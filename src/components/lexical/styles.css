@@ -1,0 +1,82 @@
+/* #region Formatting */
+.editor-theme-text-bold {
+    font-weight: bold;
+}
+
+.editor-theme-text-italic {
+    font-style: italic;
+}
+
+.editor-theme-text-underline {
+    text-decoration: underline;
+}
+
+.editor-theme-text-strikethrough {
+    text-decoration: line-through;
+}
+
+.editor-theme-text-underline-strikethrough {
+    text-decoration: underline line-through;
+}
+
+.editor-theme-text-subscript {
+    font-size: small;
+}
+
+.editor-theme-text-superscript {
+    font-size: small;
+}
+
+.editor-theme-text-code {
+    background: #ececec;
+    word-wrap: break-word;
+    padding: .1rem .3rem .2rem;
+    border-radius: .2rem;
+}
+
+.editor-theme-text-highlight {
+    background-color: yellow;
+}
+
+/* #endregion */
+
+.editor-theme-paragraph {
+    margin: 5px 0;
+}
+
+.editor-theme-heading-h1 {
+    font-size: 2.125rem;
+    margin-block: .5rem;
+}
+
+.editor-theme-heading-h2 {
+    font-size: 1.875rem;
+    margin-block: .5rem;
+}
+
+.editor-theme-heading-h3 {
+    font-size: 1.5rem;
+    margin-block: .5rem;
+}
+
+.editor-theme-heading-h4 {
+    font-size: 1.25rem;
+    margin-block: .5rem;
+}
+
+.editor-theme-heading-h5 {
+    font-size: 1.125rem;
+    margin-block: .5rem;
+}
+
+.editor-theme-heading-h6 {
+    font-size: 1rem;
+    margin-block: .5rem;
+}
+
+.editor-theme-quote {
+    padding-left: 30px;
+    border-left: 3px solid black;
+    border-radius: 0 0 0 0;
+    background-color: #ececec;
+}
