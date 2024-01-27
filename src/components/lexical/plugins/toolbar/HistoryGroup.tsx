@@ -72,14 +72,14 @@ export default function HistoryGroup({ editor, include = ['undo', 'redo'] }: IHi
     return (
         <Fragment>
             {historyPlugin}
-            <Grid container columnGap={.5}>
+            <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
                 {include.map((type) => (
                     <Grid item key={type}>
                         <ToolbarToggleButton
                             selected={false}
                             disabled={!state[type]}
                             value={type}
-                            icon={buttonsSetup[type].icon}
+                            label={buttonsSetup[type].icon}
                             title={buttonsSetup[type].title}
                             onClick={() => dispatchActionsCommand(type)}
                         />

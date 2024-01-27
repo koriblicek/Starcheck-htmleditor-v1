@@ -1,82 +1,95 @@
+:root {
+    --lexical-indent-base-value: 20px;
+  }
+
 /* #region Formatting */
-.editor-theme-text-bold {
+.htmleditor-theme-text-bold {
     font-weight: bold;
 }
 
-.editor-theme-text-italic {
+.htmleditor-theme-text-italic {
     font-style: italic;
 }
 
-.editor-theme-text-underline {
+.htmleditor-theme-text-underline {
     text-decoration: underline;
 }
 
-.editor-theme-text-strikethrough {
+.htmleditor-theme-text-strikethrough {
     text-decoration: line-through;
 }
 
-.editor-theme-text-underline-strikethrough {
+.htmleditor-theme-text-underline-strikethrough {
     text-decoration: underline line-through;
 }
 
-.editor-theme-text-subscript {
+.htmleditor-theme-text-subscript {
     font-size: small;
 }
 
-.editor-theme-text-superscript {
+.htmleditor-theme-text-superscript {
     font-size: small;
 }
 
-.editor-theme-text-code {
+.htmleditor-theme-text-code {
     background: #ececec;
     word-wrap: break-word;
     padding: .1rem .3rem .2rem;
     border-radius: .2rem;
 }
 
-.editor-theme-text-highlight {
+.htmleditor-theme-text-highlight {
     background-color: yellow;
 }
 
 /* #endregion */
 
-.editor-theme-paragraph {
+/* #region elements */
+.htmleditor-theme-paragraph {
     margin: 5px 0;
+    line-height: 1rem;
 }
 
-.editor-theme-heading-h1 {
+.htmleditor-theme-heading-h1 {
     font-size: 2.125rem;
     margin-block: .5rem;
 }
 
-.editor-theme-heading-h2 {
+.htmleditor-theme-heading-h2 {
     font-size: 1.875rem;
     margin-block: .5rem;
 }
 
-.editor-theme-heading-h3 {
+.htmleditor-theme-heading-h3 {
     font-size: 1.5rem;
     margin-block: .5rem;
 }
 
-.editor-theme-heading-h4 {
+.htmleditor-theme-heading-h4 {
     font-size: 1.25rem;
     margin-block: .5rem;
 }
 
-.editor-theme-heading-h5 {
+.htmleditor-theme-heading-h5 {
     font-size: 1.125rem;
     margin-block: .5rem;
 }
 
-.editor-theme-heading-h6 {
+.htmleditor-theme-heading-h6 {
     font-size: 1rem;
     margin-block: .5rem;
 }
 
-.editor-theme-quote {
-    padding-left: 30px;
+.htmleditor-theme-quote {
+    padding: 10px 10px 10px 20px;
     border-left: 3px solid black;
-    border-radius: 0 0 0 0;
+    border-radius: 0 8px 6px 0;
+    line-height: 120%;
     background-color: #ececec;
+}
+
+/* #endregion */
+
+.htmleditor-theme-style-indent {
+    
 }

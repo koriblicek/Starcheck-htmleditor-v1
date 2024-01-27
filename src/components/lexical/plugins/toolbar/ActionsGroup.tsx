@@ -1,11 +1,11 @@
 import { Fragment, useCallback, useMemo } from "react";
 import { Grid } from "@mui/material";
 import { LexicalEditor, CLEAR_EDITOR_COMMAND } from "lexical";
-import { ActionsType, ICON_SIZE, RecordActionsType } from "src/types";
+import { ActionsType, ICON_SIZE } from "src/types";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
-import { mdiDelete } from '@mdi/js';
+import { mdiTrashCanOutline } from '@mdi/js';
 
 interface IActionsGroupProps {
     editor: LexicalEditor;
@@ -15,10 +15,8 @@ interface IActionsGroupProps {
 type Setup = Record<ActionsType, { icon: JSX.Element, title: string; }>;
 
 const buttonsSetup = {
-    clear: { icon: <Icon path={mdiDelete} size={ICON_SIZE} />, title: "Clear" }
+    clear: { icon: <Icon path={mdiTrashCanOutline} size={ICON_SIZE} />, title: "Clear Editor" }
 } as Setup;
-
-const initialState: RecordActionsType = { clear: true };
 
 export default function ActionsGroup({ editor, include = ['clear'] }: IActionsGroupProps) {
 
@@ -37,14 +35,15 @@ export default function ActionsGroup({ editor, include = ['clear'] }: IActionsGr
     return (
         <Fragment>
             {clearPlugin}
-            <Grid container columnGap={.5}>
+            <Grid container columnGap={.5} alignItems='center' sx={{ backgroundColor: 'white' }} wrap='nowrap'>
                 {include.map((type) => (
                     <Grid item key={type}>
                         <ToolbarToggleButton
-                            selected={false}
-                            disabled={!initialState[type]}
+                            selected={true}
                             value={type}
-                            icon={buttonsSetup[type].icon}
+                            color="error"
+                            size="small"
+                            label={buttonsSetup[type].icon}
                             title={buttonsSetup[type].title}
                             onClick={() => dispatchActionsCommand(type)}
                         />

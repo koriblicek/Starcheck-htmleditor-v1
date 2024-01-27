@@ -2,7 +2,7 @@ import { createTheme } from "@mui/material";
 
 // const font = "'Roboto', sans-serif";
 
-const mediaQueryTheme = createTheme();
+// const mediaQueryTheme = createTheme();
 
 const theme = createTheme({
     palette: {

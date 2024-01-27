@@ -4,36 +4,35 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { MuiContentEditable } from './styles';
 import { PlaceholderWrapper } from './wrappers/PlaceholderWrapper';
-import { TabIndentationPlugin } from '@lexical/react/LexicalTabIndentationPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import RichTextWrapper from './wrappers/RichTextWrapper';
-import ToolbarPlugin from './plugins/ToolbarPlugin';
+import TopToolbarPlugin from './plugins/TopToolbarPlugin';
 import EditorWrapper from './wrappers/EditorWrapper';
+import BottomToolbarPlugin from './plugins/BottomToolbarPlugin';
 
 const theme = {
-    root: 'editor-lexical-composer',
-    // Theme styling goes here
-    paragraph: 'editor-theme-paragraph',
+    paragraph: "htmleditor-theme-paragraph",
     heading: {
-        h1: "editor-theme-heading-h1",
-        h2: "editor-theme-heading-h2",
-        h3: "editor-theme-heading-h3",
-        h4: "editor-theme-heading-h4",
-        h5: "editor-theme-heading-h5",
-        h6: "editor-theme-heading-h6"
+        h1: "htmleditor-theme-heading-h1",
+        h2: "htmleditor-theme-heading-h2",
+        h3: "htmleditor-theme-heading-h3",
+        h4: "htmleditor-theme-heading-h4",
+        h5: "htmleditor-theme-heading-h5",
+        h6: "htmleditor-theme-heading-h6"
     },
-    quote: "editor-theme-quote",
+    quote: "htmleditor-theme-quote",
     text: {
-        bold: "editor-theme-text-bold",
-        italic: "editor-theme-text-italic",
-        underline: "editor-theme-text-underline",
-        strikethrough: "editor-theme-text-strikethrough",
-        underlineStrikethrough: "editor-theme-text-underline-strikethrough",
-        subscript: "editor-theme-text-subscript",
-        superscript: "editor-theme-text-superscript",
-        code: "editor-theme-text-code",
-        highlight: "editor-theme-text-highlight"
-    }
+        bold: "htmleditor-theme-text-bold",
+        italic: "htmleditor-theme-text-italic",
+        underline: "htmleditor-theme-text-underline",
+        strikethrough: "htmleditor-theme-text-strikethrough",
+        underlineStrikethrough: "htmleditor-theme-text-underline-strikethrough",
+        subscript: "htmleditor-theme-text-subscript",
+        superscript: "htmleditor-theme-text-superscript",
+        code: "htmleditor-theme-text-code",
+        highlight: "htmleditor-theme-text-highlight"
+    },
+    indent: "htmleditor-theme-style-indent"
 };
 
 
@@ -56,18 +55,18 @@ export default function Editor(): JSX.Element {
     };
 
     return (
-        <EditorWrapper>
-            <LexicalComposer initialConfig={initialConfig}>
-                <ToolbarPlugin />
+        <LexicalComposer initialConfig={initialConfig}>
+            <EditorWrapper>
+                <TopToolbarPlugin />
                 <RichTextWrapper>
                     <RichTextPlugin
                         contentEditable={<MuiContentEditable />}
                         placeholder={<PlaceholderWrapper text="Click here to enter text..." />}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
+                    <BottomToolbarPlugin />
                 </RichTextWrapper>
-                <TabIndentationPlugin />
-            </LexicalComposer>
-        </EditorWrapper>
+            </EditorWrapper>
+        </LexicalComposer>
     );
 }

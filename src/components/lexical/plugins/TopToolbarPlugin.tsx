@@ -1,11 +1,11 @@
 import { Grid } from '@mui/material';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { ButtonsDivider } from './toolbar/ButtonsDivider';
+import ButtonsDivider from './toolbar/ButtonsDivider';
+import ElementTypeSelectionGroup from './toolbar/ElementTypeSelectionGroup';
 import FormattingTextButtonsGroup from './toolbar/FormattingTextButtonsGroup';
 import FormattingElementButtonsGroup from './toolbar/FormattingElementButtonsGroup';
 import HistoryGroup from './toolbar/HistoryGroup';
-import ActionsGroup from './toolbar/ActionsGroup';
-import { ElementTypeSelectionGroup } from './toolbar/ElementTypeSelectionGroup';
+import IndentationGroup from './toolbar/IndentationGroup';
 
 const toolbarPluginSx = {
     p: .5,
@@ -13,15 +13,17 @@ const toolbarPluginSx = {
     position: 'sticky',
     top: 0,
     zIndex: 2,
-    backgroundColor: 'white'
+    backgroundColor: 'white',
+    overflow: "auto",
+    scrollbarWidth: 'thin'
 };
 
-export default function ToolbarPlugin(): JSX.Element {
+export default function TopToolbarPlugin(): JSX.Element {
 
     const [editor] = useLexicalComposerContext();
 
     return (
-        <Grid container sx={toolbarPluginSx} columnGap={.5} rowGap={.5} alignItems='center'>
+        <Grid container sx={toolbarPluginSx} columnGap={.5} rowGap={.5} alignItems='center' direction='row' wrap='nowrap'>
             <Grid item>
                 <HistoryGroup editor={editor} include={['undo', 'redo']} />
             </Grid>
@@ -35,7 +37,13 @@ export default function ToolbarPlugin(): JSX.Element {
                 <ButtonsDivider />
             </Grid>
             <Grid item>
-                <FormattingTextButtonsGroup editor={editor} include={['bold', 'italic', 'underline', 'strikethrough', 'code', 'subscript', 'superscript', 'highlight']} />
+                <FormattingTextButtonsGroup editor={editor} buttons={['bold', 'italic', 'underline', 'clear_text_format']} grouppedButtons={['strikethrough', 'code', 'subscript', 'superscript', 'highlight']} />
+            </Grid>
+            <Grid item>
+                <ButtonsDivider />
+            </Grid>
+            <Grid item>
+                <IndentationGroup editor={editor} include={['outdent', 'indent']} />
             </Grid>
             <Grid item>
                 <ButtonsDivider />
@@ -46,10 +54,6 @@ export default function ToolbarPlugin(): JSX.Element {
             <Grid item>
                 <ButtonsDivider />
             </Grid>
-            <Grid item>
-                <ActionsGroup editor={editor} include={['clear']} />
-            </Grid>
         </Grid>
-
     );
 }

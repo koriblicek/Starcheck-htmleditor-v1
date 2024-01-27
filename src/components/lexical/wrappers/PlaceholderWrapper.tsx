@@ -3,8 +3,8 @@ import { Box } from '@mui/material';
 const placeholderWrapperSx = {
     position: 'absolute',
     color: 'gray',
-    top: '10px',
-    left: '10px',
+    top: '16px',
+    left: '20px',
     pointerEvents: 'none'
 };
 

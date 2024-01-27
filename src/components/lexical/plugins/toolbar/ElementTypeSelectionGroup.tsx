@@ -5,7 +5,6 @@ import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/r
 import { $setBlocksType } from "@lexical/selection";
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
 import { ElementTypeSelectionType, ElementTypeSelectionTypeOptional, ICON_SIZE } from 'src/types';
-import ArrowDropDownIcon from '@mui/icons-material/ArrowDropDown';
 import ToolbarToggleButton from 'src/components/ui/ToolbarToggleButton';
 import Icon from '@mdi/react';
 import { mdiFormatParagraph } from '@mdi/js';
@@ -16,6 +15,7 @@ import { mdiFormatHeader4 } from '@mdi/js';
 import { mdiFormatHeader5 } from '@mdi/js';
 import { mdiFormatHeader6 } from '@mdi/js';
 import { mdiCommentQuoteOutline } from '@mdi/js';
+import { mdiChevronDown } from '@mdi/js';
 
 export interface IElementTypeSelectionGroupProps {
     editor: LexicalEditor;
@@ -25,19 +25,19 @@ export interface IElementTypeSelectionGroupProps {
 type Setup = Record<ElementTypeSelectionType, { startIcon: JSX.Element, endIcon: JSX.Element, title: string; }>;
 
 const buttonsSetup = {
-    paragraph: { startIcon: <Icon path={mdiFormatParagraph} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Paragraph" },
-    h1: { startIcon: <Icon path={mdiFormatHeader1} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Heading 1" },
-    h2: { startIcon: <Icon path={mdiFormatHeader2} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Heading 2" },
-    h3: { startIcon: <Icon path={mdiFormatHeader3} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Heading 3" },
-    h4: { startIcon: <Icon path={mdiFormatHeader4} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Heading 4" },
-    h5: { startIcon: <Icon path={mdiFormatHeader5} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Heading 5" },
-    h6: { startIcon: <Icon path={mdiFormatHeader6} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Heading 6" },
-    quote: { startIcon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, endIcon: <ArrowDropDownIcon fontSize={'small'} />, title: "Quote" }
+    paragraph: { startIcon: <Icon path={mdiFormatParagraph} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Normal Style" },
+    h1: { startIcon: <Icon path={mdiFormatHeader1} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 1" },
+    h2: { startIcon: <Icon path={mdiFormatHeader2} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 2" },
+    h3: { startIcon: <Icon path={mdiFormatHeader3} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 3" },
+    h4: { startIcon: <Icon path={mdiFormatHeader4} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 4" },
+    h5: { startIcon: <Icon path={mdiFormatHeader5} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 5" },
+    h6: { startIcon: <Icon path={mdiFormatHeader6} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 6" },
+    quote: { startIcon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Quote" }
 } as Setup;
 
 const initialState: ElementTypeSelectionType = "paragraph";
 
-export function ElementTypeSelectionGroup({ editor, include = ["h1", "h2", "h3", "h4", "h5", "h6", "quote"] }: IElementTypeSelectionGroupProps) {
+export default function ElementTypeSelectionGroup({ editor, include = ["h1", "h2", "h3", "h4", "h5", "h6", "quote"] }: IElementTypeSelectionGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
@@ -120,10 +120,11 @@ export function ElementTypeSelectionGroup({ editor, include = ["h1", "h2", "h3",
                 anchorEl={anchorEl}
                 open={Boolean(anchorEl)}
                 onClose={handleClose}
+                disableAutoFocusItem
             >
                 {availableTypes.map((type) => {
                     return (
-                        <MenuItem onClick={() => setElementType(type)} key={type} selected={state === type}>
+                        <MenuItem onClick={() => setElementType(type)} key={type} selected={state === type} sx={{py:.5}}>
                             {<>{buttonsSetup[type].startIcon}<Typography variant='subtitle1' sx={{ px: 0.5 }}>{buttonsSetup[type].title}</Typography></>}
                         </MenuItem>
                     );
@@ -139,7 +140,7 @@ export function ElementTypeSelectionGroup({ editor, include = ["h1", "h2", "h3",
             <ToolbarToggleButton
                 selected={false}
                 value="state"
-                icon={<>{buttonsSetup[state].startIcon}<Typography variant='button' sx={{ px: 0.5 }}>{buttonsSetup[state].title}</Typography>{buttonsSetup[state].endIcon}</>}
+                label={<><Typography variant='button' sx={{ px: 0.5 }} noWrap>{buttonsSetup[state].title}</Typography>{buttonsSetup[state].endIcon}</>}
                 title={buttonsSetup[state].title}
                 onClick={(e: React.MouseEvent) => handleClick(e)}
             />
@@ -149,7 +150,7 @@ export function ElementTypeSelectionGroup({ editor, include = ["h1", "h2", "h3",
 
     return (
         <Fragment>
-            <Grid container columnGap={.5}>
+            <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
                 <Grid>
                     {toggleButton}
                 </Grid>

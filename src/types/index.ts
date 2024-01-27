@@ -2,8 +2,8 @@ import { TextFormatType, ElementFormatType } from "lexical";
 import { HeadingTagType } from '@lexical/rich-text';
 
 export const ICON_SIZE: number = 0.8;
-
-export type RecordTextFormatType = Record<TextFormatType, boolean>;
+export type ClearTextFormatType = "clear_text_format";
+export type RecordTextFormatType = Record<TextFormatType | ClearTextFormatType, boolean>;
 
 export type RecordElementFormatType = Record<ElementFormatType, boolean>;
 
@@ -12,6 +12,9 @@ export type RecordActionsType = Record<ActionsType, boolean>;
 
 export type HistoryType = "redo" | "undo" | "clear_history";
 export type RecordHistoryType = Record<HistoryType, boolean>;
+
+export type IndentationType = "outdent" | "indent";
+export type RecordIndentationType = Record<IndentationType, boolean>;
 
 export type ElementTypeSelectionTypeParagraph = "paragraph";
 export type ElementTypeSelectionTypeQuote = "quote";

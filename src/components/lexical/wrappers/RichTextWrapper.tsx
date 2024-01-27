@@ -3,7 +3,9 @@ import { PropsWithChildren } from "react";
 
 const richTextWrapperSx = {
     position: 'relative',
-    overflow: 'auto',
+    minHeight: '58px',
+    overflowY: 'auto',
+    overflowX: 'hidden',
     resize: 'vertical'
 };
 
