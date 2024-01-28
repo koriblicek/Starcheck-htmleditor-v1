@@ -1,4 +1,4 @@
-import { Grid, Menu, MenuItem, Typography } from '@mui/material';
+import { Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
 import { $getSelection, $isRangeSelection, $createParagraphNode, LexicalEditor } from 'lexical';
 import { $isListNode } from '@lexical/list';
 import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
@@ -19,6 +19,7 @@ import { mdiChevronDown } from '@mdi/js';
 
 export interface IElementTypeSelectionGroupProps {
     editor: LexicalEditor;
+    width?: string;
     include?: ElementTypeSelectionTypeOptional[];
 }
 
@@ -37,7 +38,7 @@ const buttonsSetup = {
 
 const initialState: ElementTypeSelectionType = "paragraph";
 
-export default function ElementTypeSelectionGroup({ editor, include = ["h1", "h2", "h3", "h4", "h5", "h6", "quote"] }: IElementTypeSelectionGroupProps) {
+export default function ElementTypeSelectionGroup({ editor, width = '90px', include = ["h1", "h2", "h3", "h4", "h5", "h6", "quote"] }: IElementTypeSelectionGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
@@ -124,7 +125,7 @@ export default function ElementTypeSelectionGroup({ editor, include = ["h1", "h2
             >
                 {availableTypes.map((type) => {
                     return (
-                        <MenuItem onClick={() => setElementType(type)} key={type} selected={state === type} sx={{py:.5}}>
+                        <MenuItem onClick={() => setElementType(type)} key={type} selected={state === type} sx={{ py: .5 }}>
                             {<>{buttonsSetup[type].startIcon}<Typography variant='subtitle1' sx={{ px: 0.5 }}>{buttonsSetup[type].title}</Typography></>}
                         </MenuItem>
                     );
@@ -140,12 +141,12 @@ export default function ElementTypeSelectionGroup({ editor, include = ["h1", "h2
             <ToolbarToggleButton
                 selected={false}
                 value="state"
-                label={<><Typography variant='button' sx={{ px: 0.5 }} noWrap>{buttonsSetup[state].title}</Typography>{buttonsSetup[state].endIcon}</>}
+                label={<Box sx={{ display: 'flex', alignItems: 'center', width: `${width}`, justifyContent:'space-between' }}><Typography variant='button' sx={{ px: 0.5, overflow: 'clip' }} noWrap>{buttonsSetup[state].title}</Typography>{buttonsSetup[state].endIcon}</Box>}
                 title={buttonsSetup[state].title}
                 onClick={(e: React.MouseEvent) => handleClick(e)}
             />
         );
-    }, [state, handleClick]);
+    }, [state, width, handleClick]);
 
 
     return (

@@ -6,6 +6,7 @@ import FormattingTextButtonsGroup from './toolbar/FormattingTextButtonsGroup';
 import FormattingElementButtonsGroup from './toolbar/FormattingElementButtonsGroup';
 import HistoryGroup from './toolbar/HistoryGroup';
 import IndentationGroup from './toolbar/IndentationGroup';
+import LinkButton from './toolbar/LinkButton';
 
 const toolbarPluginSx = {
     p: .5,
@@ -31,13 +32,19 @@ export default function TopToolbarPlugin(): JSX.Element {
                 <ButtonsDivider />
             </Grid>
             <Grid item>
-                <ElementTypeSelectionGroup editor={editor} include={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'quote']} />
+                <ElementTypeSelectionGroup editor={editor} width='120px' include={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'quote']} />
             </Grid>
             <Grid item>
                 <ButtonsDivider />
             </Grid>
             <Grid item>
                 <FormattingTextButtonsGroup editor={editor} buttons={['bold', 'italic', 'underline', 'clear_text_format']} grouppedButtons={['strikethrough', 'code', 'subscript', 'superscript', 'highlight']} />
+            </Grid>
+            <Grid item>
+                <ButtonsDivider />
+            </Grid>
+            <Grid item>
+                <LinkButton editor={editor} />
             </Grid>
             <Grid item>
                 <ButtonsDivider />

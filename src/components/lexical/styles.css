@@ -1,6 +1,6 @@
 :root {
     --lexical-indent-base-value: 20px;
-  }
+}
 
 /* #region Formatting */
 .htmleditor-theme-text-bold {
@@ -43,6 +43,10 @@
 }
 
 /* #endregion */
+
+.htmleditor-theme-link {
+    color: red;
+}
 
 /* #region elements */
 .htmleditor-theme-paragraph {
@@ -90,6 +94,4 @@
 
 /* #endregion */
 
-.htmleditor-theme-style-indent {
-    
-}
+.htmleditor-theme-style-indent {}

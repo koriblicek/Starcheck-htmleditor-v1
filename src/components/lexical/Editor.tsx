@@ -2,6 +2,7 @@ import './styles.css';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
+import { LinkNode } from "@lexical/link";
 import { MuiContentEditable } from './styles';
 import { PlaceholderWrapper } from './wrappers/PlaceholderWrapper';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
@@ -20,6 +21,7 @@ const theme = {
         h5: "htmleditor-theme-heading-h5",
         h6: "htmleditor-theme-heading-h6"
     },
+    link: "htmleditor-theme-link",
     quote: "htmleditor-theme-quote",
     text: {
         bold: "htmleditor-theme-text-bold",
@@ -50,7 +52,7 @@ export default function Editor(): JSX.Element {
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode
+            HeadingNode, QuoteNode, LinkNode
         ]
     };
 
