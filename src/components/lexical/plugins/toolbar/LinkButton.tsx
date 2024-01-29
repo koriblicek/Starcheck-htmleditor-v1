@@ -90,7 +90,7 @@ export default function LinkButton({ editor }: ILinkButtonProps) {
 
     return (
         <Fragment>
-            <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
+            <Grid container columnGap={.5} alignItems='center' wrap='nowrap' width='auto'>
                 <Grid item>
                     <ToolbarToggleButton
                         selected={isLink}

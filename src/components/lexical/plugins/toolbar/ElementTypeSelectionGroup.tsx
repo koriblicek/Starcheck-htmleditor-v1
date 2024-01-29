@@ -1,6 +1,6 @@
 import { Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
 import { $getSelection, $isRangeSelection, $createParagraphNode, LexicalEditor } from 'lexical';
-import { ListNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, INSERT_CHECK_LIST_COMMAND } from '@lexical/list';
+import { ListNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, REMOVE_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, INSERT_CHECK_LIST_COMMAND } from '@lexical/list';
 import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
 import { $setBlocksType } from "@lexical/selection";
 import { $getNearestNodeOfType } from "@lexical/utils";
@@ -77,16 +77,28 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
                     return;
                 }
                 if (type === "bullet") {
-                    editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+                    if (state !== "bullet") {
+                        editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+                    } else {
+                        editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+                    }
                     return;
                 }
                 if (type === "number") {
-                    editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+                    console.log(type, state);
+                    if (state !== "number") {
+                        editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+                    } else {
+                        editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+                    }
                     return;
                 }
                 if (type === "check") {
-                    editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
-                    //TODO not implemented
+                    if (state !== "check") {
+                        editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+                    } else {
+                        editor.dispatchCommand(REMOVE_LIST_COMMAND, undefined);
+                    }
                     return;
                 }
                 if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(type)) {
@@ -96,7 +108,7 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
             }
         });
         handleClose();
-    }, [editor, handleClose]);
+    }, [editor, handleClose, state]);
 
     useEffect(() => {
         return editor.registerUpdateListener(({ editorState }) => {
@@ -176,7 +188,7 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
 
     return (
         <Fragment>
-            <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
+            <Grid container columnGap={.5} alignItems='center' wrap='nowrap' width='auto'>
                 {buttons.map((type) => (
                     <Grid item key={type}>
                         <ToolbarToggleButton

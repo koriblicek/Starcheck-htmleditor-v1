@@ -34,7 +34,7 @@ export default function IndentationGroup({ editor, include = ['outdent', 'indent
 
     return (
         <Fragment>
-            <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
+            <Grid container columnGap={.5} alignItems='center' wrap='nowrap' width='auto'>
                 {include.map((type) => (
                     <Grid item key={type}>
                         <ToolbarToggleButton

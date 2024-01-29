@@ -20,6 +20,9 @@ export type RecordHistoryType = Record<HistoryType, boolean>;
 export type IndentationType = "outdent" | "indent";
 export type RecordIndentationType = Record<IndentationType, boolean>;
 
+export type ColorType = "font_color" | "background_color";
+export type RecordColorType = Record<ColorType, boolean>;
+
 export type ElementTypeSelectionTypeParagraph = "paragraph";
 export type ElementTypeSelectionTypeQuote = "quote";
 export type ElementTypeSelectionType = ElementTypeSelectionTypeParagraph | HeadingTagType | ElementTypeSelectionTypeQuote | ListType;
@@ -31,3 +34,13 @@ export type LinkData = {
     target: string | null;
     title: string | null;
 };
+
+export type FontFamilyListType = {
+    name: string,
+    family: string;
+};
+export type StyleTextData = {
+    font: string;
+    size: number | null;
+};
+//export type RecordStyleText = Record<

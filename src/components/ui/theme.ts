@@ -18,8 +18,9 @@ const theme = createTheme({
     //     }
     // },
     typography: {
+        // fontFamily: "sans-serif",
         button: {
-            fontSize: ".8em",
+            fontSize: ".85em",
         }
     },
 });

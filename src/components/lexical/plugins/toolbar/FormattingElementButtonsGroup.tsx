@@ -67,7 +67,7 @@ export default function FormattingElementButtonsGroup({ editor, include = ['left
     }, [editor, updateFormatButtons]);
 
     return (
-        <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
+        <Grid container columnGap={.5} alignItems='center' wrap='nowrap' width='auto'>
             {include.map((type) => (
                 <Grid item key={type}>
                     <ToolbarToggleButton
