@@ -15,7 +15,7 @@ const toolbarPluginSx = {
     top: 0,
     zIndex: 2,
     backgroundColor: 'white',
-    overflow: "auto",
+    overflow: 'auto',
     scrollbarWidth: 'thin'
 };
 
@@ -32,13 +32,13 @@ export default function TopToolbarPlugin(): JSX.Element {
                 <ButtonsDivider />
             </Grid>
             <Grid item>
-                <ElementTypeSelectionGroup editor={editor} width='120px' include={['h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'quote']} />
+                <FormattingTextButtonsGroup editor={editor} buttons={['bold', 'italic', 'underline', 'clear_text_format']} grouppedButtons={['strikethrough', 'code', 'subscript', 'superscript', 'highlight']} />
             </Grid>
             <Grid item>
                 <ButtonsDivider />
             </Grid>
             <Grid item>
-                <FormattingTextButtonsGroup editor={editor} buttons={['bold', 'italic', 'underline', 'clear_text_format']} grouppedButtons={['strikethrough', 'code', 'subscript', 'superscript', 'highlight']} />
+                <ElementTypeSelectionGroup editor={editor} buttons={['bullet', 'number']} grouppedButtons={['paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'check', 'quote']} grouppedButtonsWidth='110px' />
             </Grid>
             <Grid item>
                 <ButtonsDivider />

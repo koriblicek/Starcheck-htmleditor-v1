@@ -1,10 +1,11 @@
 import { Box, Grid, Menu, MenuItem, Typography } from '@mui/material';
 import { $getSelection, $isRangeSelection, $createParagraphNode, LexicalEditor } from 'lexical';
-import { $isListNode } from '@lexical/list';
+import { ListNode, $isListNode, INSERT_ORDERED_LIST_COMMAND, INSERT_UNORDERED_LIST_COMMAND, INSERT_CHECK_LIST_COMMAND } from '@lexical/list';
 import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/rich-text';
 import { $setBlocksType } from "@lexical/selection";
+import { $getNearestNodeOfType } from "@lexical/utils";
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { ElementTypeSelectionType, ElementTypeSelectionTypeOptional, ICON_SIZE } from 'src/types';
+import { ElementTypeSelectionType, ICON_SIZE } from 'src/types';
 import ToolbarToggleButton from 'src/components/ui/ToolbarToggleButton';
 import Icon from '@mdi/react';
 import { mdiFormatParagraph } from '@mdi/js';
@@ -16,37 +17,44 @@ import { mdiFormatHeader5 } from '@mdi/js';
 import { mdiFormatHeader6 } from '@mdi/js';
 import { mdiCommentQuoteOutline } from '@mdi/js';
 import { mdiChevronDown } from '@mdi/js';
+import { mdiFormatListBulletedSquare } from '@mdi/js';
+import { mdiFormatListNumbered } from '@mdi/js';
+import { mdiFormatListCheckbox } from '@mdi/js';
 
 export interface IElementTypeSelectionGroupProps {
     editor: LexicalEditor;
-    width?: string;
-    include?: ElementTypeSelectionTypeOptional[];
+    buttons?: ElementTypeSelectionType[];
+    grouppedButtons?: ElementTypeSelectionType[];
+    grouppedButtonsWidth?: string;
 }
 
-type Setup = Record<ElementTypeSelectionType, { startIcon: JSX.Element, endIcon: JSX.Element, title: string; }>;
+type Setup = Record<ElementTypeSelectionType, { icon: JSX.Element, title: string; }>;
 
 const buttonsSetup = {
-    paragraph: { startIcon: <Icon path={mdiFormatParagraph} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Normal Style" },
-    h1: { startIcon: <Icon path={mdiFormatHeader1} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 1" },
-    h2: { startIcon: <Icon path={mdiFormatHeader2} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 2" },
-    h3: { startIcon: <Icon path={mdiFormatHeader3} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 3" },
-    h4: { startIcon: <Icon path={mdiFormatHeader4} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 4" },
-    h5: { startIcon: <Icon path={mdiFormatHeader5} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 5" },
-    h6: { startIcon: <Icon path={mdiFormatHeader6} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Heading 6" },
-    quote: { startIcon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, endIcon: <Icon path={mdiChevronDown} size={ICON_SIZE} />, title: "Quote" }
+    paragraph: { icon: <Icon path={mdiFormatParagraph} size={ICON_SIZE} />, title: "Normal" },
+    h1: { icon: <Icon path={mdiFormatHeader1} size={ICON_SIZE} />, title: "Heading 1" },
+    h2: { icon: <Icon path={mdiFormatHeader2} size={ICON_SIZE} />, title: "Heading 2" },
+    h3: { icon: <Icon path={mdiFormatHeader3} size={ICON_SIZE} />, title: "Heading 3" },
+    h4: { icon: <Icon path={mdiFormatHeader4} size={ICON_SIZE} />, title: "Heading 4" },
+    h5: { icon: <Icon path={mdiFormatHeader5} size={ICON_SIZE} />, title: "Heading 5" },
+    h6: { icon: <Icon path={mdiFormatHeader6} size={ICON_SIZE} />, title: "Heading 6" },
+    bullet: { icon: <Icon path={mdiFormatListBulletedSquare} size={ICON_SIZE} />, title: "Bullet List" },
+    number: { icon: <Icon path={mdiFormatListNumbered} size={ICON_SIZE} />, title: "Numbered List" },
+    check: { icon: <Icon path={mdiFormatListCheckbox} size={ICON_SIZE} />, title: "Check List" },
+    quote: { icon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, title: "Quote" }
 } as Setup;
 
 const initialState: ElementTypeSelectionType = "paragraph";
 
-export default function ElementTypeSelectionGroup({ editor, width = '90px', include = ["h1", "h2", "h3", "h4", "h5", "h6", "quote"] }: IElementTypeSelectionGroupProps) {
+export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2', 'h3', 'bullet', 'number'], grouppedButtons = ['h4', 'h5', 'h6', 'check', 'quote'], grouppedButtonsWidth = '90px' }: IElementTypeSelectionGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
     const [state, setState] = useState<ElementTypeSelectionType>(initialState);
 
-    const availableTypes: ElementTypeSelectionType[] = useMemo(() => {
-        return ["paragraph", ...include];
-    }, [include]);
+    const availableGroupedTypes: ElementTypeSelectionType[] = useMemo(() => {
+        return [...grouppedButtons];
+    }, [grouppedButtons]);
 
     const handleClick = useCallback((event: React.MouseEvent) => {
         setAnchorEl(event.currentTarget);
@@ -66,6 +74,19 @@ export default function ElementTypeSelectionGroup({ editor, width = '90px', incl
                 }
                 if (type === "quote") {
                     $setBlocksType(selection, () => $createQuoteNode());
+                    return;
+                }
+                if (type === "bullet") {
+                    editor.dispatchCommand(INSERT_UNORDERED_LIST_COMMAND, undefined);
+                    return;
+                }
+                if (type === "number") {
+                    editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
+                    return;
+                }
+                if (type === "check") {
+                    editor.dispatchCommand(INSERT_CHECK_LIST_COMMAND, undefined);
+                    //TODO not implemented
                     return;
                 }
                 if (["h1", "h2", "h3", "h4", "h5", "h6"].includes(type)) {
@@ -91,20 +112,17 @@ export default function ElementTypeSelectionGroup({ editor, width = '90px', incl
                     const elementDOM = editor.getElementByKey(elementKey);
                     if (elementDOM !== null) {
                         if ($isListNode(element)) {
-                            // const parentList = $getNearestNodeOfType<ListNode>(
-                            //     anchorNode,
-                            //     ListNode,
-                            // );
-                            // const type = parentList
-                            //     ? parentList.getListType()
-                            //     : element.getListType();
-                            // setBlockType(type);
+                            // is list?
+                            const parentList = $getNearestNodeOfType<ListNode>(anchorNode, ListNode);
+                            const type = parentList ? parentList.getListType() : element.getListType();
+                            setState(type);
                         } else {
+                            //is heading?
                             const type = $isHeadingNode(element)
                                 ? element.getTag()
                                 : element.getType();
 
-                            if (availableTypes.includes(type)) {
+                            if (availableGroupedTypes.includes(type)) {
                                 setState(type);
                             }
                         }
@@ -112,7 +130,7 @@ export default function ElementTypeSelectionGroup({ editor, width = '90px', incl
                 }
             });
         });
-    }, [editor, availableTypes]);
+    }, [editor, availableGroupedTypes]);
 
     const menu = useMemo(() => {
         return (
@@ -123,10 +141,10 @@ export default function ElementTypeSelectionGroup({ editor, width = '90px', incl
                 onClose={handleClose}
                 disableAutoFocusItem
             >
-                {availableTypes.map((type) => {
+                {availableGroupedTypes.map((type) => {
                     return (
                         <MenuItem onClick={() => setElementType(type)} key={type} selected={state === type} sx={{ py: .5 }}>
-                            {<>{buttonsSetup[type].startIcon}<Typography variant='subtitle1' sx={{ px: 0.5 }}>{buttonsSetup[type].title}</Typography></>}
+                            {<>{buttonsSetup[type].icon}<Typography variant='subtitle1' sx={{ px: 0.5 }}>{buttonsSetup[type].title}</Typography></>}
                         </MenuItem>
                     );
                 })}
@@ -134,24 +152,42 @@ export default function ElementTypeSelectionGroup({ editor, width = '90px', incl
 
             </Menu>
         );
-    }, [state, anchorEl, handleClose, setElementType, availableTypes]);
+    }, [state, anchorEl, handleClose, setElementType, availableGroupedTypes]);
 
     const toggleButton = useMemo(() => {
         return (
             <ToolbarToggleButton
                 selected={false}
                 value="state"
-                label={<Box sx={{ display: 'flex', alignItems: 'center', width: `${width}`, justifyContent:'space-between' }}><Typography variant='button' sx={{ px: 0.5, overflow: 'clip' }} noWrap>{buttonsSetup[state].title}</Typography>{buttonsSetup[state].endIcon}</Box>}
+                label={
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: `${grouppedButtonsWidth}`, justifyContent: 'space-between' }}>
+                        <Typography variant='button' sx={{ px: 0.5, overflow: 'clip' }} noWrap>
+                            {grouppedButtons.includes(state) ? buttonsSetup[state].title : "More Styles"}
+                        </Typography>
+                        {<Icon path={mdiChevronDown} size={ICON_SIZE} />}
+                    </Box>
+                }
                 title={buttonsSetup[state].title}
                 onClick={(e: React.MouseEvent) => handleClick(e)}
             />
         );
-    }, [state, width, handleClick]);
+    }, [state, grouppedButtonsWidth, grouppedButtons, handleClick]);
 
 
     return (
         <Fragment>
             <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
+                {buttons.map((type) => (
+                    <Grid item key={type}>
+                        <ToolbarToggleButton
+                            selected={state === type}
+                            value={type}
+                            label={buttonsSetup[type].icon}
+                            title={buttonsSetup[type].title}
+                            onClick={() => setElementType(type)}
+                        />
+                    </Grid>
+                ))}
                 <Grid>
                     {toggleButton}
                 </Grid>

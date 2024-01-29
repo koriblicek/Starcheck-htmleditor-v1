@@ -5,24 +5,19 @@ import { createTheme } from "@mui/material";
 // const mediaQueryTheme = createTheme();
 
 const theme = createTheme({
-    palette: {
-        primary: {
-            main: "#1c3e50",
-        },
-        secondary: {
-            main: "#fa7930ff",
-            contrastText: "white",
-        },
-        background: {
-            default: "#f8f8f8",
-        },
-        // colors: {
-        //     darkblue: "#364570ff",
-        //     lightgreen: "#9cbec6ff",
-        // },
-    },
+    // palette: {
+    //     primary: {
+    //         main: "#1c3e50",
+    //     },
+    //     secondary: {
+    //         main: "#fa7930ff",
+    //         contrastText: "white",
+    //     },
+    //     background: {
+    //         default: "#f8f8f8",
+    //     }
+    // },
     typography: {
-        // fontFamily: font,
         button: {
             fontSize: ".8em",
         }

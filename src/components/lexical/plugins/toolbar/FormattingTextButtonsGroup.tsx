@@ -137,15 +137,13 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
             return null;
         }
         return (
-            <Grid item>
-                <ToolbarToggleButton
-                    selected={false}
-                    value="state"
-                    label={<><Icon path={mdiFormatLetterCase} size={ICON_SIZE} /><Icon path={mdiChevronDown} size={ICON_SIZE} /></>}
-                    title={'Extra Formatting'}
-                    onClick={(e: React.MouseEvent) => handleClick(e)}
-                />
-            </Grid>
+            <ToolbarToggleButton
+                selected={false}
+                value="state"
+                label={<><Icon path={mdiFormatLetterCase} size={ICON_SIZE} /><Icon path={mdiChevronDown} size={ICON_SIZE} /></>}
+                title={'Extra Formatting'}
+                onClick={(e: React.MouseEvent) => handleClick(e)}
+            />
         );
     }, [grouppedButtons, handleClick]);
 
@@ -204,7 +202,9 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                         />
                     </Grid>
                 ))}
-                {toggleButton}
+                <Grid item>
+                    {toggleButton}
+                </Grid>
             </Grid>
             {menu}
         </>

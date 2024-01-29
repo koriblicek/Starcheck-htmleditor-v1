@@ -1,4 +1,4 @@
-import { Fragment, useCallback, useMemo } from "react";
+import { Fragment, useCallback } from "react";
 import { Grid } from "@mui/material";
 import { LexicalEditor, INDENT_CONTENT_COMMAND, OUTDENT_CONTENT_COMMAND } from "lexical";
 import { ICON_SIZE, IndentationType } from "src/types";
@@ -6,7 +6,6 @@ import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
 import { mdiFormatIndentDecrease } from '@mdi/js';
 import { mdiFormatIndentIncrease } from '@mdi/js';
-import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 
 interface IIndentationGroupProps {
     editor: LexicalEditor;
@@ -22,10 +21,6 @@ const buttonsSetup = {
 
 export default function IndentationGroup({ editor, include = ['outdent', 'indent'] }: IIndentationGroupProps) {
 
-    const tabIndentationPlugin = useMemo(() => {
-        return <TabIndentationPlugin />;
-    }, []);
-
     const dispatchActionsCommand = useCallback((type: IndentationType) => {
         switch (type) {
             case 'outdent':
@@ -39,7 +34,6 @@ export default function IndentationGroup({ editor, include = ['outdent', 'indent
 
     return (
         <Fragment>
-            {tabIndentationPlugin}
             <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
                 {include.map((type) => (
                     <Grid item key={type}>

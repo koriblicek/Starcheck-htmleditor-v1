@@ -2,8 +2,7 @@ import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Grid } from "@mui/material";
 import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_CRITICAL, LexicalEditor, SELECTION_CHANGE_COMMAND } from "lexical";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
-import { LinkPlugin } from "@lexical/react/LexicalLinkPlugin";
-import { ICON_SIZE } from "src/types";
+import { ICON_SIZE, LinkData } from "src/types";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
 import { mdiLink } from '@mdi/js';
@@ -25,9 +24,11 @@ export default function LinkButton({ editor }: ILinkButtonProps) {
 
     const [isLink, setIsLink] = useState<boolean>(false);
 
-    const [linkUrl, setLinkUrl] = useState<string>("");
+    const [linkData, setLinkData] = useState<LinkData>({ url: "", target: "_self", title: "" });
 
     const [isLinkDialog, setIsLinkDialog] = useState<boolean>(false);
+
+    const [isDisabled, setIsDisabled] = useState<boolean>(true);
 
     const handleCloseDialog = useCallback(() => {
         setIsLinkDialog(false);
@@ -38,41 +39,44 @@ export default function LinkButton({ editor }: ILinkButtonProps) {
         editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
     }, [editor]);
 
+    const handleConfirmLink = useCallback((linkData: LinkData) => {
+        setLinkData({ ...linkData });
+        setIsLinkDialog(false);
+        editor.dispatchCommand(TOGGLE_LINK_COMMAND, { url: sanitizeUrl(linkData.url), target: linkData.target, title: linkData.title });
+    }, [editor]);
 
     const linkDialog = useMemo(() => {
         return (
-            <LinkDialog open={isLinkDialog} url={linkUrl} onClose={handleCloseDialog} onConfirm={handleCloseDialog} onLinkDelete={handleDeleteLink} />
+            <LinkDialog open={isLinkDialog} data={linkData} onClose={handleCloseDialog} onConfirm={handleConfirmLink} onLinkDelete={handleDeleteLink} />
         );
-    }, [linkUrl, isLinkDialog, handleCloseDialog, handleDeleteLink]);
-
-    const linkPlugin = useMemo(() => {
-        return <LinkPlugin />;
-    }, []);
+    }, [linkData, isLinkDialog, handleCloseDialog, handleDeleteLink, handleConfirmLink]);
 
     const updateButton = useCallback(() => {
         const selection = $getSelection();
         if ($isRangeSelection(selection)) {
             const node = getSelectedNode(selection);
             const parent = node.getParent();
-            console.log($isLinkNode(parent));
-            if ($isLinkNode(parent) || $isLinkNode(node)) {
+            if ($isLinkNode(parent)) {
                 setIsLink(true);
+                setLinkData({ url: parent.getURL(), target: parent.getTarget(), title: parent.getTitle() });
+            } else if ($isLinkNode(node)) {
+                setIsLink(true);
+                setLinkData({ url: node.getURL(), target: node.getTarget(), title: node.getTitle() });
             } else {
                 setIsLink(false);
             }
+            const anchor = selection.anchor;
+            const focus = selection.focus;
+            setIsDisabled(anchor.key === focus.key && anchor.offset === focus.offset);
         }
     }, []);
 
     const insertLink = useCallback(() => {
         if (!isLink) {
-            setIsLinkDialog(true);
-            setLinkUrl('https://');
-            editor.dispatchCommand(TOGGLE_LINK_COMMAND, sanitizeUrl('https://'));
-        } else {
-            setIsLinkDialog(true);
-            //            editor.dispatchCommand(TOGGLE_LINK_COMMAND, null);
+            setLinkData({ url: sanitizeUrl('https://'), target: "_self", title: "" });
         }
-    }, [editor, isLink]);
+        setIsLinkDialog(true);
+    }, [isLink]);
 
     useEffect(() => {
         return editor.registerCommand(
@@ -86,11 +90,11 @@ export default function LinkButton({ editor }: ILinkButtonProps) {
 
     return (
         <Fragment>
-            {linkPlugin}
             <Grid container columnGap={.5} alignItems='center' wrap='nowrap'>
                 <Grid item>
                     <ToolbarToggleButton
                         selected={isLink}
+                        disabled={isDisabled && !isLink}
                         value='link'
                         label={buttonSetup.icon}
                         title={buttonSetup.title}

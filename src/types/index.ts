@@ -1,7 +1,11 @@
 import { TextFormatType, ElementFormatType } from "lexical";
 import { HeadingTagType } from '@lexical/rich-text';
+import { ListType } from '@lexical/list';
 
-export const ICON_SIZE: number = 0.8;
+export const ICON_SIZE: number = .9;
+export const linkAttributeTartgetTypeList: LinkAttributeTartgetType[] = ["_self", "_blank", "_parent", "_top"];
+
+
 export type ClearTextFormatType = "clear_text_format";
 export type RecordTextFormatType = Record<TextFormatType | ClearTextFormatType, boolean>;
 
@@ -18,6 +22,12 @@ export type RecordIndentationType = Record<IndentationType, boolean>;
 
 export type ElementTypeSelectionTypeParagraph = "paragraph";
 export type ElementTypeSelectionTypeQuote = "quote";
-export type ElementTypeSelectionTypeOptional = HeadingTagType | ElementTypeSelectionTypeQuote;
-export type ElementTypeSelectionType = ElementTypeSelectionTypeParagraph | ElementTypeSelectionTypeOptional;
+export type ElementTypeSelectionType = ElementTypeSelectionTypeParagraph | HeadingTagType | ElementTypeSelectionTypeQuote | ListType;
 export type RecordElementTypeSelectionType = Record<ElementTypeSelectionType, boolean>;
+
+export type LinkAttributeTartgetType = "_self" | "_blank" | "_parent" | "_top";
+export type LinkData = {
+    url: string;
+    target: string | null;
+    title: string | null;
+};
