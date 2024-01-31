@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Grid } from "@mui/material";
-import { $getSelection, $isRangeSelection, COMMAND_PRIORITY_CRITICAL, LexicalEditor, SELECTION_CHANGE_COMMAND } from "lexical";
+import { $getSelection, $isRangeSelection, LexicalEditor } from "lexical";
 import { $isLinkNode, TOGGLE_LINK_COMMAND } from '@lexical/link';
 import { ICON_SIZE, LinkData } from "src/types";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
@@ -68,6 +68,8 @@ export default function LinkButton({ editor }: ILinkButtonProps) {
             const anchor = selection.anchor;
             const focus = selection.focus;
             setIsDisabled(anchor.key === focus.key && anchor.offset === focus.offset);
+        } else {
+            setIsDisabled(true);
         }
     }, []);
 
@@ -79,13 +81,17 @@ export default function LinkButton({ editor }: ILinkButtonProps) {
     }, [isLink]);
 
     useEffect(() => {
-        return editor.registerCommand(
-            SELECTION_CHANGE_COMMAND, () => {
+        return editor.registerUpdateListener(({ editorState }) => {
+            //return editor.registerCommand(
+            // SELECTION_CHANGE_COMMAND, () => {
+            //     updateButton();
+            //     return false;
+            // },
+            // COMMAND_PRIORITY_CRITICAL,
+            editorState.read(() => {
                 updateButton();
-                return false;
-            },
-            COMMAND_PRIORITY_CRITICAL,
-        );
+            });
+        });
     }, [editor, updateButton]);
 
     return (

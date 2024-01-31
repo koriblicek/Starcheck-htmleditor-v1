@@ -42,19 +42,19 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                 <Stack direction='column' gap={1}>
                     <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={linkData.url} type="text" margin="dense"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, url: e.target.value }; })}
-                        label="HREF"
+                        label="Link URL 'href':"
                         InputLabelProps={{
                             shrink: true
                         }}
                     />
                     <FormControl fullWidth variant='outlined'>
-                        <InputLabel id="link-target-label" htmlFor="link-target-input">TARGET</InputLabel>
+                        <InputLabel id="link-target-label" htmlFor="link-target-input">Open link in 'target':</InputLabel>
                         <Select
                             labelId="link-target-label"
                             id="link-target"
                             value={linkData.target}
                             size='small'
-                            label="TARGET"
+                            label="Open link in 'target':"
                             inputProps={{id: 'link-target-input'}}
                             onChange={(e) => setLinkData((prevState) => { return { ...prevState, target: e.target.value }; })}
                         >
@@ -65,7 +65,7 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                     </FormControl>
                     <TextField fullWidth id="link-title" name="link-title" variant="outlined" size='small' value={linkData.title} type="text" margin="dense"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, title: e.target.value }; })}
-                        label="TITLE"
+                        label="Link title 'title':"
                         InputLabelProps={{
                             shrink: true
                         }}

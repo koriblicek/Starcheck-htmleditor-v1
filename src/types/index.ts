@@ -35,6 +35,12 @@ export type LinkData = {
     title: string | null;
 };
 
+export type NewImagePayload = {
+    src: string;
+    altText: string;
+};
+
+
 export type FontFamilyListType = {
     name: string,
     family: string;

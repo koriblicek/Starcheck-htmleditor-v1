@@ -49,6 +49,8 @@
     text-decoration: underline;
 }
 
+.htmleditor-theme-inline-image {}
+
 .htmleditor-theme-link:hover,
 .htmleditor-theme-link:active,
 .htmleditor-theme-link:focus {

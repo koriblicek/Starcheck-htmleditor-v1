@@ -12,9 +12,11 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import RichTextWrapper from './wrappers/RichTextWrapper';
-import TopToolbarPlugin from './plugins/TopToolbarPlugin';
+import TopToolbar from './toolbar/TopToolbar';
 import EditorWrapper from './wrappers/EditorWrapper';
-import BottomToolbarPlugin from './plugins/BottomToolbarPlugin';
+import BottomToolbar from './toolbar/BottomToolbar';
+import { InlineImageNode } from './nodes/InlineImageNode';
+import ImagePlugin from './plugins/InlineImagePlugin';
 
 const theme = {
     paragraph: "htmleditor-theme-paragraph",
@@ -54,6 +56,7 @@ const theme = {
         highlight: "htmleditor-theme-text-highlight"
     },
     link: "htmleditor-theme-link",
+    inlineImage: 'htmleditor-theme-inline-image',
     indent: "htmleditor-theme-style-indent"
 };
 
@@ -72,27 +75,28 @@ export default function Editor(): JSX.Element {
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode
+            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, InlineImageNode
         ]
     };
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <EditorWrapper>
-                <TopToolbarPlugin />
+                <TopToolbar />
                 <RichTextWrapper>
                     <RichTextPlugin
                         contentEditable={<MuiContentEditable />}
                         placeholder={<PlaceholderWrapper text="Click here to enter text..." />}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
-                    <BottomToolbarPlugin />
+                    <BottomToolbar />
                 </RichTextWrapper>
             </EditorWrapper>
             <LinkPlugin />
             <TabIndentationPlugin />
             <ListPlugin />
             <CheckListPlugin />
+            <ImagePlugin />
         </LexicalComposer>
     );
 }

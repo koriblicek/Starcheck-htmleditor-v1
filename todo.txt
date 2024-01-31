@@ -5,3 +5,10 @@ https://www.npmjs.com/package/vite-plugin-css-injected-by-js
 shift + Enter - soft line break - create button for such functionality
 
 FormattingElementButtonsGroup - add clear alignment type instead of ""
+
+
+addClassNamesToElement
+
+
+How to delete classes when use $generateHtmlFromNodes?
+https://github.com/facebook/lexical/discussions/3828

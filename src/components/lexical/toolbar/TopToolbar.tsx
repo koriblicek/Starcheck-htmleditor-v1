@@ -1,16 +1,17 @@
 import { Divider, Stack } from '@mui/material';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import ButtonsDivider from './toolbar/ButtonsDivider';
-import ElementTypeSelectionGroup from './toolbar/ElementTypeSelectionGroup';
-import FormattingTextButtonsGroup from './toolbar/FormattingTextButtonsGroup';
-import FormattingElementButtonsGroup from './toolbar/FormattingElementButtonsGroup';
-import HistoryGroup from './toolbar/HistoryGroup';
-import IndentationGroup from './toolbar/IndentationGroup';
-import LinkButton from './toolbar/LinkButton';
-import StyleTextButtonsGroup from './toolbar/StyleTextButtonsGroup';
-import ColorTextButtonsGroup from './toolbar/ColorTextButtonsGroup';
+import ButtonsDivider from './groups/ButtonsDivider';
+import ElementTypeSelectionGroup from './groups/ElementTypeSelectionGroup';
+import FormattingTextButtonsGroup from './groups/FormattingTextButtonsGroup';
+import FormattingElementButtonsGroup from './groups/FormattingElementButtonsGroup';
+import HistoryGroup from './groups/HistoryGroup';
+import IndentationGroup from './groups/IndentationGroup';
+import LinkButton from './groups/LinkButton';
+import StyleTextButtonsGroup from './groups/StyleTextButtonsGroup';
+import ColorTextButtonsGroup from './groups/ColorTextButtonsGroup';
+import ImageButton from './groups/ImageButton';
 
-const toolbarPluginSx = {
+const toolbarSx = {
     p: .5,
     position: 'sticky',
     top: 0,
@@ -20,13 +21,13 @@ const toolbarPluginSx = {
     scrollbarWidth: 'thin'
 };
 
-export default function TopToolbarPlugin(): JSX.Element {
+export default function TopToolbar(): JSX.Element {
 
     const [editor] = useLexicalComposerContext();
 
     return (
         <>
-            <Stack direction="column" sx={toolbarPluginSx}>
+            <Stack direction="column" sx={toolbarSx}>
                 <Stack flexDirection="row" gap={.5} justifyContent='left' sx={{ pb: .5 }}>
                     <HistoryGroup
                         editor={editor}
@@ -68,6 +69,9 @@ export default function TopToolbarPlugin(): JSX.Element {
                     />
                     <ButtonsDivider />
                     <LinkButton
+                        editor={editor}
+                    />
+                    <ImageButton
                         editor={editor}
                     />
                     <ButtonsDivider />

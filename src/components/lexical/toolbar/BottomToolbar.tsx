@@ -1,8 +1,8 @@
 import { Box } from '@mui/material';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import ActionsGroup from './toolbar/ActionsGroup';
+import ActionsGroup from './groups/ActionsGroup';
 
-const toolbarPluginSx = {
+const toolbarSx = {
     position: 'fixed',
     right: '17px',
     bottom: '5px',
@@ -14,13 +14,8 @@ export default function BottomToolbarPlugin(): JSX.Element {
     const [editor] = useLexicalComposerContext();
 
     return (
-        // <Grid container sx={toolbarPluginSx} columnGap={.5} rowGap={.5} alignItems='center' justifyContent='end'>
-        //     <Grid item>
-        <Box sx={toolbarPluginSx}>
+        <Box sx={toolbarSx}>
             <ActionsGroup editor={editor} include={['clear']} />
         </Box>
-        //     </Grid>
-        // </Grid>
-
     );
 }
