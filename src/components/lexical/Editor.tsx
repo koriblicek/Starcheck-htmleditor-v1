@@ -9,14 +9,20 @@ import { PlaceholderWrapper } from './wrappers/PlaceholderWrapper';
 import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
+import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
+import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
+import { InlineImageNode } from './nodes/InlineImageNode';
+import { EditorToolbarsSetup } from 'src/types';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import RichTextWrapper from './wrappers/RichTextWrapper';
 import TopToolbar from './toolbar/TopToolbar';
 import EditorWrapper from './wrappers/EditorWrapper';
 import BottomToolbar from './toolbar/BottomToolbar';
-import { InlineImageNode } from './nodes/InlineImageNode';
 import ImagePlugin from './plugins/InlineImagePlugin';
+import YouTubePlugin from './plugins/YouTubePlugin';
+import { YouTubeNode } from './nodes/YouTubeNode';
+import TreeViewPlugin from './plugins/TreeViewPlugin';
 
 const theme = {
     paragraph: "htmleditor-theme-paragraph",
@@ -43,6 +49,10 @@ const theme = {
             'htmleditor-theme-ol3'
         ]
     },
+    embedBlock: {
+        base: 'htmleditor-embedBlock',
+        focus: 'htmleditor-embedBlock-focus',
+      },
     quote: "htmleditor-theme-quote",
     text: {
         bold: "htmleditor-theme-text-bold",
@@ -68,21 +78,24 @@ function onError(error: Error): void {
     console.error(error);
 }
 
+interface IEditroProps {
+    toolbarsSetup?: EditorToolbarsSetup;
+}
 
-export default function Editor(): JSX.Element {
+export default function Editor({ toolbarsSetup = {} }: IEditroProps): JSX.Element {
     const initialConfig = {
         namespace: 'Starcheck-html-editor',
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, InlineImageNode
+            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, InlineImageNode, YouTubeNode
         ]
     };
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <EditorWrapper>
-                <TopToolbar />
+                <TopToolbar settings={toolbarsSetup.top} />
                 <RichTextWrapper>
                     <RichTextPlugin
                         contentEditable={<MuiContentEditable />}
@@ -97,6 +110,10 @@ export default function Editor(): JSX.Element {
             <ListPlugin />
             <CheckListPlugin />
             <ImagePlugin />
+            <YouTubePlugin />
+            <HistoryPlugin />
+            <ClearEditorPlugin />
+            <TreeViewPlugin />
         </LexicalComposer>
     );
 }

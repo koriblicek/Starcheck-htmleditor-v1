@@ -1,11 +1,4 @@
-/**
- * Copyright (c) Meta Platforms, Inc. and affiliates.
- *
- * This source code is licensed under the MIT license found in the
- * LICENSE file in the root directory of this source tree.
- *
- */
-import type { Float } from './InlineImageNode';
+import type { Float, Height, Width } from './InlineImageNode';
 import type { BaseSelection, NodeKey } from 'lexical';
 
 import './InlineImageNode.css';
@@ -13,17 +6,13 @@ import './InlineImageNode.css';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
 import { mergeRegister } from '@lexical/utils';
-import {
-  $getNodeByKey,
-  $getSelection,
-  $isNodeSelection,
-  CLICK_COMMAND,
-  COMMAND_PRIORITY_LOW,
-  KEY_BACKSPACE_COMMAND,
-  KEY_DELETE_COMMAND,
-} from 'lexical';
-import { Suspense, useCallback, useEffect, useRef, useState } from 'react';
+import { $getNodeByKey, $getSelection, $isNodeSelection, CLICK_COMMAND, COMMAND_PRIORITY_LOW, KEY_BACKSPACE_COMMAND, KEY_DELETE_COMMAND } from 'lexical';
+import { Suspense, useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { $isInlineImageNode } from './InlineImageNode';
+import { IconButton } from '@mui/material';
+import Icon from '@mdi/react';
+import { mdiPencil } from '@mdi/js';
+import { EditInlineImageDialog } from './dialogs/EditInlineImageDialog';
 
 const imageCache = new Set();
 
@@ -40,156 +29,50 @@ function useSuspenseImage(src: string) {
   }
 }
 
-function LazyImage({
-  altText,
-  className,
-  imageRef,
-  src,
-  width,
-  height,
-  float
-}: {
-  altText: string;
-  className: string | null;
-  height: 'inherit' | number;
-  imageRef: { current: null | HTMLImageElement; };
-  src: string;
-  width: 'inherit' | number;
-  float: Float;
+function LazyImage({ altText, className, imageRef, src, width, height, float }: {
+  altText: string | null; className: string | null; height?: Height; imageRef: { current: null | HTMLImageElement; }; src: string; width?: Width; float: Float;
 }): JSX.Element {
+
   useSuspenseImage(src);
+
   return (
     <img
       className={className || undefined}
       src={src}
-      alt={altText}
+      alt={altText ? altText : ""}
       ref={imageRef}
       style={{
         display: 'inline-block',
-        height,
-        width,
-        float: float
+        height: `${height}`,
+        width: `${width}`,
+        // float: `${float}`,
+        maxWidth: '100%',
       }}
     />
   );
 }
-/*
-export function UpdateInlineImageDialog({
-  activeEditor,
-  nodeKey,
-  onClose,
-}: {
-  activeEditor: LexicalEditor;
-  nodeKey: NodeKey;
-  onClose: () => void;
-}): JSX.Element {
-  const editorState = activeEditor.getEditorState();
-  const node = editorState.read(
-    () => $getNodeByKey(nodeKey) as InlineImageNode,
-  );
-  const [altText, setAltText] = useState(node.getAltText());
-  const [showCaption, setShowCaption] = useState(node.getShowCaption());
-  const [position, setPosition] = useState<Position>(node.getPosition());
 
-  const handleShowCaptionChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setShowCaption(e.target.checked);
-  };
-
-  const handlePositionChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setPosition(e.target.value as Position);
-  };
-
-  const handleOnConfirm = () => {
-    const payload = {altText, position, showCaption};
-    if (node) {
-      activeEditor.update(() => {
-        node.update(payload);
-      });
-    }
-    onClose();
-  };
-
-  return (
-    <>
-      <div style={{marginBottom: '1em'}}>
-        <TextInput
-          label="Alt Text"
-          placeholder="Descriptive alternative text"
-          onChange={setAltText}
-          value={altText}
-          data-test-id="image-modal-alt-text-input"
-        />
-      </div>
-
-      <Select
-        style={{marginBottom: '1em', width: '208px'}}
-        value={position}
-        label="Position"
-        name="position"
-        id="position-select"
-        onChange={handlePositionChange}>
-        <option value="left">Left</option>
-        <option value="right">Right</option>
-        <option value="full">Full Width</option>
-      </Select>
-
-      <div className="Input__wrapper">
-        <input
-          id="caption"
-          type="checkbox"
-          checked={showCaption}
-          onChange={handleShowCaptionChange}
-        />
-        <label htmlFor="caption">Show Caption</label>
-      </div>
-
-      <DialogActions>
-        <Button
-          data-test-id="image-modal-file-upload-btn"
-          onClick={() => handleOnConfirm()}>
-          Confirm
-        </Button>
-      </DialogActions>
-    </>
-  );
-}
-*/
-export default function InlineImageComponent({
-  src,
-  altText,
-  nodeKey,
-  width,
-  height,
-  float
-}: {
-  altText: string;
-  height: 'inherit' | number;
-  nodeKey: NodeKey;
-  src: string;
-  width: 'inherit' | number;
-  float: Float;
-
+export default function InlineImageComponent({ src, altText, nodeKey, width, height, float, caption }: {
+  altText: string; height: Height; nodeKey: NodeKey; src: string; width: Width; float: Float; caption: string;
 }): JSX.Element {
   // const [modal, showModal] = useModal();
   const imageRef = useRef<null | HTMLImageElement>(null);
   const [isSelected, setSelected, clearSelection] = useLexicalNodeSelection(nodeKey);
   const [editor] = useLexicalComposerContext();
+  const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<BaseSelection | null>(null);
 
-  const onDelete = useCallback(
-    (payload: KeyboardEvent) => {
-      if (isSelected && $isNodeSelection($getSelection())) {
-        const event: KeyboardEvent = payload;
-        event.preventDefault();
-        const node = $getNodeByKey(nodeKey);
-        if ($isInlineImageNode(node)) {
-          node.remove();
-        }
+  const onDelete = useCallback((payload: KeyboardEvent) => {
+    if (isSelected && $isNodeSelection($getSelection())) {
+      const event: KeyboardEvent = payload;
+      event.preventDefault();
+      const node = $getNodeByKey(nodeKey);
+      if ($isInlineImageNode(node)) {
+        node.remove();
       }
-      return false;
-    },
-    [isSelected, nodeKey],
-  );
+    }
+    return false;
+  }, [isSelected, nodeKey]);
 
   useEffect(() => {
     let isMounted = true;
@@ -199,20 +82,11 @@ export default function InlineImageComponent({
           setSelection(editorState.read(() => $getSelection()));
         }
       }),
-      /*
-      editor.registerCommand(
-        SELECTION_CHANGE_COMMAND,
-        (_, activeEditor) => {
-          activeEditorRef.current = activeEditor;
-          return false;
-        },
-        COMMAND_PRIORITY_LOW,
-      ),
-      */
       editor.registerCommand<MouseEvent>(
         CLICK_COMMAND,
         (payload) => {
           const event = payload;
+          console.log(event.target)
           if (event.target === imageRef.current) {
             if (event.shiftKey) {
               setSelected(!isSelected);
@@ -237,31 +111,39 @@ export default function InlineImageComponent({
   }, [clearSelection, editor, isSelected, nodeKey, onDelete, /*onEnter, onEscape,*/ setSelected,]);
 
   const isFocused = isSelected;
+
+  const onClose = useCallback(() => {
+    setIsEditDialogOpen(false);
+  }, []);
+
+  const editDialog = useMemo(() => {
+    return (
+      <EditInlineImageDialog editor={editor} nodeKey={nodeKey} open={isEditDialogOpen} onClose={onClose} />
+    );
+  }, [isEditDialogOpen]);
+
   return (
     <Suspense fallback={null}>
-      <>
-        {/*<div draggable={draggable}>
-           <button
-            className="image-edit-button"
-            ref={buttonRef} }
-          onClick={() => {
-            showModal('Update Inline Image', (onClose) => (
-              <UpdateInlineImageDialog
-                activeEditor={editor}
-                nodeKey={nodeKey}
-                onClose={onClose}
-              />
-            ));
-          }}
+      <div style={{ position: 'relative', display: 'inline-block', maxWidth: '100%' }}>
+        <div style={{ position: 'absolute', top: 5, left: 15, visibility: isFocused ? 'visible' : 'hidden' }} onClick={(e) => e.stopPropagation()}>
+          <IconButton
+            color="primary"
+            sx={{
+              backgroundColor: "white",
+              "&:hover": { backgroundColor: "white" },
+              "&:focus": { backgroundColor: "white" }
+            }}
+            size='small'
+            onClick={(e) => {
+              setIsEditDialogOpen(true);
+              e.stopPropagation();
+            }}
           >
-            Edit
-          </button> */}
+            <Icon path={mdiPencil} size={1} />
+          </IconButton>
+        </div>
         <LazyImage
-          className={
-            isFocused
-              ? `focused ${$isNodeSelection(selection) ? 'draggable' : ''}`
-              : null
-          }
+          className={(isFocused ? `focused` : null)}
           src={src}
           altText={altText}
           imageRef={imageRef}
@@ -269,8 +151,8 @@ export default function InlineImageComponent({
           height={height}
           float={float}
         />
-      </>
-      {/* {modal} */}
-    </Suspense>
+      </div>
+      {editDialog}
+    </Suspense >
   );
 }

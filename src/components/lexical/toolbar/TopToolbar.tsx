@@ -1,15 +1,20 @@
 import { Divider, Stack } from '@mui/material';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import { EditorElementAlignmentGroup, EditorElementIndentationGroup, EditorElementTypeGroup, EditorFontSelection, EditorFontSizeSelection, EditorHistoryGroupType, EditorImageSelection, EditorLinkButton, EditorTextBackgroundColorSelection, EditorTextColorSelection, EditorTextFormattingGroupType, EditorTopGroupsType, EditorYouTubeButton } from 'src/types';
+import { Fragment } from 'react';
 import ButtonsDivider from './groups/ButtonsDivider';
-import ElementTypeSelectionGroup from './groups/ElementTypeSelectionGroup';
-import FormattingTextButtonsGroup from './groups/FormattingTextButtonsGroup';
-import FormattingElementButtonsGroup from './groups/FormattingElementButtonsGroup';
 import HistoryGroup from './groups/HistoryGroup';
-import IndentationGroup from './groups/IndentationGroup';
 import LinkButton from './groups/LinkButton';
-import StyleTextButtonsGroup from './groups/StyleTextButtonsGroup';
-import ColorTextButtonsGroup from './groups/ColorTextButtonsGroup';
-import ImageButton from './groups/ImageButton';
+import FontSelection from './groups/FontSelection';
+import FontSizeSelection from './groups/FontSizeSelection';
+import TextColorSelection from './groups/TextColorSelection';
+import TextBackgroundColorSelection from './groups/TextBackgroundColorSelection';
+import TextFormattingGroup from './groups/TextFormattingGroup';
+import ElementTypeGroup from './groups/ElementTypeGroup';
+import ElementAlignmentGroup from './groups/ElementAlignmentGroup';
+import ElementIndentationGroup from './groups/ElementIndentationGroup';
+import ImageSelection from './groups/ImageSelection';
+import YouTubeButton from './groups/YouTubeButton';
 
 const toolbarSx = {
     p: .5,
@@ -21,117 +26,191 @@ const toolbarSx = {
     scrollbarWidth: 'thin'
 };
 
-export default function TopToolbar(): JSX.Element {
+interface ITopToolbarProps {
+    settings?: EditorTopGroupsType[];
+}
+export default function TopToolbar({ settings }: ITopToolbarProps): JSX.Element {
 
     const [editor] = useLexicalComposerContext();
 
+    const toolbars = settings?.map((row, index) => {
+        const groups = Object.keys(row).map((key, jndex) => {
+            if (key === 'historyGroup') {
+                const hg = (row['historyGroup'] as EditorHistoryGroupType);
+                return (
+                    <Fragment key={key + jndex}>
+                        {hg.startDivider && <ButtonsDivider />}
+                        <HistoryGroup
+                            editor={editor}
+                            buttons={hg.buttons}
+                            groupedButtons={hg.groupedButtons}
+                        />
+                        {hg.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'fontSelection') {
+                const fs = (row['fontSelection'] as EditorFontSelection);
+                return (
+                    <Fragment key={key + jndex}>
+                        {fs.startDivider && <ButtonsDivider />}
+                        <FontSelection
+                            editor={editor}
+                            fontsFamilyList={fs.fontsFamilyList}
+                            fixedWidth={fs.fixedWidth}
+                        />
+                        {fs.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'fontSizeSelection') {
+                const fss = (row['fontSizeSelection'] as EditorFontSizeSelection);
+                return (
+                    <Fragment key={key + jndex}>
+                        {fss.startDivider && <ButtonsDivider />}
+                        <FontSizeSelection
+                            editor={editor}
+                            fontSizeList={fss.fontSizeList}
+                            fixedWidth={fss.fixedWidth}
+                        />
+                        {fss.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'textColorSelection') {
+                const tcs = (row['textColorSelection'] as EditorTextColorSelection);
+                return (
+                    <Fragment key={key + jndex}>
+                        {tcs.startDivider && <ButtonsDivider />}
+                        <TextColorSelection
+                            editor={editor}
+                        />
+                        {tcs.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'textBackgroundColorSelection') {
+                const tbcs = (row['textBackgroundColorSelection'] as EditorTextBackgroundColorSelection);
+                return (
+                    <Fragment key={key + jndex}>
+                        {tbcs.startDivider && <ButtonsDivider />}
+                        <TextBackgroundColorSelection
+                            editor={editor}
+                        />
+                        {tbcs.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'textFormattingGroup') {
+                const tf = (row['textFormattingGroup'] as EditorTextFormattingGroupType);
+                return (
+                    <Fragment key={key + jndex}>
+                        {tf.startDivider && <ButtonsDivider />}
+                        <TextFormattingGroup
+                            editor={editor}
+                            buttons={tf.buttons}
+                            groupedButtons={tf.groupedButtons}
+                        />
+                        {tf.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'elementTypeGroup') {
+                const et = (row['elementTypeGroup'] as EditorElementTypeGroup);
+                return (
+                    <Fragment key={key + jndex}>
+                        {et.startDivider && <ButtonsDivider />}
+                        <ElementTypeGroup
+                            editor={editor}
+                            buttons={et.buttons}
+                            groupedButtons={et.groupedButtons}
+                            fixedWidth={et.fixedWidth}
+                        />
+                        {et.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'elementAlignmentGroup') {
+                const ea = (row['elementAlignmentGroup'] as EditorElementAlignmentGroup);
+                return (
+                    <Fragment key={key + jndex}>
+                        {ea.startDivider && <ButtonsDivider />}
+                        <ElementAlignmentGroup
+                            editor={editor}
+                            buttons={ea.buttons}
+                            groupedButtons={ea.groupedButtons}
+                        />
+                        {ea.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'elementIndentationGroup') {
+                const ei = (row['elementIndentationGroup'] as EditorElementIndentationGroup);
+                return (
+                    <Fragment key={key + jndex}>
+                        {ei.startDivider && <ButtonsDivider />}
+                        <ElementIndentationGroup
+                            editor={editor}
+                            buttons={ei.buttons}
+                            groupedButtons={ei.groupedButtons}
+                        />
+                        {ei.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'linkButton') {
+                const ei = (row['linkButton'] as EditorLinkButton);
+                return (
+                    <Fragment key={key + jndex}>
+                        {ei.startDivider && <ButtonsDivider />}
+                        <LinkButton
+                            editor={editor}
+                        />
+                        {ei.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'imageSelection') {
+                const is = (row['imageSelection'] as EditorImageSelection);
+                return (
+                    <Fragment key={key + jndex}>
+                        {is.startDivider && <ButtonsDivider />}
+                        <ImageSelection
+                            editor={editor}
+                        />
+                        {is.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'youTubeButton') {
+                const yb = (row['youTubeButton'] as EditorYouTubeButton);
+                return (
+                    <Fragment key={key + jndex}>
+                        {yb.startDivider && <ButtonsDivider />}
+                        <YouTubeButton
+                            editor={editor}
+                        />
+                        {yb.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            return null;
+        });
+        return (
+            <Fragment key={index}>
+                <Stack flexDirection="row" gap={.5} justifyContent='left' sx={{ pb: .5 }}>
+                    {groups}
+                </Stack>
+                {(index !== settings.length - 1) && <Divider sx={{ mb: 0.5 }} />}
+            </Fragment>
+        );
+    });
     return (
         <>
             <Stack direction="column" sx={toolbarSx}>
-                <Stack flexDirection="row" gap={.5} justifyContent='left' sx={{ pb: .5 }}>
-                    <HistoryGroup
-                        editor={editor}
-                        include={['undo', 'redo']}
-                    />
-                    <ButtonsDivider />
-                    <StyleTextButtonsGroup
-                        editor={editor}
-                        fontFamilyList={
-                            [
-                                { name: "Default font", family: "" },
-                                { name: "Arial", family: "'Arial', 'Helvetica Neue', 'Helvetica', 'sans-serif'" },
-                                { name: "Calibri", family: "'Calibri', 'Candara', 'Segoe', 'Segoe UI', 'Optima', 'Arial', 'sans-serif'" },
-                                { name: "Courier New", family: "'Courier New', 'Courier', 'Lucida Sans Typewriter', 'Lucida', 'Typewriter', 'monospace'" },
-                                { name: "Verdana", family: "'Verdana', 'Geneva', 'sans-serif'" }
-                            ]
-                        }
-                        fontFamilyListWidth="90px"
-                        fontSizeList={[[8, "8px"], [9, "9px"], [10, "10px"], [11, "11px"], [12, "12px"], [14, "14px"], [16, "16px"], [18, "18px"], [20, "20px"], [22, "22px"], [24, "24px"], [26, "26px"], [28, "28px"], [36, "36px"], [48, "48px"], [72, "72px"]]}
-                        fontSizeListWidth="24px"
-                    />
-                    <ColorTextButtonsGroup
-                        editor={editor}
-                        include={['font_color', 'background_color']}
-                    />
-                    <FormattingTextButtonsGroup
-                        editor={editor}
-                        buttons={['bold', 'italic', 'underline', 'clear_text_format']}
-                        grouppedButtons={['strikethrough', 'code', 'subscript', 'superscript', 'highlight']}
-                    />
-                </Stack>
-                <Divider sx={{ mb: 0.5 }} />
-                <Stack flexDirection="row" gap={1} justifyContent='left'>
-                    <ElementTypeSelectionGroup
-                        editor={editor}
-                        buttons={['bullet', 'number']}
-                        grouppedButtons={['paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'check', 'quote']}
-                        grouppedButtonsWidth='110px'
-                    />
-                    <ButtonsDivider />
-                    <LinkButton
-                        editor={editor}
-                    />
-                    <ImageButton
-                        editor={editor}
-                    />
-                    <ButtonsDivider />
-                    <IndentationGroup
-                        editor={editor}
-                        include={['outdent', 'indent']}
-                    />
-                    <ButtonsDivider />
-                    <FormattingElementButtonsGroup
-                        editor={editor}
-                        include={['left', 'center', 'right', 'justify', '']}
-                    />
-                </Stack>
+                {toolbars}
             </Stack >
             <Divider />
-
-            {/* <Grid container sx={toolbarPluginSx} columnGap={.5} rowGap={.5} alignItems='center' direction='row' wrap='nowrap'>
-                <Grid item>
-                    <HistoryGroup editor={editor} include={['undo', 'redo']} />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-                <Grid item>
-                    <FormattingTextButtonsGroup editor={editor} buttons={['bold', 'italic', 'underline', 'clear_text_format']} grouppedButtons={['strikethrough', 'code', 'subscript', 'superscript', 'highlight']} />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-                <Grid item>
-                    <StyleTextButtonsGroup editor={editor} />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-                <Grid item>
-                    <LinkButton editor={editor} />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-                <Grid item>
-                    <ElementTypeSelectionGroup editor={editor} buttons={['bullet', 'number']} grouppedButtons={['paragraph', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'check', 'quote']} grouppedButtonsWidth='110px' />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-                <Grid item>
-                    <IndentationGroup editor={editor} include={['outdent', 'indent']} />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-                <Grid item>
-                    <FormattingElementButtonsGroup editor={editor} include={['left', 'center', 'right', 'justify', '']} />
-                </Grid>
-                <Grid item>
-                    <ButtonsDivider />
-                </Grid>
-            </Grid> */}
         </>
     );
 }

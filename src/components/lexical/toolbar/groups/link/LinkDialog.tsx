@@ -1,4 +1,4 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, FormControl, IconButton, InputLabel, MenuItem, Select, Stack, TextField } from '@mui/material';
 import Icon from '@mdi/react';
 import { mdiLinkOff } from '@mdi/js';
 import { mdiWindowClose } from '@mdi/js';
@@ -24,9 +24,7 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
     return (
         <Dialog onClose={onClose} open={open} fullWidth maxWidth="xs">
             <DialogTitle>
-                <DialogContentText>
                     Set or Delete link
-                </DialogContentText>
                 <IconButton
                     onClick={onClose}
                     sx={{
@@ -40,7 +38,7 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
             </DialogTitle>
             <DialogContent dividers>
                 <Stack direction='column' gap={1}>
-                    <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={linkData.url} type="text" margin="dense"
+                    <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={linkData.url} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, url: e.target.value }; })}
                         label="Link URL 'href':"
                         InputLabelProps={{
@@ -63,7 +61,7 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                             })}
                         </Select>
                     </FormControl>
-                    <TextField fullWidth id="link-title" name="link-title" variant="outlined" size='small' value={linkData.title} type="text" margin="dense"
+                    <TextField fullWidth id="link-title" name="link-title" variant="outlined" size='small' value={linkData.title} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, title: e.target.value }; })}
                         label="Link title 'title':"
                         InputLabelProps={{

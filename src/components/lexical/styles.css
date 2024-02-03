@@ -2,6 +2,16 @@
     --lexical-indent-base-value: 20px;
 }
 
+.htmleditor-embedBlock {
+    user-select: none;
+    outline: 1px rgb(202, 202, 202) dashed;
+    background-color: white;
+}
+
+.htmleditor-embedBlock-focus {
+    outline: 2px solid #757ce8;
+}
+
 /* #region Formatting */
 .htmleditor-theme-text-bold {
     font-weight: bold;
@@ -62,7 +72,12 @@
 /* #region elements */
 .htmleditor-theme-paragraph {
     margin: 5px 0;
+    clear: both;
     line-height: normal;
+}
+
+.htmleditor-theme-paragraph:hover {
+    outline: 1px rgb(202, 202, 202) dashed;
 }
 
 .htmleditor-theme-heading-h1 {

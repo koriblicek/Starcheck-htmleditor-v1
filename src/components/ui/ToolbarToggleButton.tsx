@@ -16,7 +16,7 @@ export default function ToolbarToggleButton({ label, customSx, onClick, ...props
     return (
         <ToggleButton {...props}
             onMouseDown={handleClick}
-            sx={Object.assign({ borderRadius: 1, backgoundColor: 'white' }, props.size ? {} : { p: 0.5 }, customSx)}
+            sx={Object.assign({ borderRadius: 1, backgroundColor: "white", "&:hover": { backgroundColor: "white" }, "&:focus": { backgroundColor: "white" } }, props.size ? {} : { p: 0.5 }, customSx)}
         >
             {label}
         </ToggleButton>

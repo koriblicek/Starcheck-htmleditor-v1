@@ -15,7 +15,7 @@ export default function BottomToolbarPlugin(): JSX.Element {
 
     return (
         <Box sx={toolbarSx}>
-            <ActionsGroup editor={editor} include={['clear']} />
+            <ActionsGroup editor={editor} include={['preview', 'clear']} />
         </Box>
     );
 }

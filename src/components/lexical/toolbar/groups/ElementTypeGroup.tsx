@@ -5,7 +5,7 @@ import { $createHeadingNode, $createQuoteNode, $isHeadingNode } from '@lexical/r
 import { $setBlocksType } from "@lexical/selection";
 import { $getNearestNodeOfType } from "@lexical/utils";
 import { Fragment, useCallback, useEffect, useMemo, useState } from 'react';
-import { ElementTypeSelectionType, ICON_SIZE } from 'src/types';
+import { ElementReadOnlyType, ElementTypeType, ICON_SIZE } from 'src/types';
 import ToolbarToggleButton from 'src/components/ui/ToolbarToggleButton';
 import Icon from '@mdi/react';
 import { mdiFormatParagraph } from '@mdi/js';
@@ -20,18 +20,21 @@ import { mdiChevronDown } from '@mdi/js';
 import { mdiFormatListBulletedSquare } from '@mdi/js';
 import { mdiFormatListNumbered } from '@mdi/js';
 import { mdiFormatListCheckbox } from '@mdi/js';
+import { mdiYoutube } from '@mdi/js';
+import { mdiHomeCircleOutline } from '@mdi/js';
+import { mdiImageOutline } from '@mdi/js';
 
-export interface IElementTypeSelectionGroupProps {
+export interface IElementTypeGroupProps {
     editor: LexicalEditor;
-    buttons?: ElementTypeSelectionType[];
-    grouppedButtons?: ElementTypeSelectionType[];
-    grouppedButtonsWidth?: string;
+    buttons?: ElementTypeType[];
+    groupedButtons?: ElementTypeType[];
+    fixedWidth?: string;
 }
 
-type Setup = Record<ElementTypeSelectionType, { icon: JSX.Element, title: string; }>;
+type Setup = Record<ElementTypeType | ElementReadOnlyType, { icon: JSX.Element, title: string; }>;
 
 const buttonsSetup = {
-    paragraph: { icon: <Icon path={mdiFormatParagraph} size={ICON_SIZE} />, title: "Normal" },
+    paragraph: { icon: <Icon path={mdiFormatParagraph} size={ICON_SIZE} />, title: "Normal Paragraph" },
     h1: { icon: <Icon path={mdiFormatHeader1} size={ICON_SIZE} />, title: "Heading 1" },
     h2: { icon: <Icon path={mdiFormatHeader2} size={ICON_SIZE} />, title: "Heading 2" },
     h3: { icon: <Icon path={mdiFormatHeader3} size={ICON_SIZE} />, title: "Heading 3" },
@@ -41,20 +44,19 @@ const buttonsSetup = {
     bullet: { icon: <Icon path={mdiFormatListBulletedSquare} size={ICON_SIZE} />, title: "Bullet List" },
     number: { icon: <Icon path={mdiFormatListNumbered} size={ICON_SIZE} />, title: "Numbered List" },
     check: { icon: <Icon path={mdiFormatListCheckbox} size={ICON_SIZE} />, title: "Check List" },
-    quote: { icon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, title: "Quote" }
+    quote: { icon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, title: "Quote" },
+    youtube: { icon: <Icon path={mdiYoutube} size={ICON_SIZE} />, title: "Youtube" },
+    "inline-image": { icon: <Icon path={mdiImageOutline} size={ICON_SIZE} />, title: "Inline Image" },
+    root: { icon: <Icon path={mdiHomeCircleOutline} size={ICON_SIZE} />, title: "Root" }
 } as Setup;
 
-const initialState: ElementTypeSelectionType = "paragraph";
+const initialState: ElementTypeType = "paragraph";
 
-export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2', 'h3', 'bullet', 'number'], grouppedButtons = ['h4', 'h5', 'h6', 'check', 'quote'], grouppedButtonsWidth = '90px' }: IElementTypeSelectionGroupProps) {
+export default function ElementTypeGroup({ editor, buttons = ['h1', 'h2', 'h3', 'bullet', 'number'], groupedButtons = ['paragraph', 'h4', 'h5', 'h6', 'check', 'quote'], fixedWidth = 'auto' }: IElementTypeGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
-    const [state, setState] = useState<ElementTypeSelectionType>(initialState);
-
-    const availableGroupedTypes: ElementTypeSelectionType[] = useMemo(() => {
-        return [...grouppedButtons];
-    }, [grouppedButtons]);
+    const [state, setState] = useState<ElementTypeType | ElementReadOnlyType>(initialState);
 
     const handleClick = useCallback((event: React.MouseEvent) => {
         setAnchorEl(event.currentTarget);
@@ -64,7 +66,7 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
         setAnchorEl(null);
     }, []);
 
-    const setElementType = useCallback((type: ElementTypeSelectionType) => {
+    const setElementType = useCallback((type: ElementTypeType) => {
         editor.update(() => {
             const selection = $getSelection();
             if ($isRangeSelection(selection)) {
@@ -105,6 +107,9 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
                     $setBlocksType(selection, () => $createHeadingNode(type));
                     return;
                 }
+            } else {
+                console.log(selection?.getNodes());
+                //setState(initialState);
             }
         });
         handleClose();
@@ -130,19 +135,21 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
                             setState(type);
                         } else {
                             //is heading?
-                            const type = $isHeadingNode(element)
-                                ? element.getTag()
-                                : element.getType();
-
-                            if (availableGroupedTypes.includes(type)) {
-                                setState(type);
-                            }
+                            const type = $isHeadingNode(element) ? element.getTag() : element.getType();
+                            // if (availableGroupedTypes.includes(type)) {
+                            setState(type);
+                            // }
                         }
+                    }
+                } else {
+                    const node = selection?.getNodes()[0];
+                    if (node) {
+                        setState(node.getType() as ElementTypeType | ElementReadOnlyType);
                     }
                 }
             });
         });
-    }, [editor, availableGroupedTypes]);
+    }, [editor]);
 
     const menu = useMemo(() => {
         return (
@@ -153,7 +160,7 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
                 onClose={handleClose}
                 disableAutoFocusItem
             >
-                {availableGroupedTypes.map((type) => {
+                {groupedButtons.map((type) => {
                     return (
                         <MenuItem onClick={() => setElementType(type)} key={type} selected={state === type} sx={{ py: .5 }}>
                             {<>{buttonsSetup[type].icon}<Typography variant='subtitle1' sx={{ px: 0.5 }}>{buttonsSetup[type].title}</Typography></>}
@@ -164,17 +171,18 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
 
             </Menu>
         );
-    }, [state, anchorEl, handleClose, setElementType, availableGroupedTypes]);
+    }, [state, anchorEl, handleClose, setElementType, groupedButtons]);
 
     const toggleButton = useMemo(() => {
+        console.log("test", state, buttonsSetup[state]);
         return (
             <ToolbarToggleButton
                 selected={false}
                 value="state"
                 label={
-                    <Box sx={{ display: 'flex', alignItems: 'center', width: `${grouppedButtonsWidth}`, justifyContent: 'space-between' }}>
+                    <Box sx={{ display: 'flex', alignItems: 'center', width: `${fixedWidth}`, justifyContent: 'space-between' }}>
                         <Typography variant='button' sx={{ px: 0.5, overflow: 'clip' }} noWrap>
-                            {grouppedButtons.includes(state) ? buttonsSetup[state].title : "More Styles"}
+                            {Object.keys(state) ? buttonsSetup[state].title : "More Styles"}
                         </Typography>
                         {<Icon path={mdiChevronDown} size={ICON_SIZE} />}
                     </Box>
@@ -183,7 +191,7 @@ export default function ElementTypeSelectionGroup({ editor, buttons = ['h1', 'h2
                 onClick={(e: React.MouseEvent) => handleClick(e)}
             />
         );
-    }, [state, grouppedButtonsWidth, grouppedButtons, handleClick]);
+    }, [state, fixedWidth, handleClick]);
 
 
     return (

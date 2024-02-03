@@ -1,32 +1,32 @@
-import { Fragment, useCallback, useMemo, useState } from "react";
+import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Grid, Menu, MenuItem, Typography } from "@mui/material";
 import { LexicalEditor } from "lexical";
 import { ICON_SIZE, NewImagePayload } from "src/types";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
-import { mdiImage } from '@mdi/js';
+import { mdiImageOutline } from '@mdi/js';
 import { mdiChevronDown } from '@mdi/js';
 import { INSERT_INLINE_IMAGE_COMMAND } from "../../plugins/InlineImagePlugin";
 import { NewImageUrlDialog } from "./image/NewImageUrlDialog";
 
 
-interface IImageButtonProps {
+interface IImageSelectionProps {
     editor: LexicalEditor;
 }
 
 type Setup = { icon: JSX.Element, title: string; };
 
-const buttonSetup = { icon: <><Icon path={mdiImage} size={ICON_SIZE} /><Icon path={mdiChevronDown} size={ICON_SIZE} /></>, title: "Insert Image" } as Setup;
+const buttonSetup = { icon: <><Icon path={mdiImageOutline} size={ICON_SIZE} /><Icon path={mdiChevronDown} size={ICON_SIZE} /></>, title: "Insert Image" } as Setup;
 
-export default function ImageButton({ editor }: IImageButtonProps) {
+export default function ImageSelection({ editor }: IImageSelectionProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
     const [openNewImageUrl, setOpenNewImageUrl] = useState<boolean>(false);
 
-    const handleClickToggleButton = useCallback((event: React.MouseEvent) => {
-        setAnchorEl(event.currentTarget);
-    }, []);
+    // const handleClickToggleButton = useCallback((event: React.MouseEvent) => {
+    //     setAnchorEl(event.currentTarget);
+    // }, []);
 
     const handleCloseMenu = useCallback(() => {
         setAnchorEl(null);
@@ -56,7 +56,7 @@ export default function ImageButton({ editor }: IImageButtonProps) {
     }, [anchorEl, handleCloseMenu]);
 
     const onConfirm = useCallback((payload: NewImagePayload) => {
-        editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, { src: payload.src, altText: payload.altText });
+        editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, { src: payload.src });
     }, [editor]);
 
     const dialogNewImageUrl = useMemo(() => {
@@ -74,6 +74,9 @@ export default function ImageButton({ editor }: IImageButtonProps) {
         );
     }, [openNewImageUrl, onConfirm]);
 
+    useEffect(() => {
+    }, [editor]);
+
     return (
         <Fragment>
             <Grid container columnGap={.5} alignItems='center' wrap='nowrap' width='auto'>
@@ -84,8 +87,10 @@ export default function ImageButton({ editor }: IImageButtonProps) {
                         value='image'
                         label={buttonSetup.icon}
                         title={buttonSetup.title}
-                        onClick={(e) => {
-                            handleClickToggleButton(e);
+                        onClick={() => {
+                            //TODO change back
+                            onConfirm({ src: "https://upload.wikimedia.org/wikipedia/commons/thumb/3/3f/Fronalpstock_big.jpg/800px-Fronalpstock_big.jpg" });
+                            //handleClickToggleButton(e);
                         }}
                     />
                 </Grid>

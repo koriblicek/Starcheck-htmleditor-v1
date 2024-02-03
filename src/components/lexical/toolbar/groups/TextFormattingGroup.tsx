@@ -3,7 +3,7 @@ import { Grid, Menu, MenuItem, Typography } from "@mui/material";
 import { $createParagraphNode, $getSelection, $isRangeSelection, $isTextNode, FORMAT_TEXT_COMMAND, LexicalEditor, PointType, TextFormatType } from "lexical";
 import { $getNearestBlockElementAncestorOrThrow } from '@lexical/utils';
 import { $isHeadingNode, $isQuoteNode } from '@lexical/rich-text';
-import { ClearTextFormatType, ICON_SIZE, RecordTextFormatType } from "src/types";
+import { ClearTextFormatType, ICON_SIZE } from "src/types";
 import { $isDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
@@ -17,13 +17,14 @@ import { mdiCodeTags } from '@mdi/js';
 import { mdiFormatColorHighlight } from '@mdi/js';
 import { mdiChevronDown } from '@mdi/js';
 import { mdiFormatLetterCase } from '@mdi/js';
-import { mdiEraser } from '@mdi/js';
+import { mdiFormatClear } from '@mdi/js';
 
-interface IFormattingTextButtonsGroupProps {
+interface ITextFormattingGroupProps {
     editor: LexicalEditor;
     buttons?: (TextFormatType | ClearTextFormatType)[];
-    grouppedButtons?: (TextFormatType | ClearTextFormatType)[];
+    groupedButtons?: (TextFormatType | ClearTextFormatType)[];
 }
+type RecordTextFormatType = Record<TextFormatType | ClearTextFormatType, boolean>;
 
 type Setup = Record<(TextFormatType | ClearTextFormatType), { icon: JSX.Element, title: string; }>;
 
@@ -36,12 +37,12 @@ const buttonsSetup = {
     superscript: { icon: <Icon path={mdiFormatSuperscript} size={ICON_SIZE} />, title: "Superscript" },
     code: { icon: <Icon path={mdiCodeTags} size={ICON_SIZE} />, title: "Code" },
     highlight: { icon: <Icon path={mdiFormatColorHighlight} size={ICON_SIZE} />, title: "Highlight" },
-    clear_text_format: { icon: <Icon path={mdiEraser} size={ICON_SIZE} />, title: "Clear Text Formatting" },
+    clear_text_formatting: { icon: <Icon path={mdiFormatClear} size={ICON_SIZE} />, title: "Clear Text Formatting" },
 } as Setup;
 
-const initialState: RecordTextFormatType = { bold: false, italic: false, underline: false, subscript: false, superscript: false, strikethrough: false, code: false, highlight: false, clear_text_format: false };
+const initialState: RecordTextFormatType = { bold: false, italic: false, underline: false, subscript: false, superscript: false, strikethrough: false, code: false, highlight: false, clear_text_formatting: false };
 
-export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 'italic', 'underline'], grouppedButtons = [] }: IFormattingTextButtonsGroupProps) {
+export default function TextFormattingGroup({ editor, buttons = ['bold', 'italic', 'underline'], groupedButtons = [] }: ITextFormattingGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
@@ -71,7 +72,7 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                 superscript: selection.hasFormat("superscript"),
                 code: selection.hasFormat("code"),
                 highlight: selection.hasFormat("highlight"),
-                clear_text_format: !(anchor.key === focus.key && anchor.offset === focus.offset)
+                clear_text_formatting: !(anchor.key === focus.key && anchor.offset === focus.offset)
             } as RecordTextFormatType);
         } else {
             setState(initialState);
@@ -143,7 +144,7 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
     }, [editor, updateFormatButtons]);
 
     const toggleButton = useMemo(() => {
-        if (grouppedButtons.length === 0) {
+        if (groupedButtons.length === 0) {
             return null;
         }
         return (
@@ -151,11 +152,11 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                 selected={false}
                 value="state"
                 label={<><Icon path={mdiFormatLetterCase} size={ICON_SIZE} /><Icon path={mdiChevronDown} size={ICON_SIZE} /></>}
-                title={'Extra Formatting'}
+                title={'Formatting Options'}
                 onClick={(e: React.MouseEvent) => handleClick(e)}
             />
         );
-    }, [grouppedButtons, handleClick]);
+    }, [groupedButtons, handleClick]);
 
     const menu = useMemo(() => {
         return (
@@ -166,10 +167,10 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                 onClose={handleClose}
                 disableAutoFocusItem
             >
-                {grouppedButtons.map((type) => {
+                {groupedButtons.map((type) => {
                     return (
                         <MenuItem onClick={() => {
-                            if (type === "clear_text_format") {
+                            if (type === "clear_text_formatting") {
                                 dispatchClearFormatTextCommand();
                             }
                             else {
@@ -177,8 +178,8 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                             }
                             handleClose();
                         }} key={type}
-                            selected={(type === "clear_text_format") ? false : state[type]}
-                            disabled={(type === "clear_text_format") ? !state[type] : false}
+                            selected={(type === "clear_text_formatting") ? false : state[type]}
+                            disabled={(type === "clear_text_formatting") ? !state[type] : false}
                             sx={{ py: .5 }}>
                             {<>{buttonsSetup[type].icon}<Typography variant='subtitle1' sx={{ px: 0.5 }}>{buttonsSetup[type].title}</Typography></>}
                         </MenuItem>
@@ -188,7 +189,7 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
 
             </Menu>
         );
-    }, [state, anchorEl, handleClose, dispatchFormatTextCommand, grouppedButtons, dispatchClearFormatTextCommand]);
+    }, [state, anchorEl, handleClose, dispatchFormatTextCommand, groupedButtons, dispatchClearFormatTextCommand]);
 
     return (
         <>
@@ -196,13 +197,13 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                 {buttons.map((type) => (
                     <Grid item key={type}>
                         <ToolbarToggleButton
-                            selected={(type === "clear_text_format") ? false : state[type]}
-                            disabled={(type === "clear_text_format") ? !state[type] : false}
+                            selected={(type === "clear_text_formatting") ? false : state[type]}
+                            disabled={(type === "clear_text_formatting") ? !state[type] : false}
                             value={type}
                             label={buttonsSetup[type].icon}
                             title={buttonsSetup[type].title}
                             onClick={() => {
-                                if (type === "clear_text_format") {
+                                if (type === "clear_text_formatting") {
                                     dispatchClearFormatTextCommand();
                                 }
                                 else {
@@ -212,9 +213,11 @@ export default function FormattingTextButtonsGroup({ editor, buttons = ['bold', 
                         />
                     </Grid>
                 ))}
-                <Grid item>
-                    {toggleButton}
-                </Grid>
+                {toggleButton &&
+                    <Grid item>
+                        {toggleButton}
+                    </Grid>
+                }
             </Grid>
             {menu}
         </>
