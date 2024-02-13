@@ -3,7 +3,7 @@ import { EmbedMatchResult } from '@lexical/react/LexicalAutoEmbedPlugin'; import
 import { mdiWindowClose } from '@mdi/js';
 import { mdiCheck } from '@mdi/js';
 import { ICON_SIZE } from 'src/types';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 const parseYouTubeUrl = async (url: string) => {
     const match =
@@ -37,10 +37,14 @@ export function YouTubeDialog({ open, onClose, onConfirm }: IYouTubeDialogProps)
             });
     }
 
+    useEffect(() => {
+        setValue("");
+    }, [open]);
+
     return (
-        <Dialog onClose={onClose} open={open} fullWidth maxWidth="xs">
+        <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm">
             <DialogTitle>
-                Embed Youtube Video
+                Insert Youtube Video
                 <IconButton
                     onClick={onClose}
                     sx={{
@@ -54,9 +58,17 @@ export function YouTubeDialog({ open, onClose, onConfirm }: IYouTubeDialogProps)
             </DialogTitle>
             <DialogContent dividers>
                 <Stack direction='column' gap={1}>
-                    <TextField fullWidth autoFocus id="youtube-link-src" name="youtube-link-src" variant="outlined" size='small' value={value} type="text"
+                    <TextField
+                        fullWidth
+                        autoFocus
+                        id="youtube-link-src"
+                        name="youtube-link-src"
+                        variant="outlined"
+                        size='small'
+                        value={value} type="text"
                         onChange={(e) => checkLink(e.target.value)}
                         label="YouTube URL link:"
+                        placeholder='https://www.youtube.com/watch?v=faczQ3NnYUc'
                         InputLabelProps={{
                             shrink: true
                         }}
@@ -64,7 +76,7 @@ export function YouTubeDialog({ open, onClose, onConfirm }: IYouTubeDialogProps)
                 </Stack>
             </DialogContent>
             <DialogActions>
-                <Button disabled={link === null} onClick={() => onConfirm(link!.id)} variant="text" color="primary" size="small" title="Embed" startIcon={<Icon path={mdiCheck} size={1} />}>Embed</Button>
+                <Button disabled={link === null} onClick={() => onConfirm(link!.id)} variant="text" color="primary" size="small" startIcon={<Icon path={mdiCheck} size={1} />}>Insert</Button>
             </DialogActions>
         </Dialog>
     );

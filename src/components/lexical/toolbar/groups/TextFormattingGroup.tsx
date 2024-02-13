@@ -42,7 +42,7 @@ const buttonsSetup = {
 
 const initialState: RecordTextFormatType = { bold: false, italic: false, underline: false, subscript: false, superscript: false, strikethrough: false, code: false, highlight: false, clear_text_formatting: false };
 
-export default function TextFormattingGroup({ editor, buttons = ['bold', 'italic', 'underline'], groupedButtons = [] }: ITextFormattingGroupProps) {
+export default function TextFormattingGroup({ editor, buttons = [], groupedButtons = [] }: ITextFormattingGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 

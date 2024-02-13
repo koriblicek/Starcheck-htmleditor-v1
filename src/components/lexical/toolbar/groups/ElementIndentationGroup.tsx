@@ -22,7 +22,7 @@ const buttonsSetup = {
     indent: { icon: <Icon path={mdiFormatIndentIncrease} size={ICON_SIZE} />, title: "Increase Indentation" }
 } as Setup;
 
-export default function ElementIndentationGroup({ editor, buttons = ['outdent', 'indent'], groupedButtons = [] }: IElementIndentationGroupProps) {
+export default function ElementIndentationGroup({ editor, buttons = [], groupedButtons = [] }: IElementIndentationGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 

@@ -1,4 +1,3 @@
-import './styles.css';
 import { LexicalComposer } from '@lexical/react/LexicalComposer';
 import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
@@ -13,16 +12,20 @@ import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
 import { InlineImageNode } from './nodes/InlineImageNode';
-import { EditorToolbarsSetup } from 'src/types';
+import { EditorToolbarsSetup, IAppInputData, defaultToolbarsSetup } from 'src/types';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import RichTextWrapper from './wrappers/RichTextWrapper';
 import TopToolbar from './toolbar/TopToolbar';
 import EditorWrapper from './wrappers/EditorWrapper';
-import BottomToolbar from './toolbar/BottomToolbar';
 import ImagePlugin from './plugins/InlineImagePlugin';
 import YouTubePlugin from './plugins/YouTubePlugin';
 import { YouTubeNode } from './nodes/YouTubeNode';
 import TreeViewPlugin from './plugins/TreeViewPlugin';
+import { FigureNode } from './nodes/FigureNode';
+import FigurePlugin from './plugins/FigurePlugin';
+import { EmbedVideoNode } from './nodes/EmbedVideoNode';
+import EmbedVideoPlugin from './plugins/EmbedVideoPlugin';
+import { AutoLoadPlugin } from './plugins/AutoLoadPlugin';
 
 const theme = {
     paragraph: "htmleditor-theme-paragraph",
@@ -50,9 +53,9 @@ const theme = {
         ]
     },
     embedBlock: {
-        base: 'htmleditor-embedBlock',
-        focus: 'htmleditor-embedBlock-focus',
-      },
+        base: 'htmleditor-editor-embedBlock',
+        focus: 'htmleditor-editor-embedBlock-focus',
+    },
     quote: "htmleditor-theme-quote",
     text: {
         bold: "htmleditor-theme-text-bold",
@@ -67,7 +70,9 @@ const theme = {
     },
     link: "htmleditor-theme-link",
     inlineImage: 'htmleditor-theme-inline-image',
-    indent: "htmleditor-theme-style-indent"
+    figure: 'htmleditor-theme-figure',
+    embedVideo: 'htmleditor-theme-embed-video',
+    indent: 'htmleditor-theme-style-indent'
 };
 
 
@@ -80,40 +85,43 @@ function onError(error: Error): void {
 
 interface IEditroProps {
     toolbarsSetup?: EditorToolbarsSetup;
+    inputData: IAppInputData;
 }
 
-export default function Editor({ toolbarsSetup = {} }: IEditroProps): JSX.Element {
+export default function Editor({ inputData, toolbarsSetup = defaultToolbarsSetup }: IEditroProps): JSX.Element {
     const initialConfig = {
         namespace: 'Starcheck-html-editor',
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, InlineImageNode, YouTubeNode
+            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, InlineImageNode, YouTubeNode, FigureNode, EmbedVideoNode
         ]
     };
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
             <EditorWrapper>
-                <TopToolbar settings={toolbarsSetup.top} />
+                <TopToolbar settings={toolbarsSetup} inputData={inputData} />
                 <RichTextWrapper>
                     <RichTextPlugin
                         contentEditable={<MuiContentEditable />}
                         placeholder={<PlaceholderWrapper text="Click here to enter text..." />}
                         ErrorBoundary={LexicalErrorBoundary}
                     />
-                    <BottomToolbar />
                 </RichTextWrapper>
             </EditorWrapper>
+            <AutoLoadPlugin inputData={inputData} />
             <LinkPlugin />
             <TabIndentationPlugin />
             <ListPlugin />
             <CheckListPlugin />
             <ImagePlugin />
             <YouTubePlugin />
+            <FigurePlugin />
             <HistoryPlugin />
             <ClearEditorPlugin />
             <TreeViewPlugin />
+            <EmbedVideoPlugin />
         </LexicalComposer>
     );
 }

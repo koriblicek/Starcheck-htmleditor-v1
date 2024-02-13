@@ -2,13 +2,13 @@
     --lexical-indent-base-value: 20px;
 }
 
-.htmleditor-embedBlock {
+.htmleditor-editor-embedBlock {
     user-select: none;
     outline: 1px rgb(202, 202, 202) dashed;
     background-color: white;
 }
 
-.htmleditor-embedBlock-focus {
+.htmleditor-editor-embedBlock-focus {
     outline: 2px solid #757ce8;
 }
 
@@ -59,7 +59,9 @@
     text-decoration: underline;
 }
 
-.htmleditor-theme-inline-image {}
+.htmleditor-theme-inline-image {
+    
+}
 
 .htmleditor-theme-link:hover,
 .htmleditor-theme-link:active,
@@ -216,6 +218,18 @@
     border-radius: 0 8px 6px 0;
     line-height: 120%;
     background-color: #ececec;
+}
+
+.htmleditor-theme-figure {
+    padding: 0 10px;
+    margin: 0px;
+}
+
+.htmleditor-theme-figure > figcaption {
+    text-align: center;
+}
+
+.htmleditor-theme-embed-video {
 }
 
 /* #endregion */

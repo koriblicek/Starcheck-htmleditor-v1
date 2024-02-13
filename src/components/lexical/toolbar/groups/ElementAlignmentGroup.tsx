@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from "react";
 import { Grid, Menu, MenuItem, Typography } from "@mui/material";
-import { $getSelection, $isElementNode, $isRangeSelection, ElementFormatType, FORMAT_ELEMENT_COMMAND, LexicalEditor, LexicalNode } from "lexical";
+import { $getSelection, $isElementNode, $isNodeSelection, $isRangeSelection, ElementFormatType, FORMAT_ELEMENT_COMMAND, LexicalEditor, LexicalNode } from "lexical";
 import { ElementAlignmentType, ICON_SIZE } from "src/types";
 import { getSelectedNode } from "src/components/lexical/utils/getSelectedNode";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
@@ -12,6 +12,7 @@ import { mdiFormatAlignJustify } from '@mdi/js';
 import { mdiEraser } from '@mdi/js';
 import { mdiDotsVertical } from '@mdi/js';
 import { mdiChevronDown } from '@mdi/js';
+import { $isDecoratorBlockNode } from "@lexical/react/LexicalDecoratorBlockNode";
 
 interface IElementAlignmentGroupProps {
     editor: LexicalEditor;
@@ -35,7 +36,7 @@ const buttonsSetup = {
 
 const initialState: RecordElementAlignmentType = { clear_alignment: false, start: false, left: false, center: false, end: false, right: false, justify: false };
 
-export default function ElementAlignmentGroup({ editor, buttons = ['left', 'center', 'right', 'justify', 'clear_alignment'], groupedButtons = [] }: IElementAlignmentGroupProps) {
+export default function ElementAlignmentGroup({ editor, buttons = [], groupedButtons = [] }: IElementAlignmentGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
@@ -67,6 +68,14 @@ export default function ElementAlignmentGroup({ editor, buttons = ['left', 'cent
                             ? node.getFormatType()
                             : parent?.getFormatType();
                 setState({ ...initialState, [d]: true });
+            } else {
+                if ($isNodeSelection(selection) && selection.getNodes().length === 1) {
+                    const n = selection.getNodes()[0];
+                    if ($isDecoratorBlockNode(n)) {
+                        const ft = n.__format;
+                        setState({ ...initialState, [ft]: true });
+                    }
+                }
             }
         });
     }, [editor]);

@@ -1,6 +1,6 @@
 import { Divider, Stack } from '@mui/material';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { EditorElementAlignmentGroup, EditorElementIndentationGroup, EditorElementTypeGroup, EditorFontSelection, EditorFontSizeSelection, EditorHistoryGroupType, EditorImageSelection, EditorLinkButton, EditorTextBackgroundColorSelection, EditorTextColorSelection, EditorTextFormattingGroupType, EditorTopGroupsType, EditorYouTubeButton } from 'src/types';
+import { EditorActionsGroupType, EditorElementAlignmentGroup, EditorElementIndentationGroup, EditorElementTypeGroup, EditorFontSelection, EditorFontSizeSelection, EditorHistoryGroupType, EditorImageSelection, EditorLinkButton, EditorTextBackgroundColorSelection, EditorTextColorSelection, EditorTextFormattingGroupType, EditorToolbarsSetup, EditorVideoSelection, IAppInputData } from 'src/types';
 import { Fragment } from 'react';
 import ButtonsDivider from './groups/ButtonsDivider';
 import HistoryGroup from './groups/HistoryGroup';
@@ -14,7 +14,8 @@ import ElementTypeGroup from './groups/ElementTypeGroup';
 import ElementAlignmentGroup from './groups/ElementAlignmentGroup';
 import ElementIndentationGroup from './groups/ElementIndentationGroup';
 import ImageSelection from './groups/ImageSelection';
-import YouTubeButton from './groups/YouTubeButton';
+import VideoSelection from './groups/VideoSelection';
+import ActionsGroup from './groups/ActionsGroup';
 
 const toolbarSx = {
     p: .5,
@@ -27,14 +28,30 @@ const toolbarSx = {
 };
 
 interface ITopToolbarProps {
-    settings?: EditorTopGroupsType[];
+    settings: EditorToolbarsSetup;
+    inputData: IAppInputData;
 }
-export default function TopToolbar({ settings }: ITopToolbarProps): JSX.Element {
+export default function TopToolbar({ settings, inputData }: ITopToolbarProps): JSX.Element {
 
     const [editor] = useLexicalComposerContext();
 
-    const toolbars = settings?.map((row, index) => {
+    const toolbars = settings.toolbar.map((row, index) => {
         const groups = Object.keys(row).map((key, jndex) => {
+            if (key === 'actionsGroup') {
+                const ag = (row['actionsGroup'] as EditorActionsGroupType);
+                return (
+                    <Fragment key={key + jndex}>
+                        {ag.startDivider && <ButtonsDivider />}
+                        <ActionsGroup
+                            editor={editor}
+                            buttons={ag.buttons}
+                            groupedButtons={ag.groupedButtons}
+                            inputData={inputData}
+                        />
+                        {ag.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
             if (key === 'historyGroup') {
                 const hg = (row['historyGroup'] as EditorHistoryGroupType);
                 return (
@@ -182,12 +199,12 @@ export default function TopToolbar({ settings }: ITopToolbarProps): JSX.Element 
                     </Fragment>
                 );
             }
-            if (key === 'youTubeButton') {
-                const yb = (row['youTubeButton'] as EditorYouTubeButton);
+            if (key === 'videoSelection') {
+                const yb = (row['videoSelection'] as EditorVideoSelection);
                 return (
                     <Fragment key={key + jndex}>
                         {yb.startDivider && <ButtonsDivider />}
-                        <YouTubeButton
+                        <VideoSelection
                             editor={editor}
                         />
                         {yb.endDivider && <ButtonsDivider />}
@@ -201,10 +218,11 @@ export default function TopToolbar({ settings }: ITopToolbarProps): JSX.Element 
                 <Stack flexDirection="row" gap={.5} justifyContent='left' sx={{ pb: .5 }}>
                     {groups}
                 </Stack>
-                {(index !== settings.length - 1) && <Divider sx={{ mb: 0.5 }} />}
+                {(index !== settings.toolbar.length - 1) && <Divider sx={{ mb: 0.5 }} />}
             </Fragment>
         );
     });
+
     return (
         <>
             <Stack direction="column" sx={toolbarSx}>

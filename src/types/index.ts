@@ -1,13 +1,32 @@
 import { TextFormatType, ElementFormatType } from "lexical";
 import { HeadingTagType } from '@lexical/rich-text';
 import { ListType } from '@lexical/list';
+import { CSSProperties } from "react";
+
+export const APP_NAME = "APIHTMLEDITOR";
+export const APP_LANGUAGES = ["sk", "gb"];
+
+//#region APP
+//Input data via div/scriptst
+export interface IAppInputData {
+    dataApiLink: string;
+    dataCssLink: string;
+    dataRestApiLink: string;
+    dataDbKey: string;
+    dataId: string;
+    dataModule: string;
+    dataVersion: string;
+    dataLoadOnStart: boolean;
+}
+
+//Settings from API
+export interface IAppData {
+    imagesURL: string;
+}
+//#endregion
 
 export const ICON_SIZE: number = .9;
 export const linkAttributeTartgetTypeList: LinkAttributeTartgetType[] = ["_self", "_blank", "_parent", "_top"];
-
-export type ActionsType = "clear" | "preview";
-export type RecordActionsType = Record<ActionsType, boolean>;
-
 
 export type LinkAttributeTartgetType = "_self" | "_blank" | "_parent" | "_top";
 
@@ -21,10 +40,31 @@ export type NewImagePayload = {
     src: string;
 };
 
-//export type RecordStyleText = Record<
+export type NewEmbedVideoPayload = {
+    videoUrl: string;
+    posterUrl: string;
+};
+
+export type SaveRestApiPayload = {
+    data: string;
+    html: string;
+    timestamp: number;
+};
+
+export type Float = CSSProperties["float"] | undefined;
+export type Width = CSSProperties["width"];
+export type Height = CSSProperties["height"];
 
 //----------
-
+//#region ActionsGroup
+export type ActionsType = "clear" | "preview" | "save_local_storage" | "load_local_storage" | "save_rest" | "load_rest";
+export type EditorActionsGroupType = {
+    buttons?: ActionsType[];
+    groupedButtons?: ActionsType[];
+    startDivider?: boolean;
+    endDivider?: boolean;
+};
+//#endregion
 //#region HistoryGroup
 export type HistoryType = "redo" | "undo" | "clear_history";
 export type EditorHistoryGroupType = {
@@ -80,7 +120,7 @@ export type EditorTextFormattingGroupType = {
 //#region ElementTypeGroup
 export type ElementTypeParagraph = "paragraph";
 export type ElementTypeQuote = "quote";
-export type ElementReadOnlyType = "youtube" | "root" | "inline-image";
+export type ElementReadOnlyType = "youtube" | "root" | "inline-image" | "figure" | "embed-video";
 export type ElementTypeType = ElementTypeParagraph | HeadingTagType | ElementTypeQuote | ListType;
 export type EditorElementTypeGroup = {
     buttons?: ElementTypeType[];
@@ -120,13 +160,15 @@ export type EditorImageSelection = {
     endDivider?: boolean;
 };
 //#endregion
-//#region YouTubeButton
-export type EditorYouTubeButton = {
+//#region VideoSelection
+export type VideoType = "youtube" | "embed-video";
+export type EditorVideoSelection = {
     startDivider?: boolean;
     endDivider?: boolean;
 };
 //#endregion
 export type EditorTopGroupsType = {
+    actionsGroup?: EditorActionsGroupType;
     historyGroup?: EditorHistoryGroupType;
     fontSelection?: EditorFontSelection;
     fontSizeSelection?: EditorFontSizeSelection;
@@ -138,11 +180,10 @@ export type EditorTopGroupsType = {
     elementIndentationGroup?: EditorElementIndentationGroup;
     linkButton?: EditorLinkButton;
     imageSelection?: EditorImageSelection;
-    youTubeButton?: EditorYouTubeButton;
+    videoSelection?: EditorVideoSelection;
 };
 export type EditorToolbarsSetup = {
-    top?: EditorTopGroupsType[];
-    bottom?: string;
+    toolbar: EditorTopGroupsType[];
 };
 
-export const defaultToolbarsSetup: EditorToolbarsSetup = {};
+export const defaultToolbarsSetup: EditorToolbarsSetup = { toolbar: [] };

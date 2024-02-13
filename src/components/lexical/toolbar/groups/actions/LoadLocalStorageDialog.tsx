@@ -3,16 +3,16 @@ import { ICON_SIZE } from 'src/types';
 import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
 
-export interface IClearEditorDialogProps {
+export interface ILoadLocalStorageDialogProps {
     open: boolean;
     onAction: (confirm: boolean) => void;
 }
-export function ClearEditorDialog({ open, onAction }: IClearEditorDialogProps) {
+export function LoadLocalStorageDialog({ open, onAction }: ILoadLocalStorageDialogProps) {
 
     return (
         <Dialog onClose={() => onAction(false)} open={open} fullWidth maxWidth="xs">
             <DialogTitle>
-                Clear Editor
+                Load content from Local Storage
                 <IconButton
                     onClick={() => onAction(false)}
                     sx={{
@@ -26,7 +26,7 @@ export function ClearEditorDialog({ open, onAction }: IClearEditorDialogProps) {
             </DialogTitle>
             <DialogContent dividers>
                 <DialogContentText>
-                    Are you sure you would like to clear editor?
+                    Are you sure you would like load saved content and overwrite current data?
                 </DialogContentText>
             </DialogContent>
             <DialogActions>

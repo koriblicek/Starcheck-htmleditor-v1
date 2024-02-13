@@ -30,7 +30,7 @@ const buttonsSetup = {
 
 const initialState: RecordHistoryType = { redo: false, undo: false, clear_history: false };
 
-export default function HistoryGroup({ editor, buttons = ['undo', 'redo', 'clear_history'], groupedButtons = [] }: IHistoryGroupProps) {
+export default function HistoryGroup({ editor, buttons = [], groupedButtons = [] }: IHistoryGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 

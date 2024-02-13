@@ -35,6 +35,8 @@ function LazyImage({ altText, className, imageRef, src, width, height, float }: 
 
   useSuspenseImage(src);
 
+  console.log(float);
+  
   return (
     <img
       className={className || undefined}
@@ -62,6 +64,7 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
   const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
   const [selection, setSelection] = useState<BaseSelection | null>(null);
 
+  console.log(caption, selection)
   const onDelete = useCallback((payload: KeyboardEvent) => {
     if (isSelected && $isNodeSelection($getSelection())) {
       const event: KeyboardEvent = payload;
@@ -86,7 +89,7 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
         CLICK_COMMAND,
         (payload) => {
           const event = payload;
-          console.log(event.target)
+          console.log(event.target);
           if (event.target === imageRef.current) {
             if (event.shiftKey) {
               setSelected(!isSelected);
@@ -120,7 +123,7 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
     return (
       <EditInlineImageDialog editor={editor} nodeKey={nodeKey} open={isEditDialogOpen} onClose={onClose} />
     );
-  }, [isEditDialogOpen]);
+  }, [isEditDialogOpen, editor, nodeKey, onClose]);
 
   return (
     <Suspense fallback={null}>

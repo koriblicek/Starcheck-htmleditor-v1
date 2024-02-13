@@ -19,10 +19,8 @@ export default function YouTubePlugin(): JSX.Element | null {
         return editor.registerCommand<string>(
             INSERT_YOUTUBE_COMMAND,
             (payload) => {
-                console.log(payload);
                 const youTubeNode = $createYouTubeNode(payload);
                 $insertNodeToNearestRoot(youTubeNode);
-
                 return true;
             },
             COMMAND_PRIORITY_EDITOR,

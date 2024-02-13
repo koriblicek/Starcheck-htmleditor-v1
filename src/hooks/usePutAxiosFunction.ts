@@ -1,33 +1,31 @@
 import axios, { AxiosError, AxiosRequestConfig } from "axios";
 import { useCallback, useEffect, useState } from "react";
 
-export interface IGetErrorObj {
+export interface IPutErrorObj {
     code: number;
     message: string;
     url: string;
 }
 
-function useGetAxiosFunction<T>() {
-    const [response, setResponse] = useState<T | null>(null);
-    const [error, setError] = useState<IGetErrorObj | null>(null);
-    const [isLoading, setIsLoading] = useState<boolean>(false);
+function usePutAxiosFunction<T>() {
+    const [error, setError] = useState<IPutErrorObj | null>(null);
+    const [isUploading, setIsUploading] = useState<boolean>(false);
+    const [isCompleted, setIsCompleted] = useState<boolean>(false);
     const [controller, setController] = useState<AbortController>();
 
-    const axiosFetch = useCallback(async (url: string, params?: AxiosRequestConfig) => {
+    const axiosPut = useCallback(async (url: string, data: T, params?: AxiosRequestConfig) => {
         try {
-            setIsLoading(true);
+            setIsUploading(true);
             setError(null);
-            setResponse(null);
-
+            setIsCompleted(false);
             const ctrl = new AbortController();
             setController(ctrl);
 
-            const res = await axios.get(url, {
+            await axios.put(url, data, {
                 ...params,
                 signal: ctrl.signal
             });
 
-            setResponse(res.data as T);
         } catch (err) {
             if (axios.isCancel(err)) {
                 console.log("cancel");
@@ -49,14 +47,15 @@ function useGetAxiosFunction<T>() {
                 }
             }
         } finally {
-            setIsLoading(false);
+            setIsUploading(false);
+            setIsCompleted(true);
         }
     }, []);
 
-    const cancelFetch = useCallback(() => {
+    const cancelPut = useCallback(() => {
         setError(null);
-        setIsLoading(false);
-        setResponse(null);
+        setIsUploading(false);
+        setIsCompleted(false);
         controller && controller.abort();
     }, [controller]);
 
@@ -67,7 +66,7 @@ function useGetAxiosFunction<T>() {
         };
     }, [controller]);
 
-    return { response, error, isLoading, axiosFetch, cancelFetch };
+    return { error, isUploading, isCompleted, axiosPut, cancelPut };
 }
 
-export default useGetAxiosFunction;
+export default usePutAxiosFunction;

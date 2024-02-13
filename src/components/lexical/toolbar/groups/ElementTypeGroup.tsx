@@ -21,6 +21,7 @@ import { mdiFormatListBulletedSquare } from '@mdi/js';
 import { mdiFormatListNumbered } from '@mdi/js';
 import { mdiFormatListCheckbox } from '@mdi/js';
 import { mdiYoutube } from '@mdi/js';
+import { mdiVideoBox } from '@mdi/js';
 import { mdiHomeCircleOutline } from '@mdi/js';
 import { mdiImageOutline } from '@mdi/js';
 
@@ -45,14 +46,16 @@ const buttonsSetup = {
     number: { icon: <Icon path={mdiFormatListNumbered} size={ICON_SIZE} />, title: "Numbered List" },
     check: { icon: <Icon path={mdiFormatListCheckbox} size={ICON_SIZE} />, title: "Check List" },
     quote: { icon: <Icon path={mdiCommentQuoteOutline} size={ICON_SIZE} />, title: "Quote" },
-    youtube: { icon: <Icon path={mdiYoutube} size={ICON_SIZE} />, title: "Youtube" },
+    youtube: { icon: <Icon path={mdiYoutube} size={ICON_SIZE} />, title: "Youtube Video" },
+    "embed-video": { icon: <Icon path={mdiVideoBox} size={ICON_SIZE} />, title: "Embed Video" },
     "inline-image": { icon: <Icon path={mdiImageOutline} size={ICON_SIZE} />, title: "Inline Image" },
+    figure: { icon: <Icon path={mdiImageOutline} size={ICON_SIZE} />, title: "Figure" },
     root: { icon: <Icon path={mdiHomeCircleOutline} size={ICON_SIZE} />, title: "Root" }
 } as Setup;
 
 const initialState: ElementTypeType = "paragraph";
 
-export default function ElementTypeGroup({ editor, buttons = ['h1', 'h2', 'h3', 'bullet', 'number'], groupedButtons = ['paragraph', 'h4', 'h5', 'h6', 'check', 'quote'], fixedWidth = 'auto' }: IElementTypeGroupProps) {
+export default function ElementTypeGroup({ editor, buttons = [], groupedButtons = [], fixedWidth = 'auto' }: IElementTypeGroupProps) {
 
     const [anchorEl, setAnchorEl] = useState<null | Element>(null);
 
@@ -87,7 +90,6 @@ export default function ElementTypeGroup({ editor, buttons = ['h1', 'h2', 'h3', 
                     return;
                 }
                 if (type === "number") {
-                    console.log(type, state);
                     if (state !== "number") {
                         editor.dispatchCommand(INSERT_ORDERED_LIST_COMMAND, undefined);
                     } else {

@@ -11,6 +11,7 @@ export interface INewImageUrlDialogProps {
     onConfirm: (imageData: NewImagePayload) => void;
 }
 const initialData: NewImagePayload = { src: "https://" };
+
 export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDialogProps) {
     const [imageData, setImageData] = useState<NewImagePayload>(initialData);
     const [isValid, setIsValid] = useState<boolean | null>();
@@ -96,7 +97,6 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
                     variant="contained"
                     color="primary"
                     size="small"
-                    title="Insert Image"
                     startIcon={<Icon path={mdiDownload} size={ICON_SIZE} />}
                 >
                     Insert Image

@@ -17,6 +17,7 @@ HTML: The Markup Language (an HTML language reference)
 https://w3c.github.io/html-reference/common-models.html#common.elem.flow
 
 
+
 [13:17, 2/2/2024] Roman Novota: takto vkladam YouTube video
 [13:17, 2/2/2024] Roman Novota: <iframe class="responsive" width="100%" height="" src="https://www.youtube.com/embed/8luULdSuRds" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
 
@@ -26,3 +27,9 @@ https://w3c.github.io/html-reference/common-models.html#common.elem.flow
                     <img src="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg" width="100%;" />
                 </a></div>
 [13:18, 2/2/2024] Roman Novota: proste je to len odkaz.. ktoreho video sa otvorit ponad ostatni content
+
+<video width="100%" controls>
+  <source src="mov_bbb.mp4" type="video/mp4">
+  <source src="mov_bbb.ogg" type="video/ogg">
+  Your browser does not support HTML video.
+</video>

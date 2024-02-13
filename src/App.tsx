@@ -1,11 +1,11 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
-import { EditorToolbarsSetup } from "./types";
+import { EditorToolbarsSetup, IAppInputData } from "./types";
 import Editor from "./components/lexical/Editor";
 import theme from "./components/ui/theme";
 
 const setup: EditorToolbarsSetup = {
-  top: [
+  toolbar: [
     {
       historyGroup: {
         startDivider: false,
@@ -13,6 +13,14 @@ const setup: EditorToolbarsSetup = {
         groupedButtons: [],
         endDivider: true
       },
+      actionsGroup: {
+        startDivider: false,
+        buttons: ['load_rest', 'save_rest', 'preview', 'clear'],
+        groupedButtons: ["save_local_storage", "load_local_storage"],
+        endDivider: true
+      }
+    },
+    {
       fontSelection: {
         startDivider: false,
         fontsFamilyList: [
@@ -68,9 +76,9 @@ const setup: EditorToolbarsSetup = {
       },
       imageSelection: {
         startDivider: false,
-        endDivider: false
+        endDivider: true
       },
-      youTubeButton: {
+      videoSelection: {
         startDivider: false,
         endDivider: false
       }
@@ -99,11 +107,15 @@ const setup: EditorToolbarsSetup = {
   ]
 };
 
-function App() {
+interface IAppProps {
+  inputData: IAppInputData;
+}
+
+function App({ inputData }: IAppProps) {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
-      <Editor toolbarsSetup={setup} />
+      <Editor toolbarsSetup={setup} inputData={inputData} />
     </ThemeProvider>
   );
 }
