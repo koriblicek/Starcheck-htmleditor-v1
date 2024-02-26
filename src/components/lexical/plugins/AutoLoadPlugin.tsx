@@ -2,17 +2,34 @@ import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext
 import { useEffect } from 'react';
 import { IAppInputData, SaveRestApiPayload } from 'src/types';
 import { LoadingErrorDialog } from './dialogs/LoadErrorDialog';
-import useGetAxiosFunction from 'src/hooks/useGetAxiosFunction';
 import { Backdrop, CircularProgress } from '@mui/material';
+// import { COMMAND_PRIORITY_LOW, LexicalCommand, createCommand } from 'lexical';
+import useGetAxiosFunction from 'src/hooks/useGetAxiosFunction';
 
 export interface IAutoLoadPluginProps {
     inputData: IAppInputData;
 }
 
+// export const AUTO_LOAD_STATE_COMMAND: LexicalCommand<string> = createCommand('AUTO_LOAD_STATE_COMMAND');
+
 export function AutoLoadPlugin({ inputData }: IAutoLoadPluginProps) {
     const { response, isLoading, error, axiosFetch, cancelFetch } = useGetAxiosFunction<SaveRestApiPayload>();
 
     const [editor] = useLexicalComposerContext();
+
+    // useEffect(() => {
+    //     return editor.registerCommand(
+    //         AUTO_LOAD_STATE_COMMAND,
+    //         (payload) => {
+    //             editor.update(() => {
+    //                 const editorState = editor.parseEditorState(payload);
+    //                 editor.setEditorState(editorState);
+    //             }, { discrete: true });
+    //             return false;
+    //         },
+    //         COMMAND_PRIORITY_LOW
+    //     );
+    // }, [editor]);
 
     useEffect(() => {
         if (inputData.dataLoadOnStart) {
@@ -21,17 +38,21 @@ export function AutoLoadPlugin({ inputData }: IAutoLoadPluginProps) {
     }, [axiosFetch, inputData]);
 
     useEffect(() => {
-        if (response) {
+        if (response?.data) {
+            // editor.dispatchCommand(AUTO_LOAD_STATE_COMMAND, response.data);
             editor.update(() => {
                 const editorState = editor.parseEditorState(response.data);
-                editor.setEditorState(editorState);
-            });
+                queueMicrotask(() => {
+                    editor.setEditorState(editorState);
+                });
+            }, { discrete: true });
         }
     }, [editor, response, error]);
 
     function handleClose() {
         cancelFetch();
     }
+
     return (
         <div>
             <LoadingErrorDialog error={error} onClose={handleClose} />

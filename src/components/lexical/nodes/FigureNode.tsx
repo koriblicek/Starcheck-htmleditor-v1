@@ -1,4 +1,4 @@
-import { LexicalNode, type DOMExportOutput, type EditorConfig, type ElementFormatType, type LexicalEditor, type NodeKey, type Spread } from 'lexical';
+import { type DOMConversionMap, LexicalNode, type DOMExportOutput, type EditorConfig, type ElementFormatType, type LexicalEditor, type NodeKey, type Spread, DOMConversionOutput } from 'lexical';
 import { $applyNodeReplacement } from 'lexical';
 import { DecoratorBlockNode, SerializedDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 
@@ -35,18 +35,40 @@ export type SerializedFigureNode = Spread<
     },
     SerializedDecoratorBlockNode
 >;
-/*
-function convertFigureElement(
-    domNode: HTMLElement,
-): null | DOMConversionOutput {
-    const videoID = domNode.getAttribute('data-lexical-figure');
-    if (videoID) {
-        const node = $createFigureNode(videoID);
-        return { node };
+
+function convertFigureElement(domNode: HTMLElement): null | DOMConversionOutput {
+    let caption = "";
+    let src = "";
+    let altText = "";
+    let width = "100%";
+    let height = "auto";
+    //img
+    const imgs = domNode.getElementsByTagName("img");
+    if (imgs.length > 0) {
+        const src_temp = imgs[0].getAttribute("src");
+        if (src_temp)
+            src = src_temp;
+        const altText_temp = imgs[0].getAttribute("alt");
+        if (altText_temp)
+            altText = altText_temp;
+        const width_temp = window.getComputedStyle(imgs[0]).width;
+        if (width_temp)
+            width = width_temp;
+        const height_temp = window.getComputedStyle(imgs[0]).height;
+        if (height_temp)
+            height = height_temp;
     }
-    return null;
+    //figcaption
+    const figcaptions = domNode.getElementsByTagName("figcaption");
+    if (figcaptions.length > 0) {
+        const caption_temp = figcaptions[0].textContent;
+        if (caption_temp)
+            caption = caption_temp;
+    }
+    const node = $createFigureNode({ src, altText, caption, width, height });
+    return { node };
 }
-*/
+
 
 export class FigureNode extends DecoratorBlockNode {
     __src: string;
@@ -56,25 +78,18 @@ export class FigureNode extends DecoratorBlockNode {
     __height: Height;
     __float: Float;
 
-
     static getType(): string {
         return 'figure';
     }
 
     static clone(node: FigureNode): FigureNode {
-        return new FigureNode(
-            node.__src,
-            node.__altText,
-            node.__caption,
-            node.__width,
-            node.__height,
-            node.__float
-        );
+        return new FigureNode(node.__src, node.__altText, node.__caption, node.__width, node.__height, node.__float, node.__format, node.__key);
     }
 
     static importJSON(serializedNode: SerializedFigureNode): FigureNode {
         const { src, altText, caption, height, width, float } = serializedNode;
         const node = $createFigureNode({ src, altText, caption, height, width, float });
+        node.setFormat(serializedNode.format);
         return node;
     }
 
@@ -105,6 +120,10 @@ export class FigureNode extends DecoratorBlockNode {
     exportDOM(editor: LexicalEditor): DOMExportOutput {
         const element = document.createElement('figure');
         element.setAttribute('class', editor._config.theme.figure);
+        if (this.__format) {
+            element.setAttribute('style', `text-align: ${this.__format};`);
+        }
+        element.setAttribute('class', editor._config.theme.figure);
         const img = document.createElement('img');
         const figCaption = document.createElement('figcaption');
         figCaption.textContent = this.getCaption();
@@ -116,21 +135,21 @@ export class FigureNode extends DecoratorBlockNode {
         return { element };
     }
 
-    /*
     static importDOM(): DOMConversionMap | null {
         return {
-            iframe: (domNode: HTMLElement) => {
-                if (!domNode.hasAttribute('data-lexical-youtube')) {
+            figure: (domNode: HTMLElement) => {
+                const imgs = domNode.getElementsByTagName('img');
+                if (imgs.length === 0) {
                     return null;
                 }
                 return {
-                    conversion: convertYoutubeElement,
+                    conversion: convertFigureElement,
                     priority: 1,
                 };
             },
         };
     }
-*/
+
     updateDOM(): false {
         return false;
     }

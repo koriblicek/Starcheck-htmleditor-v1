@@ -11,13 +11,11 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
-import { InlineImageNode } from './nodes/InlineImageNode';
 import { EditorToolbarsSetup, IAppInputData, defaultToolbarsSetup } from 'src/types';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import RichTextWrapper from './wrappers/RichTextWrapper';
 import TopToolbar from './toolbar/TopToolbar';
 import EditorWrapper from './wrappers/EditorWrapper';
-import ImagePlugin from './plugins/InlineImagePlugin';
 import YouTubePlugin from './plugins/YouTubePlugin';
 import { YouTubeNode } from './nodes/YouTubeNode';
 import TreeViewPlugin from './plugins/TreeViewPlugin';
@@ -69,7 +67,7 @@ const theme = {
         highlight: "htmleditor-theme-text-highlight"
     },
     link: "htmleditor-theme-link",
-    inlineImage: 'htmleditor-theme-inline-image',
+    // inlineImage: 'htmleditor-theme-inline-image',
     figure: 'htmleditor-theme-figure',
     embedVideo: 'htmleditor-theme-embed-video',
     indent: 'htmleditor-theme-style-indent'
@@ -94,7 +92,7 @@ export default function Editor({ inputData, toolbarsSetup = defaultToolbarsSetup
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, InlineImageNode, YouTubeNode, FigureNode, EmbedVideoNode
+            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode
         ]
     };
 
@@ -115,7 +113,6 @@ export default function Editor({ inputData, toolbarsSetup = defaultToolbarsSetup
             <TabIndentationPlugin />
             <ListPlugin />
             <CheckListPlugin />
-            <ImagePlugin />
             <YouTubePlugin />
             <FigurePlugin />
             <HistoryPlugin />

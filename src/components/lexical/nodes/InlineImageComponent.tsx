@@ -136,6 +136,7 @@ export default function InlineImageComponent({ src, altText, nodeKey, width, hei
               "&:hover": { backgroundColor: "white" },
               "&:focus": { backgroundColor: "white" }
             }}
+            title="Edit Figure"
             size='small'
             onClick={(e) => {
               setIsEditDialogOpen(true);

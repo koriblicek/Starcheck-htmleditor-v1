@@ -110,7 +110,7 @@ export default function ElementTypeGroup({ editor, buttons = [], groupedButtons 
                     return;
                 }
             } else {
-                console.log(selection?.getNodes());
+                //console.log(selection?.getNodes());
                 //setState(initialState);
             }
         });
@@ -176,7 +176,6 @@ export default function ElementTypeGroup({ editor, buttons = [], groupedButtons 
     }, [state, anchorEl, handleClose, setElementType, groupedButtons]);
 
     const toggleButton = useMemo(() => {
-        console.log("test", state, buttonsSetup[state]);
         return (
             <ToolbarToggleButton
                 selected={false}

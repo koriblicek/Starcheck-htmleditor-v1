@@ -136,7 +136,9 @@ export default function ActionsGroup({ editor, buttons = [], groupedButtons = []
             if (loadedData) {
                 editor.update(() => {
                     const editorState = editor.parseEditorState(loadedData);
-                    editor.setEditorState(editorState);
+                    queueMicrotask(() => {
+                        editor.setEditorState(editorState);
+                    });
                 });
             }
         }
@@ -151,7 +153,7 @@ export default function ActionsGroup({ editor, buttons = [], groupedButtons = []
             });
         }
         handleCloseDialogs();
-    }, [editor]);
+    }, [editor, handleCloseDialogs]);
 
     const clearDialog = useMemo(() => {
         return (

@@ -6,7 +6,6 @@ import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
 import { mdiImageOutline } from '@mdi/js';
 import { mdiChevronDown } from '@mdi/js';
-// import { INSERT_INLINE_IMAGE_COMMAND } from "../../plugins/InlineImagePlugin";
 import { NewImageUrlDialog } from "./image/NewImageUrlDialog";
 import { INSERT_FIGURE_COMMAND } from "../../plugins/FigurePlugin";
 
@@ -52,7 +51,7 @@ export default function ImageSelection({ editor }: IImageSelectionProps) {
                     selected={false}
                     sx={{ py: 0 }}
                 >
-                    {<Typography variant='subtitle1' sx={{ px: 0.5 }}>URL</Typography>}
+                    {<Typography variant='subtitle1' sx={{ px: 0.5 }}>Figure</Typography>}
                 </MenuItem>
             </Menu>
         );
@@ -60,7 +59,7 @@ export default function ImageSelection({ editor }: IImageSelectionProps) {
 
     const onConfirm = useCallback((payload: NewImagePayload) => {
         // editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, { src: payload.src });
-        editor.dispatchCommand(INSERT_FIGURE_COMMAND, { src: payload.src, altText: "alt", caption: "caption", width: '50%', height: 'auto', float: 'none' });
+        editor.dispatchCommand(INSERT_FIGURE_COMMAND, { src: payload.src, altText: "", caption: "", width: '100%', height: 'auto', float: 'none' });
     }, [editor]);
 
     const dialogNewImageUrl = useMemo(() => {
