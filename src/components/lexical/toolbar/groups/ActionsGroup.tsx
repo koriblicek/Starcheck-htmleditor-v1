@@ -1,7 +1,7 @@
 import { Fragment, useCallback, useMemo, useState } from "react";
 import { Grid, Menu, MenuItem, Typography } from "@mui/material";
 import { LexicalEditor, CLEAR_EDITOR_COMMAND } from "lexical";
-import { ActionsType, IAppInputData, ICON_SIZE, SaveRestApiPayload } from "src/types";
+import { ActionsType, IAppInputData, ICON_SIZE, LOCAL_STORAGE_DATA_PREFIX, SaveRestApiPayload } from "src/types";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import { $generateHtmlFromNodes } from '@lexical/html';
 import Icon from '@mdi/react';
@@ -124,15 +124,15 @@ export default function ActionsGroup({ editor, buttons = [], groupedButtons = []
         if (confirm) {
             const editorState = editor.getEditorState();
             editorState.read(() => {
-                localStorage.setItem("starcheck-html-editor-data", JSON.stringify(editor.getEditorState()));
+                localStorage.setItem(LOCAL_STORAGE_DATA_PREFIX + "-" + inputData.dataFormItemId, JSON.stringify(editor.getEditorState()));
             });
         }
         handleCloseDialogs();
-    }, [editor, handleCloseDialogs]);
+    }, [editor, handleCloseDialogs, inputData]);
 
     const onLoadLocalStorageAction = useCallback((confirm: boolean) => {
         if (confirm) {
-            const loadedData = localStorage.getItem("starcheck-html-editor-data");
+            const loadedData = localStorage.getItem(LOCAL_STORAGE_DATA_PREFIX + "-" + inputData.dataFormItemId);
             if (loadedData) {
                 editor.update(() => {
                     const editorState = editor.parseEditorState(loadedData);
@@ -143,7 +143,7 @@ export default function ActionsGroup({ editor, buttons = [], groupedButtons = []
             }
         }
         handleCloseDialogs();
-    }, [editor, handleCloseDialogs]);
+    }, [editor, handleCloseDialogs, inputData]);
 
     const onLoadRestApiAction = useCallback((data: SaveRestApiPayload) => {
         if (data.data) {

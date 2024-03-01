@@ -11,7 +11,7 @@ import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
 import { HistoryPlugin } from "@lexical/react/LexicalHistoryPlugin";
 import { CheckListPlugin } from '@lexical/react/LexicalCheckListPlugin';
-import { EditorToolbarsSetup, IAppInputData, defaultToolbarsSetup } from 'src/types';
+import { EditorToolbarsSetup, IAppInputData, setupDefault } from 'src/types';
 import LexicalErrorBoundary from '@lexical/react/LexicalErrorBoundary';
 import RichTextWrapper from './wrappers/RichTextWrapper';
 import TopToolbar from './toolbar/TopToolbar';
@@ -24,6 +24,7 @@ import FigurePlugin from './plugins/FigurePlugin';
 import { EmbedVideoNode } from './nodes/EmbedVideoNode';
 import EmbedVideoPlugin from './plugins/EmbedVideoPlugin';
 import { AutoLoadPlugin } from './plugins/AutoLoadPlugin';
+import { AutoSavePlugin } from './plugins/AutoSavePlugin';
 
 const theme = {
     paragraph: "htmleditor-theme-paragraph",
@@ -86,7 +87,7 @@ interface IEditroProps {
     inputData: IAppInputData;
 }
 
-export default function Editor({ inputData, toolbarsSetup = defaultToolbarsSetup }: IEditroProps): JSX.Element {
+export default function Editor({ inputData, toolbarsSetup = setupDefault }: IEditroProps): JSX.Element {
     const initialConfig = {
         namespace: 'Starcheck-html-editor',
         theme: theme,
@@ -109,6 +110,7 @@ export default function Editor({ inputData, toolbarsSetup = defaultToolbarsSetup
                 </RichTextWrapper>
             </EditorWrapper>
             <AutoLoadPlugin inputData={inputData} />
+            <AutoSavePlugin inputData={inputData} />
             <LinkPlugin />
             <TabIndentationPlugin />
             <ListPlugin />
@@ -117,7 +119,7 @@ export default function Editor({ inputData, toolbarsSetup = defaultToolbarsSetup
             <FigurePlugin />
             <HistoryPlugin />
             <ClearEditorPlugin />
-            <TreeViewPlugin />
+            {/* <TreeViewPlugin /> */}
             <EmbedVideoPlugin />
         </LexicalComposer>
     );

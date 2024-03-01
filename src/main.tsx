@@ -1,17 +1,7 @@
-// import ReactDOM from 'react-dom/client';
-// import App from './App.tsx';
-
-
-// ReactDOM.createRoot(document.getElementById('root')!).render(
-//   // <React.StrictMode>
-//   <App />
-//   // </React.StrictMode>
-// );
-
-
-import { APP_NAME, IAppInputData } from './types/index.ts';
+import { APP_NAME, EnumUiTemplates, IAppInputData } from './types/index.ts';
 import { Fragment } from 'react';
 import ReactDOM from 'react-dom/client';
+import { isInstance } from './utils/index.ts';
 import './translations/i18n';
 import App from './App.tsx';
 
@@ -34,20 +24,21 @@ if (rootElement) {
   const dm = rootElement.getAttribute("data-module");
   const dv = rootElement.getAttribute("data-version");
   const dcl = rootElement.getAttribute("data-css-link");
-  const ddk = rootElement.getAttribute("data-db-key");
-  const dral = rootElement.getAttribute("data-rest-api-link");
+  const dfii = rootElement.getAttribute("data-form-item-id");
+  const dut = rootElement.getAttribute("data-ui-template");
   const dlos = (rootElement.getAttribute("data-load-on-start") === "true");
-  if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dcl !== null) && (ddk !== null) && (dlos !== null) && (dral !== null)) {
+  if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dcl !== null) && (dfii !== null) && (dut !== null) && (dlos !== null)) {
     inputData = {
       dataApiLink: dal,
       dataCssLink: dcl,
-      dataDbKey: ddk,
+      dataFormItemId: dfii,
       dataId: di,
       dataModule: dm,
       dataVersion: dv,
       dataLoadOnStart: dlos,
-      dataRestApiLink: dral
+      dataUiTemplate: isInstance(dut, EnumUiTemplates) as boolean ? dut as EnumUiTemplates : EnumUiTemplates.DEVELOPER_CONDENSED
     };
+    console.log(inputData);
     //load css into head
     const head = document.head;
     const link = document.createElement("link");
@@ -57,7 +48,7 @@ if (rootElement) {
     head.appendChild(link);
   } else {
     // error = true;
-    errorMessage = `Some of required input data are missing! 'data-id'='${di}','data-module'='${dm}','data-version'='${dv}','data-css-link'='${dcl}','data-db-key'='${ddk}','data-load-on-start'='${dlos}','data-rest-api-link'='${dral}'`;
+    errorMessage = `Some of required input data are missing! 'data-id'='${di}','data-module'='${dm}','data-version'='${dv}','data-css-link'='${dcl}','data-ui-template'='${dut}','data-load-on-start'='${dlos}','data-form-item-id'='${dfii}'`;
     console.error(`(Starcheck-wdesigner): ${errorMessage}`);
   }
   root.render(

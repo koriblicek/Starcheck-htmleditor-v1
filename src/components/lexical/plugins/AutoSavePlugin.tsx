@@ -1,46 +1,43 @@
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { IAppInputData, SaveRestApiPayload } from 'src/types';
+import { $generateHtmlFromNodes } from '@lexical/html';
 
 export interface IAutoLoadPluginProps {
     inputData: IAppInputData;
 }
 
-// export const AUTO_LOAD_STATE_COMMAND: LexicalCommand<string> = createCommand('AUTO_LOAD_STATE_COMMAND');
-
-export function AutoLoadPlugin({ inputData }: IAutoLoadPluginProps) {
+export function AutoSavePlugin({ inputData }: IAutoLoadPluginProps) {
     const [editor] = useLexicalComposerContext();
+    const [element] = useState<HTMLInputElement | null>(document.getElementById(inputData.dataFormItemId) as HTMLInputElement);
 
     useEffect(() => {
-        const formItem = document.getElementById(inputData.dataFormItemId) as HTMLInputElement;
-        if (formItem) {
-            if (formItem.value !== '') {
-                editor.update(() => {
-                    const data = JSON.parse(formItem.value) as SaveRestApiPayload;
-                    if (data.data) {
-                        const editorState = editor.parseEditorState(data.data);
-                        queueMicrotask(() => {
-                            editor.setEditorState(editorState);
-                        });
-                    }
-                }, { discrete: true });
-            }
+        if (element) {
+            return editor.registerUpdateListener(({ editorState }) => {
+                let html = "";
+                let data = "";
+                editorState.read(() => {
+                    data = JSON.stringify(editor.getEditorState());
+                    html = $generateHtmlFromNodes(editor);
+                });
+                element.value = JSON.stringify({ data, html, timestamp: Date.now() } as SaveRestApiPayload);
+            });
         }
-    }, [editor, inputData]);
-
-    // useEffect(() => {
-    //     return editor.registerCommand(
-    //         AUTO_LOAD_STATE_COMMAND,
-    //         (payload) => {
-    //             editor.update(() => {
-    //                 const editorState = editor.parseEditorState(payload);
-    //                 editor.setEditorState(editorState);
-    //             }, { discrete: true });
-    //             return false;
-    //         },
-    //         COMMAND_PRIORITY_LOW
-    //     );
-    // }, [editor]);
+        // if (element) {
+        //     return editor.registerCommand(
+        //         AUTO_SAVE_STATE_COMMAND,
+        //         () => {
+        //             console.log("save");
+        //             const editorState = editor.getEditorState();
+        //             editorState.read(() => {
+        //                 localStorage.setItem(LOCAL_STORAGE_DATA_PREFIX + "-" + inputData.dataFormItemId, JSON.stringify(editor.getEditorState()));
+        //             });
+        //             return false;
+        //         },
+        //         COMMAND_PRIORITY_LOW
+        //     );
+        // }
+    }, [editor, element]);
 
     return (
         null
