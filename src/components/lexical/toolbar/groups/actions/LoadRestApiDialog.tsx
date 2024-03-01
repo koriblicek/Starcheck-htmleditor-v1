@@ -11,11 +11,11 @@ export interface ILoadRestApiDialogProps {
     onClose: () => void;
     inputData: IAppInputData;
 }
-export function LoadRestApiDialog({ open, onAction, onClose, inputData }: ILoadRestApiDialogProps) {
-    const { isLoading, response, error, axiosFetch, cancelFetch } = useGetAxiosFunction<SaveRestApiPayload>();
+export function LoadRestApiDialog({ open, onAction, onClose, /*inputData*/ }: ILoadRestApiDialogProps) {
+    const { isLoading, response, error, /*axiosFetch, */ cancelFetch } = useGetAxiosFunction<SaveRestApiPayload>();
 
     function load() {
-        axiosFetch(inputData.dataRestApiLink + inputData.dataDbKey);
+        // axiosFetch(inputData.dataRestApiLink + inputData.dataDbKey);
     }
 
     useEffect(() => {

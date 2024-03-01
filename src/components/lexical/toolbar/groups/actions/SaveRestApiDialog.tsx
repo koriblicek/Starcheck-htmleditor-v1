@@ -1,5 +1,5 @@
 import { Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
-import { IAppInputData, ICON_SIZE, SaveRestApiPayload } from 'src/types';
+import { /*IAppInputData, */ICON_SIZE, SaveRestApiPayload } from 'src/types';
 import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
 import usePutAxiosFunction from 'src/hooks/usePutAxiosFunction';
@@ -7,16 +7,16 @@ import { useEffect } from 'react';
 
 export interface ISaveRestApiDialogProps {
     open: boolean;
-    inputData: IAppInputData;
+    // inputData: IAppInputData;
     onClose: () => void;
     data: SaveRestApiPayload | null;
 }
-export function SaveRestApiDialog({ open, data, onClose, inputData }: ISaveRestApiDialogProps) {
-    const { isUploading, isCompleted, error, axiosPut, cancelPut } = usePutAxiosFunction<SaveRestApiPayload>();
+export function SaveRestApiDialog({ open, data, onClose/*, inputData*/ }: ISaveRestApiDialogProps) {
+    const { isUploading, isCompleted, error, /*axiosPut,*/ cancelPut } = usePutAxiosFunction<SaveRestApiPayload>();
 
     function save() {
         if (data !== null) {
-            axiosPut(inputData.dataRestApiLink + inputData.dataDbKey, data,);
+            // axiosPut(inputData.dataRestApiLink + inputData.dataDbKey, data,);
         }
     }
 
