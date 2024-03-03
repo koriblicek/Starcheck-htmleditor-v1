@@ -55,7 +55,7 @@ function LazyImage({ src, altText, width, height }: { src: string; altText: stri
     );
 }
 
-export function FigureComponent({ className, innerClassName, format, nodeKey, src, altText, caption, width, height, float }: FigureComponentProps) {
+export function FigureComponent({ className, innerClassName, format, nodeKey, src, altText, caption, width, height/*, float */}: FigureComponentProps) {
 
     const [editor] = useLexicalComposerContext();
     const [isSelected] = useLexicalNodeSelection(nodeKey);
@@ -73,12 +73,12 @@ export function FigureComponent({ className, innerClassName, format, nodeKey, sr
 
     return (
         <BlockWithAlignableContents
-            className={className}
+            className={{ ...className, base: className.base }}
             format={format}
             nodeKey={nodeKey}
         >
             <Suspense fallback={null}>
-                <figure className={innerClassName} style={{ display: 'inline-block', float, maxWidth: '100%', width, height, pointerEvents: 'none', position: 'relative' }}>
+                <figure className={innerClassName} style={{ display: 'block'/*, width, height*/, pointerEvents: 'none' }}>
                     <IconButton
                         color="primary"
                         sx={{
@@ -101,8 +101,8 @@ export function FigureComponent({ className, innerClassName, format, nodeKey, sr
                     <LazyImage
                         src={src}
                         altText={altText}
-                        width='100%'
-                        height='100%'
+                        width={width}
+                        height={height}
                     />
                     {/* <img src={src} alt={altText} style={{ width, height, float }} /> */}
                     <figcaption>{caption}</figcaption>

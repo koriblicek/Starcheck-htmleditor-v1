@@ -15,7 +15,6 @@ function App({ inputData }: IAppProps) {
     case EnumUiTemplates.DEVELOPER_CONDENSED:
       setup = setupDevCondensed;
       break;
-
   }
 
   return (

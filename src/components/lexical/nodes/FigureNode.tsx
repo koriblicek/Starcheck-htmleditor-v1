@@ -1,8 +1,6 @@
 import { type DOMConversionMap, LexicalNode, type DOMExportOutput, type EditorConfig, type ElementFormatType, type LexicalEditor, type NodeKey, type Spread, DOMConversionOutput } from 'lexical';
 import { $applyNodeReplacement } from 'lexical';
 import { DecoratorBlockNode, SerializedDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
-
-import './FigureNode.css';
 import { Float, Height, Width } from 'src/types';
 import { FigureComponent } from './FigureComponent';
 

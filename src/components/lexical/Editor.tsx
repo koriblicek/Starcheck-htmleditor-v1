@@ -5,7 +5,6 @@ import { LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
 import { MuiContentEditable } from './styles';
 import { PlaceholderWrapper } from './wrappers/PlaceholderWrapper';
-import { LinkPlugin } from '@lexical/react/LexicalLinkPlugin';
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
 import { ClearEditorPlugin } from "@lexical/react/LexicalClearEditorPlugin";
@@ -25,54 +24,83 @@ import { EmbedVideoNode } from './nodes/EmbedVideoNode';
 import EmbedVideoPlugin from './plugins/EmbedVideoPlugin';
 import { AutoLoadPlugin } from './plugins/AutoLoadPlugin';
 import { AutoSavePlugin } from './plugins/AutoSavePlugin';
+import { GlobalStyles } from '@mui/material';
+import { CustomLinkNode } from './nodes/CustomLinkNode';
+import { CustomLinkPlugin } from './plugins/CustomLinkPlugin';
 
-// const theme = {
-//     paragraph: "htmleditor-theme-paragraph",
-//     heading: {
-//         h1: "htmleditor-theme-heading-h1",
-//         h2: "htmleditor-theme-heading-h2",
-//         h3: "htmleditor-theme-heading-h3",
-//         h4: "htmleditor-theme-heading-h4",
-//         h5: "htmleditor-theme-heading-h5",
-//         h6: "htmleditor-theme-heading-h6"
-//     },
-//     list: {
-//         checklist: 'htmleditor-theme-checklist',
-//         listitemChecked: 'htmleditor-theme-listItemChecked',
-//         listitemUnchecked: 'htmleditor-theme-listItemUnchecked',
-//         listitem: 'htmleditor-theme-listItem',
-//         nested: {
-//             listitem: 'htmleditor-theme-nestedListItem',
-//         },
-//         ul: 'htmleditor-theme-ul',
-//         olDepth: [
-//             'htmleditor-theme-ol1',
-//             'htmleditor-theme-ol2',
-//             'htmleditor-theme-ol3'
-//         ]
-//     },
-//     embedBlock: {
-//         base: 'htmleditor-editor-embedBlock',
-//         focus: 'htmleditor-editor-embedBlock-focus',
-//     },
-//     quote: "htmleditor-theme-quote",
-//     text: {
-//         bold: "htmleditor-theme-text-bold",
-//         italic: "htmleditor-theme-text-italic",
-//         underline: "htmleditor-theme-text-underline",
-//         strikethrough: "htmleditor-theme-text-strikethrough",
-//         underlineStrikethrough: "htmleditor-theme-text-underline-strikethrough",
-//         subscript: "htmleditor-theme-text-subscript",
-//         superscript: "htmleditor-theme-text-superscript",
-//         code: "htmleditor-theme-text-code",
-//         highlight: "htmleditor-theme-text-highlight"
-//     },
-//     link: "htmleditor-theme-link",
-//     // inlineImage: 'htmleditor-theme-inline-image',
-//     figure: 'htmleditor-theme-figure',
-//     embedVideo: 'htmleditor-theme-embed-video',
-//     indent: 'htmleditor-theme-style-indent'
-// };
+const styles = {
+
+    '.htmleditor-editor-embedBlock': {
+        userSelect: 'none',
+        outline: '1px rgb(202, 202, 202) dashed',
+        backgroundColor: 'white',
+    },
+    '.htmleditor-editor-embedBlock-focus': {
+        outline: '2px solid #757ce8'
+    },
+    '.button': {
+        display: 'inline-block',
+        background: '0 0',
+        border: '2px #3f6ab4 solid',
+        color: '#3f6ab4',
+        textDecoration: 'none',
+        borderRadius: '5px',
+        margin: '10px auto',
+        padding: '10px 20px 8px',
+        fontSize: '.85em',
+        cursor: 'pointer'
+    },
+    '.olive': {
+        backgroundColor: 'olive'
+    }
+};
+const theme = {
+    //     paragraph: "htmleditor-theme-paragraph",
+    //     heading: {
+    //         h1: "htmleditor-theme-heading-h1",
+    //         h2: "htmleditor-theme-heading-h2",
+    //         h3: "htmleditor-theme-heading-h3",
+    //         h4: "htmleditor-theme-heading-h4",
+    //         h5: "htmleditor-theme-heading-h5",
+    //         h6: "htmleditor-theme-heading-h6"
+    //     },
+    //     list: {
+    //         checklist: 'htmleditor-theme-checklist',
+    //         listitemChecked: 'htmleditor-theme-listItemChecked',
+    //         listitemUnchecked: 'htmleditor-theme-listItemUnchecked',
+    //         listitem: 'htmleditor-theme-listItem',
+    //         nested: {
+    //             listitem: 'htmleditor-theme-nestedListItem',
+    //         },
+    //         ul: 'htmleditor-theme-ul',
+    //         olDepth: [
+    //             'htmleditor-theme-ol1',
+    //             'htmleditor-theme-ol2',
+    //             'htmleditor-theme-ol3'
+    //         ]
+    //     },
+    embedBlock: {
+        base: 'htmleditor-editor-embedBlock',
+        focus: 'htmleditor-editor-embedBlock-focus',
+    },
+    //     quote: "htmleditor-theme-quote",
+    //     text: {
+    //         bold: "htmleditor-theme-text-bold",
+    //         italic: "htmleditor-theme-text-italic",
+    //         underline: "htmleditor-theme-text-underline",
+    //         strikethrough: "htmleditor-theme-text-strikethrough",
+    //         underlineStrikethrough: "htmleditor-theme-text-underline-strikethrough",
+    //         subscript: "htmleditor-theme-text-subscript",
+    //         superscript: "htmleditor-theme-text-superscript",
+    //         code: "htmleditor-theme-text-code",
+    //         highlight: "htmleditor-theme-text-highlight"
+    //     },
+    //     link: "htmleditor-theme-link",
+    //     // inlineImage: 'htmleditor-theme-inline-image',
+    //     figure: 'htmleditor-theme-figure',
+    //     embedVideo: 'htmleditor-theme-embed-video',
+    //     indent: 'htmleditor-theme-style-indent'
+};
 
 
 // Catch any errors that occur during Lexical updates and log them
@@ -89,16 +117,23 @@ interface IEditroProps {
 
 export default function Editor({ inputData, toolbarsSetup = setupDefault }: IEditroProps): JSX.Element {
     const initialConfig = {
-        namespace: 'Starcheck-html-editor',
-        //theme: theme,
+        namespace: 'Starcheck-html-editor' + inputData.dataFormItemId,
+        theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, LinkNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode
+            HeadingNode, QuoteNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode, LinkNode, CustomLinkNode,
+            {
+                replace: LinkNode,
+                with: (node: CustomLinkNode) => {
+                    return new CustomLinkNode(node.__url, { target: node.getTarget(), title: node.getTitle(), rel: node.getRel() });
+                }
+            }
         ]
     };
 
     return (
         <LexicalComposer initialConfig={initialConfig}>
+            <GlobalStyles styles={styles} />
             <EditorWrapper>
                 <TopToolbar settings={toolbarsSetup} inputData={inputData} />
                 <RichTextWrapper>
@@ -111,7 +146,7 @@ export default function Editor({ inputData, toolbarsSetup = setupDefault }: IEdi
             </EditorWrapper>
             <AutoLoadPlugin inputData={inputData} />
             <AutoSavePlugin inputData={inputData} />
-            <LinkPlugin />
+            <CustomLinkPlugin />
             <TabIndentationPlugin />
             <ListPlugin />
             <CheckListPlugin />

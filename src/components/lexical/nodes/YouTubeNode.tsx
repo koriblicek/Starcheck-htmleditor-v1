@@ -1,9 +1,6 @@
 import { type DOMConversionMap, type DOMConversionOutput, type DOMExportOutput, type EditorConfig, type ElementFormatType, type LexicalEditor, type LexicalNode, type NodeKey, type Spread } from 'lexical';
 import { DecoratorBlockNode, SerializedDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 import YouTubeComponent from './YouTubeComponent';
-
-import './YouTubeNode.css';
-
 export type SerializedYouTubeNode = Spread<{ videoID: string; }, SerializedDecoratorBlockNode>;
 
 function convertYoutubeElement(domNode: HTMLElement): null | DOMConversionOutput {

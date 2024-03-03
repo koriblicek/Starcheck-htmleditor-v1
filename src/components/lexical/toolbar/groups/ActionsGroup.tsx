@@ -183,7 +183,7 @@ export default function ActionsGroup({ editor, buttons = [], groupedButtons = []
         return (
             <SaveRestApiDialog open={isSaveRestApiOpen} onClose={handleCloseDialogs} data={restApiData} /* inputData={inputData}*/ />
         );
-    }, [isSaveRestApiOpen, handleCloseDialogs, restApiData, inputData]);
+    }, [isSaveRestApiOpen, handleCloseDialogs, restApiData/*, inputData*/]);
 
     const loadRestApiDialog = useMemo(() => {
         return (

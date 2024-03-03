@@ -15,16 +15,16 @@ export interface ILinkDialogProps {
 }
 
 export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILinkDialogProps) {
-    const [linkData, setLinkData] = useState<LinkData>({ url: "", target: "_self", title: "" });
+    const [linkData, setLinkData] = useState<LinkData>({ url: "", target: "_self", title: "", classes: "" });
 
     useEffect(() => {
-        setLinkData((prevState) => { return { ...prevState, ...data }; });
+        setLinkData((prevState) => { return { ...prevState, ...data, target: data.target ? data.target : "_self", title: data.title ? data.title : "", classes: data.classes ? data.classes : "" }; });
     }, [data]);
 
     return (
         <Dialog onClose={onClose} open={open} fullWidth maxWidth="xs">
             <DialogTitle>
-                    Set or Delete link
+                Set or Delete link
                 <IconButton
                     onClick={onClose}
                     sx={{
@@ -53,7 +53,7 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                             value={linkData.target}
                             size='small'
                             label="Open link in 'target':"
-                            inputProps={{id: 'link-target-input'}}
+                            inputProps={{ id: 'link-target-input' }}
                             onChange={(e) => setLinkData((prevState) => { return { ...prevState, target: e.target.value }; })}
                         >
                             {linkAttributeTartgetTypeList.map(target => {
@@ -64,6 +64,13 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                     <TextField fullWidth id="link-title" name="link-title" variant="outlined" size='small' value={linkData.title} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, title: e.target.value }; })}
                         label="Link title 'title':"
+                        InputLabelProps={{
+                            shrink: true
+                        }}
+                    />
+                    <TextField fullWidth id="link-classes" name="link-classes" variant="outlined" size='small' value={linkData.classes} type="text"
+                        onChange={(e) => setLinkData((prevState) => { return { ...prevState, classes: e.target.value }; })}
+                        label="Link classes 'class':"
                         InputLabelProps={{
                             shrink: true
                         }}

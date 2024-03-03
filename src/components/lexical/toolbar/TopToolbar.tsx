@@ -4,7 +4,6 @@ import { EditorActionsGroupType, EditorElementAlignmentGroup, EditorElementInden
 import { Fragment } from 'react';
 import ButtonsDivider from './groups/ButtonsDivider';
 import HistoryGroup from './groups/HistoryGroup';
-import LinkButton from './groups/LinkButton';
 import FontSelection from './groups/FontSelection';
 import FontSizeSelection from './groups/FontSizeSelection';
 import TextColorSelection from './groups/TextColorSelection';
@@ -16,6 +15,7 @@ import ElementIndentationGroup from './groups/ElementIndentationGroup';
 import ImageSelection from './groups/ImageSelection';
 import VideoSelection from './groups/VideoSelection';
 import ActionsGroup from './groups/ActionsGroup';
+import CustomLinkButton from './groups/CustomLinkButton';
 
 const toolbarSx = {
     p: .5,
@@ -175,12 +175,12 @@ export default function TopToolbar({ settings, inputData }: ITopToolbarProps): J
                     </Fragment>
                 );
             }
-            if (key === 'linkButton') {
-                const ei = (row['linkButton'] as EditorLinkButton);
+            if (key === 'customLinkButton') {
+                const ei = (row['customLinkButton'] as EditorLinkButton);
                 return (
                     <Fragment key={key + jndex}>
                         {ei.startDivider && <ButtonsDivider />}
-                        <LinkButton
+                        <CustomLinkButton
                             editor={editor}
                         />
                         {ei.endDivider && <ButtonsDivider />}

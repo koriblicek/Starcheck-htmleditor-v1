@@ -21,7 +21,6 @@ export default function FigurePlugin(): JSX.Element | null {
         return editor.registerCommand<InsertFigurePayload>(
             INSERT_FIGURE_COMMAND,
             (payload) => {
-                console.log(payload);
                 const figureNode = $createFigureNode(payload);
                 $insertNodeToNearestRoot(figureNode);
 

@@ -8,10 +8,18 @@ export const APP_LANGUAGES = ["sk", "gb"];
 
 export const LOCAL_STORAGE_DATA_PREFIX = "starcheck-htmleditor-v1-data";
 
-
 export enum EnumUiTemplates {
     "DEVELOPER_CONDENSED" = "dev-condensed"
 }
+
+//Error object
+export interface IErrorObject {
+    code: string;
+    codeText: string;
+    url: string;
+}
+//#endregion
+
 //#region APP
 //Input data via div/scriptst
 export interface IAppInputData {
@@ -28,6 +36,7 @@ export interface IAppInputData {
 //Settings from API
 export interface IAppData {
     imagesURL: string;
+    videosURL: string;
 }
 //#endregion
 
@@ -40,6 +49,7 @@ export type LinkData = {
     url: string;
     target: string | null;
     title: string | null;
+    classes: string | null;
 };
 
 export type NewImagePayload = {
@@ -49,6 +59,11 @@ export type NewImagePayload = {
 export type NewEmbedVideoPayload = {
     videoUrl: string;
     posterUrl: string;
+};
+
+export type VideoApiList = {
+    video: string;
+    poster: string;
 };
 
 export type SaveRestApiPayload = {
@@ -184,7 +199,7 @@ export type EditorTopGroupsType = {
     elementTypeGroup?: EditorElementTypeGroup;
     elementAlignmentGroup?: EditorElementAlignmentGroup;
     elementIndentationGroup?: EditorElementIndentationGroup;
-    linkButton?: EditorLinkButton;
+    customLinkButton?: EditorLinkButton;
     imageSelection?: EditorImageSelection;
     videoSelection?: EditorVideoSelection;
 };
@@ -205,7 +220,7 @@ export const setupDevCondensed: EditorToolbarsSetup = {
                 startDivider: false,
                 buttons: ['preview', 'clear'], //'load_rest', 'save_rest',
                 groupedButtons: ["load_local_storage", "save_local_storage"],
-                endDivider: true
+                endDivider: false
             }
         },
         {
@@ -258,7 +273,7 @@ export const setupDevCondensed: EditorToolbarsSetup = {
                 groupedButtons: ['strikethrough', 'subscript', 'superscript', 'highlight'],
                 endDivider: true
             },
-            linkButton: {
+            customLinkButton: {
                 startDivider: false,
                 endDivider: false
             },

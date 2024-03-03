@@ -85,7 +85,7 @@ export default function ImageSelection({ editor }: IImageSelectionProps) {
                 if ($isNodeSelection(selection)) {
                     const node = selection.getNodes()[0];
                     if (node) {
-                        setEnabled(node.getType() !== "youtube" && node.getType() !== "embed-video");
+                        setEnabled(node.getType() !== "youtube" && node.getType() !== "embed-video" && node.getType() !== "figure");
                     }
                 } else {
                     setEnabled(true);

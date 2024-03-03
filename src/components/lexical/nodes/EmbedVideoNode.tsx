@@ -1,7 +1,6 @@
 import { type DOMConversionMap, type DOMConversionOutput, type DOMExportOutput, type EditorConfig, type ElementFormatType, type LexicalEditor, type LexicalNode, type NodeKey, type Spread } from 'lexical';
 import { DecoratorBlockNode, SerializedDecoratorBlockNode } from '@lexical/react/LexicalDecoratorBlockNode';
 
-import './YouTubeNode.css';
 import { EmbedVideoComponent } from './EmbedVideoComponent';
 
 export type SerializedEmbedVideoNode = Spread<{ videoUrl: string; posterUrl: string; }, SerializedDecoratorBlockNode>;

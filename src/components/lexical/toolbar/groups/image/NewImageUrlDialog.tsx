@@ -1,9 +1,12 @@
-import { Alert, Button, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Alert, Button, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField, useMediaQuery, useTheme } from '@mui/material';
 import { ICON_SIZE, NewImagePayload } from 'src/types';
 import { useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
 import { mdiDownload } from '@mdi/js';
+import ImageListLoader from './imagelistloader/ImageListLoader';
+import { useAppSelector } from 'src/store/hooks';
+import ImagesGrid from './imagesgrid/ImagesGrid';
 
 export interface INewImageUrlDialogProps {
     open: boolean;
@@ -16,6 +19,22 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
     const [imageData, setImageData] = useState<NewImagePayload>(initialData);
     const [isValid, setIsValid] = useState<boolean | null>();
     const [isVerifying, setIsVerifying] = useState<boolean>(false);
+
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
+    const appData = useAppSelector(state => state.htmlEditorAppData);
+
+    const [loadedImagesData, setLoadedImagesData] = useState<string[]>();
+
+    function handleImageData(loadedData: string[]) {
+        if (loadedData.length > 0) {
+            setLoadedImagesData(loadedData);
+        } else {
+            setLoadedImagesData([]);
+        }
+    }
+
 
     useEffect(() => {
         setIsValid(null);
@@ -42,7 +61,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
     };
 
     return (
-        <Dialog onClose={onClose} open={open} fullWidth maxWidth="xs">
+        <Dialog onClose={onClose} open={open} fullWidth maxWidth="sm" fullScreen={fullScreen}>
             <DialogTitle>
                 {/* <DialogContentText> */}
                 Insert Image
@@ -57,24 +76,28 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
                 >
                     <Icon path={mdiWindowClose} size={ICON_SIZE} />
                 </IconButton>
-            </DialogTitle>
-            <DialogContent dividers>
+            </DialogTitle >
+            <DialogContent sx={{ overflowY: 'unset', px:2 }}>
+                <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={imageData.src} type="text"
+                    disabled={(isVerifying === true) || (isValid === false)}
+                    onChange={(e) => {
+                        setImageData((prevState) => { return { ...prevState, src: e.target.value }; });
+                        setIsValid(null);
+                    }}
+                    label="Image url 'src':"
+                    InputLabelProps={{
+                        shrink: true
+                    }}
+                    onFocus={event => {
+                        event.target.select();
+                    }}
+                />
+            </DialogContent>
+            <DialogContent>
                 <Grid container alignItems='center' justifyContent='center'>
-                    <Grid item xs={12}>
-                        <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={imageData.src} type="text"
-                            disabled={(isVerifying === true) || (isValid === false)}
-                            onChange={(e) => {
-                                setImageData((prevState) => { return { ...prevState, src: e.target.value }; });
-                                setIsValid(null);
-                            }}
-                            label="Image url 'src':"
-                            InputLabelProps={{
-                                shrink: true
-                            }}
-                            onFocus={event => {
-                                event.target.select();
-                            }}
-                        />
+                    <Grid>
+                        {!loadedImagesData && <ImageListLoader path={appData.imagesURL} onImageData={handleImageData} />}
+                        {loadedImagesData && <ImagesGrid imageLinks={loadedImagesData} onImageSelected={(src) => { setImageData((prevState) => { return { ...prevState, src }; }); }} />}
                     </Grid>
                     <Grid item justifyContent="center">
                         <Collapse in={isVerifying} >

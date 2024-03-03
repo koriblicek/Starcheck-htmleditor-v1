@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
-import { ICON_SIZE, NewEmbedVideoPayload } from 'src/types';
+import { ICON_SIZE, NewEmbedVideoPayload, VideoApiList } from 'src/types';
 import { useCallback, useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
@@ -7,6 +7,9 @@ import { mdiImageOutline } from '@mdi/js';
 import { mdiVideo } from '@mdi/js';
 import { mdiCheck } from '@mdi/js';
 import { InputLink } from './InputLink';
+import VideosGrid from './videolist/VideosGrid';
+import VideoListLoader from './videolistloader/VideoListLoader';
+import { useAppSelector } from 'src/store/hooks';
 
 export interface IEmbedVideoDialogProps {
     open: boolean;
@@ -21,6 +24,18 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
     const [isPosterUrlValid, setIsPosterUrlValid] = useState<boolean | null>(null);
     const [isVerifyingPosterUrl, setIsVerifyingPosterUrl] = useState<boolean>(false);
 
+    const appData = useAppSelector(state => state.htmlEditorAppData);
+
+    const [loadedVideoData, setLoadedVideoData] = useState<VideoApiList[]>();
+
+    function handleVideoData(loadedData: VideoApiList[]) {
+        if (loadedData.length > 0) {
+            setLoadedVideoData(loadedData);
+        } else {
+            setLoadedVideoData([]);
+        }
+    }
+
     useEffect(() => {
         setIsVideoUrlValid(null);
         setIsPosterUrlValid(null);
@@ -29,7 +44,6 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
     }, [open]);
 
     const verifyPosterUrl = useCallback(() => {
-        console.log(1);
         setIsVerifyingPosterUrl(true);
         new Promise((resolve) => {
             const img = new Image();
@@ -69,8 +83,7 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
                     <Icon path={mdiWindowClose} size={ICON_SIZE} />
                 </IconButton>
             </DialogTitle>
-            <DialogContent dividers>
-
+            <DialogContent sx={{ overflowY: 'unset' }}>
                 <Grid container alignItems='center' gap={2}>
                     <Grid item xs={12}>
                         <InputLink
@@ -128,6 +141,22 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
                             }}
                         />
                     </Grid>
+                </Grid>
+            </DialogContent>
+            <DialogContent>
+                <Grid container alignItems='center' justifyContent='center'>
+                    <Grid item>
+                        {!loadedVideoData && <VideoListLoader path={appData.videosURL} onVideoData={handleVideoData} />}
+                        {loadedVideoData && <VideosGrid videoLinks={loadedVideoData} onVideoSelected={(src) => {
+                            setEmbedVideoData({ videoUrl: src.video, posterUrl: src.poster });
+                            setIsPosterUrlValid(null);
+                            setIsVideoUrlValid(null);
+                        }} />}
+                    </Grid>
+                </Grid>
+            </DialogContent>
+            <DialogContent sx={{ overflowY: 'unset' }}>
+                <Grid container alignItems='center' gap={2}>
                     <Grid item>
                         <Typography variant='body1'>Embed Video requires 2 URLs to be entered. Video link and Poster link.</Typography>
                         <Typography variant='subtitle2'>Note: Both 'Poster' and 'Video' URLs must be verified before inserting!</Typography>
