@@ -275,7 +275,7 @@ export const setupDevCondensed: EditorToolbarsSetup = {
             },
             customLinkButton: {
                 startDivider: false,
-                endDivider: false
+                endDivider: true
             },
             imageSelection: {
                 startDivider: false,

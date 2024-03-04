@@ -40,3 +40,27 @@ https://w3c.github.io/html-reference/common-models.html#common.elem.flow
 	<img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%" alt="Popisny text obrazka sa moze tahat aj do ALT" />
 <figcaption>Popisny text obrazka sa moze tahat aj do ALT</figcaption>
 </figure>
+
+pridat este video TAG + classy
+<video width="100%" controls>
+  <source src="mov_bbb.mp4" type="video/mp4">
+  <source src="mov_bbb.ogg" type="video/ogg">
+  Your browser does not support HTML video.
+</video>
+
+pridat classy do <a videa
+<a class="" href="/files/2023/2023-12-04-dr-harper-dlha-verzia.mp4" data-poster="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg">
+                    <img src="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg" width="100%;" />
+                </a></div>
+
+pridat do preview zmenu velkosti okna
+
+pridat zmenu velkosti editovatelneho okna
+
+pridat "data-ui-template" [string, string...] - pre multiple instances
+
+pridat div cb classu ako samostatny komponent
+
+pridat hr + class ako samostatny komponent
+
+povolit embed na link
