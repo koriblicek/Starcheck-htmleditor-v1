@@ -1,13 +1,13 @@
 import { type ElementFormatType, type NodeKey } from 'lexical';
 import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
-import { Float, Height, Width } from "src/types";
+import { Width } from "src/types";
 import { IconButton } from '@mui/material';
 import { Suspense, useCallback, useMemo, useState } from 'react';
 import { useLexicalNodeSelection } from '@lexical/react/useLexicalNodeSelection';
-import Icon from '@mdi/react';
 import { mdiPencilOutline } from '@mdi/js';
 import { EditFigureDialog } from './dialogs/EditFigureDialog';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
+import Icon from '@mdi/react';
 
 type FigureComponentProps = Readonly<
     {
@@ -16,11 +16,8 @@ type FigureComponentProps = Readonly<
         format: ElementFormatType | null;
         nodeKey: NodeKey;
         src: string;
-        altText: string;
+        figureClasses: string;
         caption: string;
-        width: Width;
-        height: Height;
-        float: Float;
     }>;
 
 
@@ -39,7 +36,7 @@ function useSuspenseImage(src: string) {
     }
 }
 
-function LazyImage({ src, altText, width, height }: { src: string; altText: string | null; height?: Height; width?: Width; }): JSX.Element {
+function LazyImage({ src, altText, width }: { src: string; altText: string | null; width?: Width; }): JSX.Element {
 
     useSuspenseImage(src);
 
@@ -47,15 +44,13 @@ function LazyImage({ src, altText, width, height }: { src: string; altText: stri
         <img
             src={src}
             alt={altText ? altText : ""}
-            style={{
-                height: `${height}`,
-                width: `${width}`,
-            }}
+            width={width}
+            className="responsive"
         />
     );
 }
 
-export function FigureComponent({ className, innerClassName, format, nodeKey, src, altText, caption, width, height/*, float */}: FigureComponentProps) {
+export function FigureComponent({ className, format, figureClasses, nodeKey, src, caption }: FigureComponentProps) {
 
     const [editor] = useLexicalComposerContext();
     const [isSelected] = useLexicalNodeSelection(nodeKey);
@@ -73,18 +68,18 @@ export function FigureComponent({ className, innerClassName, format, nodeKey, sr
 
     return (
         <BlockWithAlignableContents
-            className={{ ...className, base: className.base }}
+            className={{ ...className, base: className.base + " " + figureClasses }}
             format={format}
             nodeKey={nodeKey}
         >
             <Suspense fallback={null}>
-                <figure className={innerClassName} style={{ display: 'block'/*, width, height*/, pointerEvents: 'none' }}>
+                <figure className={figureClasses} style={{ pointerEvents: 'none' }}>
                     <IconButton
                         color="primary"
                         sx={{
-                            position: 'absolute',
+                            position: 'relative',
                             m: 1,
-                            visibility: isSelected ? "visible" : "hidden",
+                            display: isSelected ? "block" : "none",
                             pointerEvents: 'auto',
                             backgroundColor: "white",
                             "&:hover": { backgroundColor: "white" },
@@ -100,11 +95,9 @@ export function FigureComponent({ className, innerClassName, format, nodeKey, sr
                     </IconButton>
                     <LazyImage
                         src={src}
-                        altText={altText}
-                        width={width}
-                        height={height}
+                        altText={caption}
+                        width="100%"
                     />
-                    {/* <img src={src} alt={altText} style={{ width, height, float }} /> */}
                     <figcaption>{caption}</figcaption>
                 </figure>
                 {editDialog}

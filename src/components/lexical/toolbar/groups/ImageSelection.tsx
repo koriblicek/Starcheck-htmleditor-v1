@@ -59,7 +59,7 @@ export default function ImageSelection({ editor }: IImageSelectionProps) {
 
     const onConfirm = useCallback((payload: NewImagePayload) => {
         // editor.dispatchCommand(INSERT_INLINE_IMAGE_COMMAND, { src: payload.src });
-        editor.dispatchCommand(INSERT_FIGURE_COMMAND, { src: payload.src, altText: "", caption: "", width: '100%', height: 'auto', float: 'none' });
+        editor.dispatchCommand(INSERT_FIGURE_COMMAND, { src: payload.src, figureClasses: "", caption: "" });
     }, [editor]);
 
     const dialogNewImageUrl = useMemo(() => {

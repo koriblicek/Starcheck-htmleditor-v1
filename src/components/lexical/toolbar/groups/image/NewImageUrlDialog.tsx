@@ -95,7 +95,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
             </DialogContent>
             <DialogContent>
                 <Grid container alignItems='center' justifyContent='center'>
-                    <Grid>
+                    <Grid item xs>
                         {!loadedImagesData && <ImageListLoader path={appData.imagesURL} onImageData={handleImageData} />}
                         {loadedImagesData && <ImagesGrid imageLinks={loadedImagesData} onImageSelected={(src) => { setImageData((prevState) => { return { ...prevState, src }; }); }} />}
                     </Grid>

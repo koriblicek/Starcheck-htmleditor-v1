@@ -33,3 +33,10 @@ https://w3c.github.io/html-reference/common-models.html#common.elem.flow
   <source src="mov_bbb.ogg" type="video/ogg">
   Your browser does not support HTML video.
 </video>
+
+[16:00, 3/2/2024] Roman Novota: <figure class="imageLeft" style="max-width:350px;"> <img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%"> <figcaption></figcaption> </figure>
+[16:01, 3/2/2024] Roman Novota: ale kludne bez toho style
+[16:02, 3/2/2024] Roman Novota: <figure class="imageLeft maxWidth350" >
+	<img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%" alt="Popisny text obrazka sa moze tahat aj do ALT" />
+<figcaption>Popisny text obrazka sa moze tahat aj do ALT</figcaption>
+</figure>

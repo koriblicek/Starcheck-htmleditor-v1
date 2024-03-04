@@ -34,24 +34,10 @@ const styles = {
         userSelect: 'none',
         outline: '1px rgb(202, 202, 202) dashed',
         backgroundColor: 'white',
+        display: 'inline-block'
     },
     '.htmleditor-editor-embedBlock-focus': {
         outline: '2px solid #757ce8'
-    },
-    '.button': {
-        display: 'inline-block',
-        background: '0 0',
-        border: '2px #3f6ab4 solid',
-        color: '#3f6ab4',
-        textDecoration: 'none',
-        borderRadius: '5px',
-        margin: '10px auto',
-        padding: '10px 20px 8px',
-        fontSize: '.85em',
-        cursor: 'pointer'
-    },
-    '.olive': {
-        backgroundColor: 'olive'
     }
 };
 const theme = {

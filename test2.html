@@ -26,23 +26,27 @@
 		}
 	</style>
 	
-  <link type="text/css" rel="stylesheet" href="https://www.nierakovine.sk//style.min.css?20240228223113"></link>
+  <!--<link type="text/css" rel="stylesheet" href="https://www.nierakovine.sk//style.min.css?20240228223113"></link>-->
   </head>
   <body>
-<input id="store-id" value=''></input>
-<div id="APIHTMLEDITOR-root"><div class="loader"></div></div>
+<input id="store-id1" value=''></input>
+<input id="store-id2" value=''></input>
+<div id="APIHTMLEDITOR-root"></div>
+<div id="APIHTMLEDITOR-root1"><div class="loader"></div></div>
+<div id="APIHTMLEDITOR-root2"><div class="loader"></div></div>
 <script>
     (function(r,a,l,p,h){
         r.hj=r.hj||function(){(r.hj.q=r.hj.q||[]).push(arguments)};
         p=a.getElementById('APIHTMLEDITOR-root');
         h=a.createElement('script');
+		h.setAttribute("multiple-divs", "APIHTMLEDITOR-root1,APIHTMLEDITOR-root2");
         h.async=1;
         h.src=l;
 
-        p.setAttribute('data-css-link', './styles.css');
+        p.setAttribute('data-css-link', '');
         p.setAttribute('data-ui-template', 'dev-condensed');
-        p.setAttribute('data-form-item-id', 'store-id');
-        p.setAttribute('data-load-on-start', 'true');
+        p.setAttribute('data-form-item-id', 'store-id1,store-id2');
+        p.setAttribute('data-load-on-start', '');
 
         p.setAttribute('data-id', '1ee895ee-6f95-6c22-8f83-ef72993f7122');
         p.setAttribute('data-module', 'APIHTMLEDITOR');

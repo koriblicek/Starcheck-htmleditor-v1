@@ -39,7 +39,7 @@ export function CustomLinkPlugin({ validateUrl }: Props) {
       },
       COMMAND_PRIORITY_EDITOR
     );
-  }, [editor]);
+  }, [editor, validateUrl]);
 
   return null;
 }

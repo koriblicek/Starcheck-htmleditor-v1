@@ -145,7 +145,7 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
             </DialogContent>
             <DialogContent>
                 <Grid container alignItems='center' justifyContent='center'>
-                    <Grid item>
+                    <Grid item xs={12}>
                         {!loadedVideoData && <VideoListLoader path={appData.videosURL} onVideoData={handleVideoData} />}
                         {loadedVideoData && <VideosGrid videoLinks={loadedVideoData} onVideoSelected={(src) => {
                             setEmbedVideoData({ videoUrl: src.video, posterUrl: src.poster });

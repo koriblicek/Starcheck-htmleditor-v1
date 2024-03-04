@@ -22,15 +22,15 @@ export default function ImageListLoader({ path, onImageData }: IImageListLoaderP
     return (
         <>
             {isLoading &&
-                <Grid container p={1}>
+                <Grid container>
                     <Grid item xs textAlign='center'>
                         <CircularProgress />
                     </Grid>
                 </Grid>
             }
             {error &&
-                <Grid container p={1} >
-                    <Grid item xs>
+                <Grid container >
+                    <Grid item xs={12}>
                         <Alert variant='standard' severity='error'>
                             <AlertTitle>{error.code}</AlertTitle>
                             {error.codeText}

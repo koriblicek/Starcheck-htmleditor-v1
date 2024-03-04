@@ -40,19 +40,19 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                 <Stack direction='column' gap={1}>
                     <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={linkData.url} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, url: e.target.value }; })}
-                        label="Link URL 'href':"
+                        label="Link URL:"
                         InputLabelProps={{
                             shrink: true
                         }}
                     />
                     <FormControl fullWidth variant='outlined'>
-                        <InputLabel id="link-target-label" htmlFor="link-target-input">Open link in 'target':</InputLabel>
+                        <InputLabel id="link-target-label" htmlFor="link-target-input">Open link in:</InputLabel>
                         <Select
                             labelId="link-target-label"
                             id="link-target"
                             value={linkData.target}
                             size='small'
-                            label="Open link in 'target':"
+                            label="Open link in:"
                             inputProps={{ id: 'link-target-input' }}
                             onChange={(e) => setLinkData((prevState) => { return { ...prevState, target: e.target.value }; })}
                         >
@@ -63,14 +63,14 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                     </FormControl>
                     <TextField fullWidth id="link-title" name="link-title" variant="outlined" size='small' value={linkData.title} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, title: e.target.value }; })}
-                        label="Link title 'title':"
+                        label="Link title:"
                         InputLabelProps={{
                             shrink: true
                         }}
                     />
                     <TextField fullWidth id="link-classes" name="link-classes" variant="outlined" size='small' value={linkData.classes} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, classes: e.target.value }; })}
-                        label="Link classes 'class':"
+                        label="Link classes:"
                         InputLabelProps={{
                             shrink: true
                         }}

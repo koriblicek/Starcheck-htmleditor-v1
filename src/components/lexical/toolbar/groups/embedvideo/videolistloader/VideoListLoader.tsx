@@ -23,14 +23,14 @@ export default function VideoListLoader({ path, onVideoData }: IImageListLoaderP
     return (
         <>
             {isLoading &&
-                <Grid container p={1}>
+                <Grid container>
                     <Grid item xs textAlign='center'>
                         <CircularProgress />
                     </Grid>
                 </Grid>
             }
             {error &&
-                <Grid container p={1} >
+                <Grid container >
                     <Grid item xs>
                         <Alert variant='standard' severity='error'>
                             <AlertTitle>{error.code}</AlertTitle>

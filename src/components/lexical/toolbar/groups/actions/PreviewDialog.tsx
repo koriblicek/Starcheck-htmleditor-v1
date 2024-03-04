@@ -14,7 +14,7 @@ export function PreviewDialog({ open, onClose, htmlData }: IPreviewDialogProps) 
     const fullScreen = useMediaQuery(theme.breakpoints.down('md'));
 
     return (
-        <Dialog onClose={onClose} open={open} fullScreen={fullScreen} fullWidth maxWidth="md">
+        <Dialog onClose={onClose} open={open} fullScreen={fullScreen} fullWidth maxWidth="xl">
             <DialogTitle>
                 Preview
                 <IconButton
