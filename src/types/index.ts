@@ -9,7 +9,8 @@ export const APP_LANGUAGES = ["sk", "gb"];
 export const LOCAL_STORAGE_DATA_PREFIX = "starcheck-htmleditor-v1-data";
 
 export enum EnumUiTemplates {
-    "DEVELOPER_CONDENSED" = "dev-condensed"
+    "DEVELOPER_CONDENSED" = "dev-condensed",
+    "PEREX_BRIEF" = "perex-brief"
 }
 
 //Error object
@@ -37,8 +38,17 @@ export interface IAppInputData {
 export interface IAppData {
     imagesURL: string;
     videosURL: string;
+    cssURL: string;
 }
+
+//css settings from API
+export interface ICssData {
+    figure: string[];
+    "custom-link": string[];
+}
+
 //#endregion
+
 
 export const ICON_SIZE: number = .9;
 export const linkAttributeTartgetTypeList: LinkAttributeTartgetType[] = ["_self", "_blank", "_parent", "_top"];
@@ -292,6 +302,89 @@ export const setupDevCondensed: EditorToolbarsSetup = {
                 buttons: ['bullet', 'number', 'h1', 'h2', 'h3', 'quote'],
                 groupedButtons: ['paragraph', 'h4', 'h5', 'h6', 'check'],
                 fixedWidth: '160px',
+                endDivider: true
+            },
+            elementIndentationGroup: {
+                startDivider: false,
+                buttons: ['indent', 'outdent'],
+                groupedButtons: [],
+                endDivider: true
+            },
+            elementAlignmentGroup: {
+                startDivider: false,
+                buttons: ['left', 'center', 'right', 'justify', 'clear_alignment'],
+                groupedButtons: [],
+                endDivider: false
+            }
+        }
+    ]
+};
+
+export const perexBrief: EditorToolbarsSetup = {
+    toolbar: [
+        {
+            historyGroup: {
+                startDivider: false,
+                buttons: ['undo', 'redo'],
+                groupedButtons: [],
+                endDivider: true
+            },
+            actionsGroup: {
+                startDivider: false,
+                buttons: ['preview', 'clear'], //'load_rest', 'save_rest',
+                groupedButtons: ["load_local_storage", "save_local_storage"],
+                endDivider: false
+            }
+        },
+        {
+            fontSizeSelection: {
+                startDivider: false,
+                fontSizeList: [
+                    [8, "8px"],
+                    [9, "9px"],
+                    [10, "10px"],
+                    [11, "11px"],
+                    [12, "12px"],
+                    [14, "14px"],
+                    [16, "16px"],
+                    [18, "18px"],
+                    [20, "20px"],
+                    [22, "22px"],
+                    [24, "24px"],
+                    [26, "26px"],
+                    [28, "28px"],
+                    [36, "36px"],
+                    [48, "48px"],
+                    [72, "72px"]
+                ],
+                fixedWidth: '25px',
+                endDivider: true
+            },
+            textColorSelection: {
+                startDivider: false,
+                endDivider: false
+            },
+            textBackgroundColorSelection: {
+                startDivider: false,
+                endDivider: true
+            },
+            textFormattingGroup: {
+                startDivider: false,
+                buttons: ['bold', 'italic', 'underline', 'subscript', 'superscript', 'clear_text_formatting'],
+                groupedButtons: [],
+                endDivider: true
+            },
+            customLinkButton: {
+                startDivider: false,
+                endDivider: false
+            }
+        },
+        {
+            elementTypeGroup: {
+                startDivider: false,
+                buttons: ['bullet', 'number', 'paragraph', 'h3', 'quote'],
+                groupedButtons: [],
+                fixedWidth: '135px',
                 endDivider: true
             },
             elementIndentationGroup: {

@@ -33,9 +33,9 @@ if (editorLocations) {
       const dv = dataElement.getAttribute("data-version");
       const dcl = dataElement.getAttribute("data-css-link");
       const dfii = dataElement.getAttribute("data-form-item-id")?.split(",");
-      const dut = dataElement.getAttribute("data-ui-template");
+      const dut = dataElement.getAttribute("data-ui-template")?.split(",");
       const dlos = (dataElement.getAttribute("data-load-on-start") === "true");
-      if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dcl !== null) && (dfii !== undefined) && (dut !== null) && (dlos !== null)) {
+      if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dcl !== null) && (dfii !== undefined) && (dut !== undefined) && (dlos !== null)) {
         inputData = {
           dataApiLink: dal,
           dataCssLink: dcl,
@@ -44,7 +44,7 @@ if (editorLocations) {
           dataModule: dm,
           dataVersion: dv,
           dataLoadOnStart: dlos,
-          dataUiTemplate: isInstance(dut, EnumUiTemplates) as boolean ? dut as EnumUiTemplates : EnumUiTemplates.DEVELOPER_CONDENSED
+          dataUiTemplate: isInstance(dut[index].trim(), EnumUiTemplates) as boolean ? dut[index].trim() as EnumUiTemplates : EnumUiTemplates.DEVELOPER_CONDENSED
         };
         //load css into head
         const head = document.head;

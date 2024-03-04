@@ -4,7 +4,9 @@ import { mdiLinkOff } from '@mdi/js';
 import { mdiWindowClose } from '@mdi/js';
 import { mdiCheck } from '@mdi/js';
 import { ICON_SIZE, LinkData, linkAttributeTartgetTypeList } from 'src/types';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { ClassesSelection } from 'src/components/lexical/shared/ClassesSelection';
+import { useAppSelector } from 'src/store/hooks';
 
 export interface ILinkDialogProps {
     open: boolean;
@@ -17,9 +19,15 @@ export interface ILinkDialogProps {
 export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILinkDialogProps) {
     const [linkData, setLinkData] = useState<LinkData>({ url: "", target: "_self", title: "", classes: "" });
 
+    const { cssData } = useAppSelector(state => state.htmlEditorAppData);
+
     useEffect(() => {
         setLinkData((prevState) => { return { ...prevState, ...data, target: data.target ? data.target : "_self", title: data.title ? data.title : "", classes: data.classes ? data.classes : "" }; });
     }, [data]);
+
+    const handleUpdateCustomLinkClasses = useCallback((classes: string) => {
+        setLinkData((prevState) => { return { ...prevState, classes: classes }; });
+    }, []);
 
     return (
         <Dialog onClose={onClose} open={open} fullWidth maxWidth="xs">
@@ -68,13 +76,14 @@ export function LinkDialog({ open, data, onClose, onLinkDelete, onConfirm }: ILi
                             shrink: true
                         }}
                     />
-                    <TextField fullWidth id="link-classes" name="link-classes" variant="outlined" size='small' value={linkData.classes} type="text"
+                    <ClassesSelection componentClasses={linkData.classes ? linkData.classes : ""} updateComponentClasses={handleUpdateCustomLinkClasses} availableClasses={cssData['custom-link']} open={open} />
+                    {/* <TextField fullWidth id="link-classes" name="link-classes" variant="outlined" size='small' value={linkData.classes} type="text"
                         onChange={(e) => setLinkData((prevState) => { return { ...prevState, classes: e.target.value }; })}
                         label="Link classes:"
                         InputLabelProps={{
                             shrink: true
                         }}
-                    />
+                    /> */}
                 </Stack>
             </DialogContent>
             <DialogActions>

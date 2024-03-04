@@ -1,34 +1,35 @@
-import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
+import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField } from '@mui/material';
 import { ICON_SIZE } from 'src/types';
 import { mdiWindowClose } from '@mdi/js';
-import { $getNodeByKey, LexicalEditor, NodeKey } from 'lexical';
-import { useState } from 'react';
-import { FigureNode, UpdateFigurePayload } from '../FigureNode';
+import { useCallback, useEffect, useState } from 'react';
+import { FigureNode } from '../FigureNode';
+import { ClassesSelection } from '../../shared/ClassesSelection';
+import { useAppSelector } from 'src/store/hooks';
 import Icon from '@mdi/react';
 
 export interface IEditFigureDialogProps {
-    editor: LexicalEditor;
-    nodeKey: NodeKey;
     open: boolean;
+    node: FigureNode;
     onClose: () => void;
+    onUpdate: (caption: string, figureClasses: string) => void;
 }
-export function EditFigureDialog({ editor, nodeKey, open, onClose }: IEditFigureDialogProps) {
 
-    const editorState = editor.getEditorState();
-    const node = editorState.read(() => $getNodeByKey(nodeKey) as FigureNode);
+export function EditFigureDialog({ open, onClose, node, onUpdate }: IEditFigureDialogProps) {
 
     const [figureClasses, setFigureClasses] = useState<string>(node.getFigureClasses());
     const [caption, setCaption] = useState<string>(node.getCaption());
 
-    const handleUpdate = () => {
-        const payload: UpdateFigurePayload = { figureClasses, caption };
-        if (node) {
-            editor.update(() => {
-                node.update(payload);
-            });
+    const { figure } = useAppSelector(state => state.htmlEditorAppData.cssData);
+
+    const handleUpdateFigureClasses = useCallback((classes: string) => {
+        setFigureClasses(classes);
+    }, []);
+
+    useEffect(() => {
+        if (open) {
+            setFigureClasses(node.getFigureClasses());
         }
-        onClose();
-    };
+    }, [open, node]);
 
     return (
         <Dialog onClose={onClose} open={open} fullWidth maxWidth="xs">
@@ -57,22 +58,16 @@ export function EditFigureDialog({ editor, nodeKey, open, onClose }: IEditFigure
                         />
                     </Grid>
                     <Grid item xs={12}>
-                        <TextField fullWidth autoFocus id="figure-classes" name="figure-classes" variant="outlined" size='small' value={figureClasses} type="text"
-                            onChange={(e) => setFigureClasses(e.target.value)}
-                            label="Figure classes:"
-                            InputLabelProps={{
-                                shrink: true
-                            }}
-                        />
+                        <ClassesSelection componentClasses={node.getFigureClasses()} updateComponentClasses={handleUpdateFigureClasses} availableClasses={figure} open={open} />
                     </Grid>
                 </Grid>
-                <DialogContentText>
-                    <sup>1</sup>Possible values: [<i>auto</i>, [nnn]<i>%</i>, [nnn]<i>px</i>]
-                </DialogContentText>
             </DialogContent>
             <DialogActions>
                 <Button
-                    onClick={handleUpdate}
+                    onClick={() => {
+                        onUpdate(caption, figureClasses);
+                        onClose();
+                    }}
                     variant="text"
                     color="primary"
                     size="small"

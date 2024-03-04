@@ -1,6 +1,6 @@
 import { ThemeProvider } from "@emotion/react";
 import { CssBaseline } from "@mui/material";
-import { EnumUiTemplates, IAppInputData, setupDefault, setupDevCondensed } from "./types";
+import { EnumUiTemplates, IAppInputData, perexBrief, setupDefault, setupDevCondensed } from "./types";
 import Editor from "./components/lexical/Editor";
 import theme from "./components/ui/theme";
 
@@ -15,6 +15,8 @@ function App({ inputData }: IAppProps) {
     case EnumUiTemplates.DEVELOPER_CONDENSED:
       setup = setupDevCondensed;
       break;
+    case EnumUiTemplates.PEREX_BRIEF:
+      setup = perexBrief;
   }
 
   return (

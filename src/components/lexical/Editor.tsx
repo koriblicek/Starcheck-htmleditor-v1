@@ -3,7 +3,6 @@ import { RichTextPlugin } from '@lexical/react/LexicalRichTextPlugin';
 import { HeadingNode, QuoteNode } from '@lexical/rich-text';
 import { LinkNode } from "@lexical/link";
 import { ListItemNode, ListNode } from "@lexical/list";
-import { MuiContentEditable } from './styles';
 import { PlaceholderWrapper } from './wrappers/PlaceholderWrapper';
 import { TabIndentationPlugin } from "@lexical/react/LexicalTabIndentationPlugin";
 import { ListPlugin } from "@lexical/react/LexicalListPlugin";
@@ -27,6 +26,7 @@ import { AutoSavePlugin } from './plugins/AutoSavePlugin';
 import { GlobalStyles } from '@mui/material';
 import { CustomLinkNode } from './nodes/CustomLinkNode';
 import { CustomLinkPlugin } from './plugins/CustomLinkPlugin';
+import { MuiContentEditable } from './wrappers/MuiContentEditable';
 
 const styles = {
 
@@ -38,6 +38,9 @@ const styles = {
     },
     '.htmleditor-editor-embedBlock-focus': {
         outline: '2px solid #757ce8'
+    },
+    '.htmleditor-theme-nestedListItem': {
+        listStyleType: 'none'
     }
 };
 const theme = {
@@ -50,21 +53,21 @@ const theme = {
     //         h5: "htmleditor-theme-heading-h5",
     //         h6: "htmleditor-theme-heading-h6"
     //     },
-    //     list: {
-    //         checklist: 'htmleditor-theme-checklist',
-    //         listitemChecked: 'htmleditor-theme-listItemChecked',
-    //         listitemUnchecked: 'htmleditor-theme-listItemUnchecked',
-    //         listitem: 'htmleditor-theme-listItem',
-    //         nested: {
-    //             listitem: 'htmleditor-theme-nestedListItem',
-    //         },
-    //         ul: 'htmleditor-theme-ul',
-    //         olDepth: [
-    //             'htmleditor-theme-ol1',
-    //             'htmleditor-theme-ol2',
-    //             'htmleditor-theme-ol3'
-    //         ]
-    //     },
+        list: {
+            checklist: 'htmleditor-theme-checklist',
+            listitemChecked: 'htmleditor-theme-listItemChecked',
+            listitemUnchecked: 'htmleditor-theme-listItemUnchecked',
+            listitem: 'htmleditor-theme-listItem',
+            nested: {
+                listitem: 'htmleditor-theme-nestedListItem',
+            },
+            ul: 'htmleditor-theme-ul',
+            olDepth: [
+                'htmleditor-theme-ol1',
+                'htmleditor-theme-ol2',
+                'htmleditor-theme-ol3'
+            ]
+        },
     embedBlock: {
         base: 'htmleditor-editor-embedBlock',
         focus: 'htmleditor-editor-embedBlock-focus',
@@ -88,7 +91,6 @@ const theme = {
     //     indent: 'htmleditor-theme-style-indent'
 };
 
-
 // Catch any errors that occur during Lexical updates and log them
 // or throw them as needed. If you don't throw them, Lexical will
 // try to recover gracefully without losing user data.
@@ -107,7 +109,7 @@ export default function Editor({ inputData, toolbarsSetup = setupDefault }: IEdi
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode, LinkNode, CustomLinkNode,
+            HeadingNode, QuoteNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode, CustomLinkNode,
             {
                 replace: LinkNode,
                 with: (node: CustomLinkNode) => {

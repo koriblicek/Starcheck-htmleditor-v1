@@ -23,7 +23,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const appData = useAppSelector(state => state.htmlEditorAppData);
+    const { appData } = useAppSelector(state => state.htmlEditorAppData);
 
     const [loadedImagesData, setLoadedImagesData] = useState<string[]>();
 
@@ -77,7 +77,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
                     <Icon path={mdiWindowClose} size={ICON_SIZE} />
                 </IconButton>
             </DialogTitle >
-            <DialogContent sx={{ overflowY: 'unset', px:2 }}>
+            <DialogContent sx={{ overflowY: 'unset', px: 2 }}>
                 <TextField fullWidth autoFocus id="link-href" name="link-href" variant="outlined" size='small' value={imageData.src} type="text"
                     disabled={(isVerifying === true) || (isValid === false)}
                     onChange={(e) => {

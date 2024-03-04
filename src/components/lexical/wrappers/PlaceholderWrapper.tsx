@@ -4,7 +4,8 @@ const placeholderWrapperSx = {
     position: 'absolute',
     color: 'gray',
     top: '31px',
-    left: '20px',
+    left: '50%',
+    transform: 'translate(-50%, 0)',
     pointerEvents: 'none'
 };
 

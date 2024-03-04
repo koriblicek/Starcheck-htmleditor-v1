@@ -1,13 +1,5 @@
-css in js
-https://www.npmjs.com/package/vite-plugin-css-injected-by-js
-
-
-shift + Enter - soft line break - create button for such functionality
-
-FormattingElementButtonsGroup - add clear alignment type instead of ""
-
-
-addClassNamesToElement
+DONE - pridat do preview zmenu velkosti okna
+DONE - pridat zmenu velkosti editovatelneho okna
 
 
 How to delete classes when use $generateHtmlFromNodes?
@@ -15,7 +7,6 @@ https://github.com/facebook/lexical/discussions/3828
 
 HTML: The Markup Language (an HTML language reference)
 https://w3c.github.io/html-reference/common-models.html#common.elem.flow
-
 
 
 [13:17, 2/2/2024] Roman Novota: takto vkladam YouTube video
@@ -53,9 +44,7 @@ pridat classy do <a videa
                     <img src="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg" width="100%;" />
                 </a></div>
 
-pridat do preview zmenu velkosti okna
 
-pridat zmenu velkosti editovatelneho okna
 
 pridat "data-ui-template" [string, string...] - pre multiple instances
 

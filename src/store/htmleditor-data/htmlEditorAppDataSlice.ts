@@ -1,16 +1,24 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IAppData } from 'src/types';
+import { IAppData, ICssData } from 'src/types';
+interface State {
+    appData: IAppData;
+    cssData: ICssData;
+}
 
 const initialState = {
-} as IAppData;
+} as State;
 
 export const htmlEditorAppDataSlice = createSlice({
     name: 'htmlEditorAppData',
     initialState,
     reducers: {
-        initializeAppData: (_, action: PayloadAction<{ data: IAppData; }>) => {
+        initializeAppData: (state, action: PayloadAction<{ data: IAppData; }>) => {
             //initialize app data
-            return { ...action.payload.data };
+            state.appData = action.payload.data;
+        },
+        initializeCssData: (state, action: PayloadAction<{ data: ICssData; }>) => {
+            //initialize css data
+            state.cssData = action.payload.data;
         }
     }
 });

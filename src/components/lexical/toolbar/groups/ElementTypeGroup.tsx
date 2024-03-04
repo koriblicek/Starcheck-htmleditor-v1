@@ -62,8 +62,10 @@ export default function ElementTypeGroup({ editor, buttons = [], groupedButtons 
     const [state, setState] = useState<ElementTypeType | ElementReadOnlyType>(initialState);
 
     const handleClick = useCallback((event: React.MouseEvent) => {
-        setAnchorEl(event.currentTarget);
-    }, []);
+        if (groupedButtons.length !== 0){
+            setAnchorEl(event.currentTarget);
+        }
+    }, [groupedButtons]);
 
     const handleClose = useCallback(() => {
         setAnchorEl(null);
@@ -185,14 +187,14 @@ export default function ElementTypeGroup({ editor, buttons = [], groupedButtons 
                         <Typography variant='button' sx={{ px: 0.5, overflow: 'clip' }} noWrap>
                             {Object.keys(state) ? buttonsSetup[state].title : "More Styles"}
                         </Typography>
-                        {<Icon path={mdiChevronDown} size={ICON_SIZE} />}
+                        {(groupedButtons.length !== 0) && <Icon path={mdiChevronDown} size={ICON_SIZE} />}
                     </Box>
                 }
                 title={buttonsSetup[state].title}
                 onClick={(e: React.MouseEvent) => handleClick(e)}
             />
         );
-    }, [state, fixedWidth, handleClick]);
+    }, [state, fixedWidth, handleClick, groupedButtons]);
 
 
     return (

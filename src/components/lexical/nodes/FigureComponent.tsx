@@ -1,4 +1,4 @@
-import { type ElementFormatType, type NodeKey } from 'lexical';
+import { $getNodeByKey, type ElementFormatType, type NodeKey } from 'lexical';
 import { BlockWithAlignableContents } from "@lexical/react/LexicalBlockWithAlignableContents";
 import { Width } from "src/types";
 import { IconButton } from '@mui/material';
@@ -8,6 +8,7 @@ import { mdiPencilOutline } from '@mdi/js';
 import { EditFigureDialog } from './dialogs/EditFigureDialog';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
 import Icon from '@mdi/react';
+import { FigureNode, UpdateFigurePayload } from './FigureNode';
 
 type FigureComponentProps = Readonly<
     {
@@ -56,15 +57,27 @@ export function FigureComponent({ className, format, figureClasses, nodeKey, src
     const [isSelected] = useLexicalNodeSelection(nodeKey);
     const [isEditDialogOpen, setIsEditDialogOpen] = useState<boolean>(false);
 
-    const onClose = useCallback(() => {
+    const node = editor.getEditorState().read(() => $getNodeByKey(nodeKey) as FigureNode);
+
+    const handleClose = useCallback(() => {
         setIsEditDialogOpen(false);
     }, []);
 
+    const handleUpdate = useCallback((caption: string, figureClasses: string) => {
+        const payload: UpdateFigurePayload = { figureClasses, caption };
+        if (node) {
+            editor.update(() => {
+                node.update(payload);
+            });
+        }
+
+    }, [editor, node]);
+
     const editDialog = useMemo(() => {
         return (
-            <EditFigureDialog editor={editor} nodeKey={nodeKey} open={isEditDialogOpen} onClose={onClose} />
+            <EditFigureDialog node={node} open={isEditDialogOpen} onClose={handleClose} onUpdate={handleUpdate} />
         );
-    }, [isEditDialogOpen, editor, nodeKey, onClose]);
+    }, [isEditDialogOpen, handleClose, handleUpdate, node]);
 
     return (
         <BlockWithAlignableContents
