@@ -26,6 +26,8 @@ export function PreviewDialog({ open, onClose, htmlData }: IPreviewDialogProps) 
 
     const [size, setSize] = useState<string>("xl");
 
+    //const src = 'data:text/html;charset=utf-8,' + encodeURI(htmlData);
+
     const handleSize = (_: React.MouseEvent<HTMLElement>, newSize: string | null) => {
         if (newSize !== null) {
             setSize(newSize);
@@ -47,7 +49,8 @@ export function PreviewDialog({ open, onClose, htmlData }: IPreviewDialogProps) 
                 </IconButton>
             </DialogTitle>
             <DialogContent dividers>
-                <div dangerouslySetInnerHTML={{ __html: htmlData }} />
+                    {/* <iframe src={src} style={{width:'100%', height:'100%'}}/> */}
+                    <div dangerouslySetInnerHTML={{ __html: htmlData }} />
             </DialogContent>
             <DialogActions>
                 <ToggleButtonGroup aria-label="text alignment" size='small' exclusive value={size} onChange={handleSize}>

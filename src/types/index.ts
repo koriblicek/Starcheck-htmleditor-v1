@@ -45,6 +45,8 @@ export interface IAppData {
 export interface ICssData {
     figure: string[];
     "custom-link": string[];
+    "div-clear-both": string[];
+    "horizontal-rule": string[];
 }
 
 //#endregion
@@ -151,7 +153,7 @@ export type EditorTextFormattingGroupType = {
 //#region ElementTypeGroup
 export type ElementTypeParagraph = "paragraph";
 export type ElementTypeQuote = "quote";
-export type ElementReadOnlyType = "youtube" | "root" | "inline-image" | "figure" | "embed-video";
+export type ElementReadOnlyType = "youtube" | "root" | "inline-image" | "figure" | "embed-video" | "div-clear-both" | "horizontal-rule";
 export type ElementTypeType = ElementTypeParagraph | HeadingTagType | ElementTypeQuote | ListType;
 export type EditorElementTypeGroup = {
     buttons?: ElementTypeType[];
@@ -198,6 +200,15 @@ export type EditorVideoSelection = {
     endDivider?: boolean;
 };
 //#endregion
+//#region InsertGroup
+export type InsertType = "clear_both" | "hr";
+export type EditorInsertGroupType = {
+    buttons?: InsertType[];
+    groupedButtons?: InsertType[];
+    startDivider?: boolean;
+    endDivider?: boolean;
+};
+//#endregion
 export type EditorTopGroupsType = {
     actionsGroup?: EditorActionsGroupType;
     historyGroup?: EditorHistoryGroupType;
@@ -212,6 +223,7 @@ export type EditorTopGroupsType = {
     customLinkButton?: EditorLinkButton;
     imageSelection?: EditorImageSelection;
     videoSelection?: EditorVideoSelection;
+    insertGroup?: EditorInsertGroupType;
 };
 export type EditorToolbarsSetup = {
     toolbar: EditorTopGroupsType[];
@@ -293,6 +305,12 @@ export const setupDevCondensed: EditorToolbarsSetup = {
             },
             videoSelection: {
                 startDivider: false,
+                endDivider: true
+            },
+            insertGroup: {
+                startDivider: false,
+                buttons: ['clear_both', 'hr'],
+                groupedButtons: [],
                 endDivider: false
             }
         },
@@ -376,6 +394,12 @@ export const perexBrief: EditorToolbarsSetup = {
             },
             customLinkButton: {
                 startDivider: false,
+                endDivider: true
+            },
+            insertGroup: {
+                startDivider: false,
+                buttons: ['clear_both', 'hr'],
+                groupedButtons: [],
                 endDivider: false
             }
         },

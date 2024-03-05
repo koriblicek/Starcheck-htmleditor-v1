@@ -24,6 +24,8 @@ import { mdiYoutube } from '@mdi/js';
 import { mdiVideoBox } from '@mdi/js';
 import { mdiHomeCircleOutline } from '@mdi/js';
 import { mdiImageOutline } from '@mdi/js';
+import { mdiFormatFloatNone } from '@mdi/js';
+import { mdiMinus } from '@mdi/js';
 
 export interface IElementTypeGroupProps {
     editor: LexicalEditor;
@@ -50,6 +52,8 @@ const buttonsSetup = {
     "embed-video": { icon: <Icon path={mdiVideoBox} size={ICON_SIZE} />, title: "Embed Video" },
     "inline-image": { icon: <Icon path={mdiImageOutline} size={ICON_SIZE} />, title: "Inline Image" },
     figure: { icon: <Icon path={mdiImageOutline} size={ICON_SIZE} />, title: "Figure" },
+    "div-clear-both": { icon: <Icon path={mdiFormatFloatNone} size={ICON_SIZE} />, title: "DIV Clear Both" },
+    "horizontal-rule": { icon: <Icon path={mdiMinus} size={ICON_SIZE} />, title: "Horizontal Rule" },
     root: { icon: <Icon path={mdiHomeCircleOutline} size={ICON_SIZE} />, title: "Root" }
 } as Setup;
 

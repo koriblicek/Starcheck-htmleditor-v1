@@ -1,5 +1,5 @@
 import { LinkNode, LinkAttributes } from '@lexical/link';
-import { $getSelection, $isElementNode, $isRangeSelection, EditorConfig, ElementNode, LexicalCommand, LexicalNode, NodeKey, SerializedElementNode, Spread, createCommand } from 'lexical';
+import { $getSelection, $isElementNode, $isRangeSelection, DOMConversionMap, DOMConversionOutput, EditorConfig, ElementNode, LexicalCommand, LexicalNode, NodeKey, SerializedElementNode, Spread, createCommand } from 'lexical';
 import utils from "@lexical/utils";
 
 type SerializedCustomLinkNode = Omit<Spread<LinkAttributes & LinkClassAttribute, SerializedElementNode>, "url"> & { url: string; };
@@ -9,6 +9,30 @@ export type LinkClassAttribute = {
 };
 
 export const TOGGLE_CUSTOM_LINK_COMMAND: LexicalCommand<string | ({ url: string; } & LinkAttributes & LinkClassAttribute) | null> = createCommand();
+
+
+function convertCustomNodeElement(domNode: HTMLElement): null | DOMConversionOutput {
+  let href = "";
+  let classes = "";
+  let title = "";
+  let target = "";
+  if (domNode) {
+    const href_temp = domNode.getAttribute("href");
+    if (href_temp)
+      href = href_temp;
+    const title_temp = domNode.getAttribute("title");
+    if (title_temp)
+      title = title_temp;
+    const target_temp = domNode.getAttribute("target");
+    if (target_temp)
+      target = target_temp;
+    const classes_temp = domNode.getAttribute("class");
+    if (classes_temp)
+      classes = classes_temp;
+  }
+  const node = $createCustomLinkNode(href, { target, title, classes });
+  return { node };
+}
 
 export class CustomLinkNode extends LinkNode {
   __classes: null | string;
@@ -34,6 +58,21 @@ export class CustomLinkNode extends LinkNode {
 
   static clone(node: CustomLinkNode) {
     return new CustomLinkNode(node.__url, { target: node.getTarget(), rel: node.getRel(), title: node.getTitle(), classes: node.getClasses() }, node.__key);
+  }
+
+  static importDOM(): DOMConversionMap | null {
+    return {
+      a: (domNode: HTMLElement) => {
+        const img = domNode.getElementsByTagName('img');
+        if (img) {
+          return null;
+        }
+        return {
+          conversion: convertCustomNodeElement,
+          priority: 1,
+        };
+      }
+    };
   }
 
   createDOM(config: EditorConfig) {
@@ -86,16 +125,11 @@ export function $createCustomLinkNode(url: string, attributes?: LinkAttributes &
   return new CustomLinkNode(url, attributes);
 }
 
-export function $isCustomLinkNode(
-  node: LexicalNode | null | undefined,
-): node is CustomLinkNode {
+export function $isCustomLinkNode(node: LexicalNode | null | undefined): node is CustomLinkNode {
   return node instanceof CustomLinkNode;
 }
 
-export function toggleCustomLink(
-  url: null | string,
-  attributes: LinkAttributes & LinkClassAttribute = {},
-): void {
+export function toggleCustomLink(url: null | string, attributes: LinkAttributes & LinkClassAttribute = {}): void {
   const { target, title, classes } = attributes;
   const rel = attributes.rel === undefined ? 'noreferrer' : attributes.rel;
   const selection = $getSelection();

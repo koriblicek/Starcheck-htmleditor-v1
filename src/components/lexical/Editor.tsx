@@ -27,14 +27,18 @@ import { GlobalStyles } from '@mui/material';
 import { CustomLinkNode } from './nodes/CustomLinkNode';
 import { CustomLinkPlugin } from './plugins/CustomLinkPlugin';
 import { MuiContentEditable } from './wrappers/MuiContentEditable';
+import { DivClearBothNode } from './nodes/DivClearBothNode';
+import DivClearBothPlugin from './plugins/DivClearBothPlugin';
+import HorizontalRulePlugin from './plugins/HorizontalRulePlugin';
+import { HorizontalRuleNode } from './nodes/HorizontalRuleNode';
 
 const styles = {
 
     '.htmleditor-editor-embedBlock': {
         userSelect: 'none',
+        cursor: 'pointer',
         outline: '1px rgb(202, 202, 202) dashed',
-        backgroundColor: 'white',
-        display: 'inline-block'
+        // backgroundColor: 'white'
     },
     '.htmleditor-editor-embedBlock-focus': {
         outline: '2px solid #757ce8'
@@ -53,21 +57,21 @@ const theme = {
     //         h5: "htmleditor-theme-heading-h5",
     //         h6: "htmleditor-theme-heading-h6"
     //     },
-        list: {
-            checklist: 'htmleditor-theme-checklist',
-            listitemChecked: 'htmleditor-theme-listItemChecked',
-            listitemUnchecked: 'htmleditor-theme-listItemUnchecked',
-            listitem: 'htmleditor-theme-listItem',
-            nested: {
-                listitem: 'htmleditor-theme-nestedListItem',
-            },
-            ul: 'htmleditor-theme-ul',
-            olDepth: [
-                'htmleditor-theme-ol1',
-                'htmleditor-theme-ol2',
-                'htmleditor-theme-ol3'
-            ]
+    list: {
+        checklist: 'htmleditor-theme-checklist',
+        listitemChecked: 'htmleditor-theme-listItemChecked',
+        listitemUnchecked: 'htmleditor-theme-listItemUnchecked',
+        listitem: 'htmleditor-theme-listItem',
+        nested: {
+            listitem: 'htmleditor-theme-nestedListItem',
         },
+        ul: 'htmleditor-theme-ul',
+        olDepth: [
+            'htmleditor-theme-ol1',
+            'htmleditor-theme-ol2',
+            'htmleditor-theme-ol3'
+        ]
+    },
     embedBlock: {
         base: 'htmleditor-editor-embedBlock',
         focus: 'htmleditor-editor-embedBlock-focus',
@@ -109,7 +113,7 @@ export default function Editor({ inputData, toolbarsSetup = setupDefault }: IEdi
         theme: theme,
         onError: onError,
         nodes: [
-            HeadingNode, QuoteNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode, CustomLinkNode,
+            HeadingNode, QuoteNode, ListNode, ListItemNode, YouTubeNode, FigureNode, EmbedVideoNode, CustomLinkNode, DivClearBothNode, HorizontalRuleNode,
             {
                 replace: LinkNode,
                 with: (node: CustomLinkNode) => {
@@ -144,6 +148,8 @@ export default function Editor({ inputData, toolbarsSetup = setupDefault }: IEdi
             <ClearEditorPlugin />
             {/* <TreeViewPlugin /> */}
             <EmbedVideoPlugin />
+            <DivClearBothPlugin />
+            <HorizontalRulePlugin />
         </LexicalComposer>
     );
 }

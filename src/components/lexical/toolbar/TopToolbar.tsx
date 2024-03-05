@@ -1,6 +1,6 @@
 import { Divider, Stack } from '@mui/material';
 import { useLexicalComposerContext } from '@lexical/react/LexicalComposerContext';
-import { EditorActionsGroupType, EditorElementAlignmentGroup, EditorElementIndentationGroup, EditorElementTypeGroup, EditorFontSelection, EditorFontSizeSelection, EditorHistoryGroupType, EditorImageSelection, EditorLinkButton, EditorTextBackgroundColorSelection, EditorTextColorSelection, EditorTextFormattingGroupType, EditorToolbarsSetup, EditorVideoSelection, IAppInputData } from 'src/types';
+import { EditorActionsGroupType, EditorElementAlignmentGroup, EditorElementIndentationGroup, EditorElementTypeGroup, EditorFontSelection, EditorFontSizeSelection, EditorHistoryGroupType, EditorImageSelection, EditorInsertGroupType, EditorLinkButton, EditorTextBackgroundColorSelection, EditorTextColorSelection, EditorTextFormattingGroupType, EditorToolbarsSetup, EditorVideoSelection, IAppInputData } from 'src/types';
 import { Fragment } from 'react';
 import ButtonsDivider from './groups/ButtonsDivider';
 import HistoryGroup from './groups/HistoryGroup';
@@ -16,6 +16,7 @@ import ImageSelection from './groups/ImageSelection';
 import VideoSelection from './groups/VideoSelection';
 import ActionsGroup from './groups/ActionsGroup';
 import CustomLinkButton from './groups/CustomLinkButton';
+import InsertGroup from './groups/InsertGroup';
 
 const toolbarSx = {
     p: .5,
@@ -208,6 +209,20 @@ export default function TopToolbar({ settings, inputData }: ITopToolbarProps): J
                             editor={editor}
                         />
                         {yb.endDivider && <ButtonsDivider />}
+                    </Fragment>
+                );
+            }
+            if (key === 'insertGroup') {
+                const ig = (row['insertGroup'] as EditorInsertGroupType);
+                return (
+                    <Fragment key={key + jndex}>
+                        {ig.startDivider && <ButtonsDivider />}
+                        <InsertGroup
+                            editor={editor}
+                            buttons={ig.buttons}
+                            groupedButtons={ig.groupedButtons}
+                        />
+                        {ig.endDivider && <ButtonsDivider />}
                     </Fragment>
                 );
             }

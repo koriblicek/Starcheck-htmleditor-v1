@@ -1,36 +1,51 @@
-DONE - pridat do preview zmenu velkosti okna
-DONE - pridat zmenu velkosti editovatelneho okna
+IDEAS:
+
 
 
 How to delete classes when use $generateHtmlFromNodes?
 https://github.com/facebook/lexical/discussions/3828
 
-HTML: The Markup Language (an HTML language reference)
-https://w3c.github.io/html-reference/common-models.html#common.elem.flow
+
+colors:
+https://mui.com/material-ui/customization/palette/
+
+          import { createTheme, alpha, getContrastRatio } from '@mui/material/styles';
+
+          const violetBase = '#7F00FF';
+          const violetMain = alpha(violetBase, 0.7);
+
+          const theme = createTheme({
+            palette: {
+              violet: {
+                main: violetMain,
+                light: alpha(violetBase, 0.5),
+                dark: alpha(violetBase, 0.9),
+                contrastText: getContrastRatio(violetMain, '#fff') > 4.5 ? '#fff' : '#111',
+              },
+            },
+          });
+
+---------------------------------------------------------------------------------------------------------------------
 
 
-[13:17, 2/2/2024] Roman Novota: takto vkladam YouTube video
-[13:17, 2/2/2024] Roman Novota: <iframe class="responsive" width="100%" height="" src="https://www.youtube.com/embed/8luULdSuRds" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-
-[13:18, 2/2/2024] Roman Novota: takto mam zase vyriesene embed videa:
-[13:18, 2/2/2024] Roman Novota: <div class="thumbs">
+DONE - pridat do preview zmenu velkosti okna
+DONE - pridat zmenu velkosti editovatelneho okna
+DONE - pridat "data-ui-template" [string, string...] - pre multiple instances
+DONE - pridat div cb classu ako samostatny komponent
+DONE - po kliknuti na obrazok automaticky otvorit edit menu
+  - trochu inak - kliknem a ukaze sa pekne action bar kde vidim co mozem robit
+DONE - <iframe class="responsive" width="100%" height="" src="https://www.youtube.com/embed/8luULdSuRds" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+DONE - <div class="thumbs">
                 <a href="/files/2023/2023-12-04-dr-harper-dlha-verzia.mp4" data-poster="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg">
                     <img src="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg" width="100%;" />
                 </a></div>
-[13:18, 2/2/2024] Roman Novota: proste je to len odkaz.. ktoreho video sa otvorit ponad ostatni content
+DONE - <figure class="imageLeft" style="max-width:350px;"> <img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%"> <figcaption></figcaption> </figure>
+DONE - pridat hr + class ako samostatny komponent
+DONE - znefunkcnit decorator buttons ked je selektnuty decorator - inak je tam chyba
 
-<video width="100%" controls>
-  <source src="mov_bbb.mp4" type="video/mp4">
-  <source src="mov_bbb.ogg" type="video/ogg">
-  Your browser does not support HTML video.
-</video>
 
-[16:00, 3/2/2024] Roman Novota: <figure class="imageLeft" style="max-width:350px;"> <img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%"> <figcaption></figcaption> </figure>
-[16:01, 3/2/2024] Roman Novota: ale kludne bez toho style
-[16:02, 3/2/2024] Roman Novota: <figure class="imageLeft maxWidth350" >
-	<img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%" alt="Popisny text obrazka sa moze tahat aj do ALT" />
-<figcaption>Popisny text obrazka sa moze tahat aj do ALT</figcaption>
-</figure>
+
+---------------------------------------------------------------------------------------------------------------------
 
 pridat este video TAG + classy
 <video width="100%" controls>
@@ -45,11 +60,10 @@ pridat classy do <a videa
                 </a></div>
 
 
-
-pridat "data-ui-template" [string, string...] - pre multiple instances
-
-pridat div cb classu ako samostatny komponent
-
-pridat hr + class ako samostatny komponent
-
 povolit embed na link
+
+ak pridam obrazok.. a zistuim ze som sa pomylil.. tak ho nemozem vymenit -
+
+vyhodit  data-load-on-start, data-css-link - su zbytocne
+
+pridat link do figure

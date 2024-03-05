@@ -1,6 +1,6 @@
 import { Fragment, useCallback, useEffect, useMemo, useState } from "react";
 import { Grid, Menu, MenuItem, Typography } from "@mui/material";
-import { $getSelection, $isNodeSelection, LexicalEditor } from "lexical";
+import { $getSelection, $isRangeSelection, LexicalEditor } from "lexical";
 import { ICON_SIZE, NewImagePayload } from "src/types";
 import ToolbarToggleButton from "src/components/ui/ToolbarToggleButton";
 import Icon from '@mdi/react';
@@ -81,14 +81,12 @@ export default function ImageSelection({ editor }: IImageSelectionProps) {
     useEffect(() => {
         return editor.registerUpdateListener(({ editorState }) => {
             editorState.read(() => {
+                if (editor.isComposing()) return;
                 const selection = $getSelection();
-                if ($isNodeSelection(selection)) {
-                    const node = selection.getNodes()[0];
-                    if (node) {
-                        setEnabled(node.getType() !== "youtube" && node.getType() !== "embed-video" && node.getType() !== "figure");
-                    }
-                } else {
+                if ($isRangeSelection(selection)) {
                     setEnabled(true);
+                } else {
+                    setEnabled(false);
                 }
             });
         });

@@ -23,6 +23,9 @@ const theme = createTheme({
             fontSize: ".85em",
         }
     },
+    // palette: {
+    //     primary: #009900
+    //   },
 });
 
 export default theme;
