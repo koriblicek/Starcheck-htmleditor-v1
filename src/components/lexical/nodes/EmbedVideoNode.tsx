@@ -63,23 +63,13 @@ export class EmbedVideoNode extends DecoratorBlockNode {
         element.setAttribute('class', editor._config.theme.embedVideo);
         const a = document.createElement('a');
         a.setAttribute('href', this.__videoUrl);
+        a.setAttribute('class', "avideo");
         a.setAttribute('data-poster', this.__posterUrl);
         const img = document.createElement('img');
         img.setAttribute("src", this.__posterUrl);
         img.setAttribute("style", "width: 100%;");
         a.appendChild(img);
         element.appendChild(a);
-        /*
-                const element = document.createElement('iframe');
-                element.setAttribute('data-lexical-youtube', this.__id);
-                element.setAttribute('style', 'width:100%; aspect-ratio: 16/9');
-                element.setAttribute('src', `https://www.youtube-nocookie.com/embed/${this.__id}`);
-                element.setAttribute('frameborder', '0');
-                element.setAttribute('allow', 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture');
-                element.setAttribute('allowfullscreen', 'true');
-                element.setAttribute('title', 'YouTube video');
-                return { element };
-                */
         return { element };
     }
 

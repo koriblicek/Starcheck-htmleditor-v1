@@ -44,6 +44,12 @@ DONE - pridat hr + class ako samostatny komponent
 DONE - znefunkcnit decorator buttons ked je selektnuty decorator - inak je tam chyba
 DONE - ak pridam obrazok.. a zistuim ze som sa pomylil.. tak ho nemozem vymenit -
 DONE - fix Decorator nodes mazanie (mazalo predchadzajuci alebo nasledovny decorator node)
+DONE - preload video list
+DONE - pridat classy do <a videa
+      <a class="avideo" href="/files/2023/2023-12-04-dr-harper-dlha-verzia.mp4" data-poster="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg">
+        <img src="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg" width="100%;" />
+      </a></div>
+DONE - vyhodit  data-load-on-start, data-css-link - su zbytocne
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -54,16 +60,8 @@ pridat este video TAG + classy
   Your browser does not support HTML video.
 </video>
 
-pridat classy do <a videa
-<a class="" href="/files/2023/2023-12-04-dr-harper-dlha-verzia.mp4" data-poster="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg">
-                    <img src="/files/2023/2023-12-04-dr-harper-dlha-verzia-v2.jpg" width="100%;" />
-                </a></div>
-
-
 povolit embed na link
 pridat anchor do figure nejako
 
-vyhodit  data-load-on-start, data-css-link - su zbytocne
 
-DONE - preload video list
 

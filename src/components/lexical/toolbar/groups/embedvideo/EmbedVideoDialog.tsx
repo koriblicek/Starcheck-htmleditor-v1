@@ -24,7 +24,7 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
     const [isVerifyingPosterUrl, setIsVerifyingPosterUrl] = useState<boolean>(false);
     
     const { videoData: loadedVideoData } = useAppSelector(state => state.htmlEditorAppData);
-console.log(loadedVideoData)
+
     useEffect(() => {
         setIsVideoUrlValid(null);
         setIsPosterUrlValid(null);

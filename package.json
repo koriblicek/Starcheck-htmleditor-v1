@@ -1,7 +1,7 @@
 {
   "name": "htmleditor-v1",
   "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "json-db": "npx json-server ./db/db.json",

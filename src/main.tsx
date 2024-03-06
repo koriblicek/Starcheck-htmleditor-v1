@@ -14,7 +14,6 @@ let inputData: IAppInputData | undefined;
 let errorMessage = "";
 // let error = false;
 
-
 const editorLocations = document.currentScript?.getAttribute('multiple-divs')?.split(",");
 
 if (editorLocations) {
@@ -31,34 +30,20 @@ if (editorLocations) {
       const di = dataElement.getAttribute("data-id");
       const dm = dataElement.getAttribute("data-module");
       const dv = dataElement.getAttribute("data-version");
-      const dcl = dataElement.getAttribute("data-css-link");
       const dfii = dataElement.getAttribute("data-form-item-id")?.split(",");
       const dut = dataElement.getAttribute("data-ui-template")?.split(",");
-      const dlos = (dataElement.getAttribute("data-load-on-start") === "true");
-      if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dcl !== null) && (dfii !== undefined) && (dut !== undefined) && (dlos !== null)) {
+      if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dfii !== undefined) && (dut !== undefined)) {
         inputData = {
           dataApiLink: dal,
-          dataCssLink: dcl,
           dataFormItemId: dfii[index].trim(),
           dataId: di,
           dataModule: dm,
           dataVersion: dv,
-          dataLoadOnStart: dlos,
           dataUiTemplate: isInstance(dut[index].trim(), EnumUiTemplates) as boolean ? dut[index].trim() as EnumUiTemplates : EnumUiTemplates.DEVELOPER_CONDENSED
         };
-        //load css into head
-        const head = document.head;
-        const link = document.createElement("link");
-        link.setAttribute("type", "text/css");
-        link.setAttribute("rel", "stylesheet");
-        link.setAttribute("href", dcl);
-        link.setAttribute("id", "css-" + dfii);
-        head.appendChild(link);
-
-
       } else {
         // error = true;
-        errorMessage = `Some of required input data are missing! 'data-id'='${di}','data-module'='${dm}','data-version'='${dv}','data-css-link'='${dcl}','data-ui-template'='${dut}','data-load-on-start'='${dlos}','data-form-item-id'='${dfii}'`;
+        errorMessage = `Some of required input data are missing! 'data-id'='${di}','data-module'='${dm}','data-version'='${dv}','data-ui-template'='${dut}','data-form-item-id'='${dfii}'`;
         console.error(`(Starcheck-wdesigner): ${errorMessage}`);
       }
       root.render(
@@ -92,32 +77,20 @@ if (editorLocations) {
     const di = rootElement.getAttribute("data-id");
     const dm = rootElement.getAttribute("data-module");
     const dv = rootElement.getAttribute("data-version");
-    const dcl = rootElement.getAttribute("data-css-link");
     const dfii = rootElement.getAttribute("data-form-item-id");
     const dut = rootElement.getAttribute("data-ui-template");
-    const dlos = (rootElement.getAttribute("data-load-on-start") === "true");
-    if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dcl !== null) && (dfii !== null) && (dut !== null) && (dlos !== null)) {
+    if ((dal !== null) && (di !== null) && (dm !== null) && (dv !== null) && (dfii !== null) && (dut !== null)) {
       inputData = {
         dataApiLink: dal,
-        dataCssLink: dcl,
         dataFormItemId: dfii,
         dataId: di,
         dataModule: dm,
         dataVersion: dv,
-        dataLoadOnStart: dlos,
         dataUiTemplate: isInstance(dut, EnumUiTemplates) as boolean ? dut as EnumUiTemplates : EnumUiTemplates.DEVELOPER_CONDENSED
       };
-      //load css into head
-      const head = document.head;
-      const link = document.createElement("link");
-      link.setAttribute("type", "text/css");
-      link.setAttribute("rel", "stylesheet");
-      link.setAttribute("href", dcl);
-      link.setAttribute("id", "css-" + dfii);
-      head.appendChild(link);
     } else {
       // error = true;
-      errorMessage = `Some of required input data are missing! 'data-id'='${di}','data-module'='${dm}','data-version'='${dv}','data-css-link'='${dcl}','data-ui-template'='${dut}','data-load-on-start'='${dlos}','data-form-item-id'='${dfii}'`;
+      errorMessage = `Some of required input data are missing! 'data-id'='${di}','data-module'='${dm}','data-version'='${dv}','data-ui-template'='${dut}','data-form-item-id'='${dfii}'`;
       console.error(`(Starcheck-wdesigner): ${errorMessage}`);
     }
     root.render(

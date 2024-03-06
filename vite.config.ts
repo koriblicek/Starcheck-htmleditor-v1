@@ -9,4 +9,15 @@ export default defineConfig({
       src: "/src",
     },
   },
+  build: {
+    rollupOptions: {
+      output: {
+        dir: './dist/',
+        entryFileNames: 'index-6oxYz9yh.js',
+        assetFileNames: 'plugin.css',
+        chunkFileNames: "chunk.js",
+        manualChunks: undefined,
+      }
+    }
+  },
 });

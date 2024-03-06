@@ -25,13 +25,11 @@ export interface IErrorObject {
 //Input data via div/scriptst
 export interface IAppInputData {
     dataApiLink: string;
-    dataCssLink: string;
     dataUiTemplate: EnumUiTemplates;
     dataFormItemId: string;
     dataId: string;
     dataModule: string;
     dataVersion: string;
-    dataLoadOnStart: boolean;
 }
 
 //Settings from API
