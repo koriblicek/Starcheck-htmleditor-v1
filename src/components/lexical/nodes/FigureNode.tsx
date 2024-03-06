@@ -13,6 +13,7 @@ export interface FigurePayload {
 export interface UpdateFigurePayload {
     figureClasses?: string;
     caption?: string;
+    src?: string;
 }
 
 export type SerializedFigureNode = Spread<
@@ -63,7 +64,7 @@ function convertImageElement(domNode: HTMLElement): null | DOMConversionOutput {
         if (altText_temp)
             caption = altText_temp;
     }
-    const node = $createFigureNode({ src, caption});
+    const node = $createFigureNode({ src, caption });
     return { node };
 }
 
@@ -170,12 +171,15 @@ export class FigureNode extends DecoratorBlockNode {
 
     update(payload: UpdateFigurePayload): void {
         const writable = this.getWritable();
-        const { figureClasses, caption } = payload;
+        const { figureClasses, caption, src } = payload;
         if (figureClasses !== undefined) {
             writable.__figureClasses = figureClasses;
         }
         if (caption !== undefined) {
             writable.__caption = caption;
+        }
+        if (src !== undefined) {
+            writable.__src = src;
         }
     }
 

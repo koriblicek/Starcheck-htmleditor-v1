@@ -1,46 +1,34 @@
 import { Alert, Button, CircularProgress, Collapse, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, TextField, useMediaQuery, useTheme } from '@mui/material';
 import { ICON_SIZE, NewImagePayload } from 'src/types';
 import { useEffect, useState } from 'react';
-import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
 import { mdiDownload } from '@mdi/js';
-import ImageListLoader from './imagelistloader/ImageListLoader';
 import { useAppSelector } from 'src/store/hooks';
+import Icon from '@mdi/react';
 import ImagesGrid from './imagesgrid/ImagesGrid';
 
 export interface INewImageUrlDialogProps {
     open: boolean;
+    path?: string;
     onClose: () => void;
     onConfirm: (imageData: NewImagePayload) => void;
 }
-const initialData: NewImagePayload = { src: "https://" };
+export function NewImageUrlDialog({ open, onClose, onConfirm, path = "https://" }: INewImageUrlDialogProps) {
 
-export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDialogProps) {
-    const [imageData, setImageData] = useState<NewImagePayload>(initialData);
+    const [imageData, setImageData] = useState<NewImagePayload>({ src: path });
     const [isValid, setIsValid] = useState<boolean | null>();
     const [isVerifying, setIsVerifying] = useState<boolean>(false);
 
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
 
-    const { appData } = useAppSelector(state => state.htmlEditorAppData);
-
-    const [loadedImagesData, setLoadedImagesData] = useState<string[]>();
-
-    function handleImageData(loadedData: string[]) {
-        if (loadedData.length > 0) {
-            setLoadedImagesData(loadedData);
-        } else {
-            setLoadedImagesData([]);
-        }
-    }
-
+    const { imageData: loadedImagesData } = useAppSelector(state => state.htmlEditorAppData);
 
     useEffect(() => {
         setIsValid(null);
         setIsVerifying(false);
-        setImageData(initialData);
-    }, [open]);
+        setImageData({ src: path });
+    }, [open, path]);
 
     const verifyImage = (path: string) => {
         setIsVerifying(true);
@@ -53,6 +41,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
             .then((response) => {
                 if (response) {
                     onConfirm(imageData);
+                    onClose();
                 } else {
                     setIsValid(false);
                 }
@@ -96,8 +85,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
             <DialogContent>
                 <Grid container alignItems='center' justifyContent='center'>
                     <Grid item xs>
-                        {!loadedImagesData && <ImageListLoader path={appData.imagesURL} onImageData={handleImageData} />}
-                        {loadedImagesData && <ImagesGrid imageLinks={loadedImagesData} onImageSelected={(src) => { setImageData((prevState) => { return { ...prevState, src }; }); }} />}
+                        {loadedImagesData && <ImagesGrid imageLinks={loadedImagesData} onImageSelected={(src) => { setImageData((prevState) => { return { ...prevState, src }; }); }} path={imageData.src} />}
                     </Grid>
                     <Grid item justifyContent="center">
                         <Collapse in={isVerifying} >
@@ -122,7 +110,7 @@ export function NewImageUrlDialog({ open, onClose, onConfirm }: INewImageUrlDial
                     size="small"
                     startIcon={<Icon path={mdiDownload} size={ICON_SIZE} />}
                 >
-                    Insert Image
+                    Proceed
                 </Button>
             </DialogActions>
         </Dialog>

@@ -1,5 +1,5 @@
 import { Button, Dialog, DialogActions, DialogContent, DialogTitle, Grid, IconButton, Typography } from '@mui/material';
-import { ICON_SIZE, NewEmbedVideoPayload, VideoApiList } from 'src/types';
+import { ICON_SIZE, NewEmbedVideoPayload } from 'src/types';
 import { useCallback, useEffect, useState } from 'react';
 import Icon from '@mdi/react';
 import { mdiWindowClose } from '@mdi/js';
@@ -8,7 +8,6 @@ import { mdiVideo } from '@mdi/js';
 import { mdiCheck } from '@mdi/js';
 import { InputLink } from './InputLink';
 import VideosGrid from './videolist/VideosGrid';
-import VideoListLoader from './videolistloader/VideoListLoader';
 import { useAppSelector } from 'src/store/hooks';
 
 export interface IEmbedVideoDialogProps {
@@ -23,19 +22,9 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
     const [isVideoUrlValid, setIsVideoUrlValid] = useState<boolean | null>(null);
     const [isPosterUrlValid, setIsPosterUrlValid] = useState<boolean | null>(null);
     const [isVerifyingPosterUrl, setIsVerifyingPosterUrl] = useState<boolean>(false);
-
-    const { appData } = useAppSelector(state => state.htmlEditorAppData);
-
-    const [loadedVideoData, setLoadedVideoData] = useState<VideoApiList[]>();
-
-    function handleVideoData(loadedData: VideoApiList[]) {
-        if (loadedData.length > 0) {
-            setLoadedVideoData(loadedData);
-        } else {
-            setLoadedVideoData([]);
-        }
-    }
-
+    
+    const { videoData: loadedVideoData } = useAppSelector(state => state.htmlEditorAppData);
+console.log(loadedVideoData)
     useEffect(() => {
         setIsVideoUrlValid(null);
         setIsPosterUrlValid(null);
@@ -146,7 +135,7 @@ export function EmbedVideoDialog({ open, onClose, onConfirm }: IEmbedVideoDialog
             <DialogContent>
                 <Grid container alignItems='center' justifyContent='center'>
                     <Grid item xs={12}>
-                        {!loadedVideoData && <VideoListLoader path={appData.videosURL} onVideoData={handleVideoData} />}
+                        {/* {!loadedVideoData && <VideoListLoader path={appData.videosURL} onVideoData={handleVideoData} />} */}
                         {loadedVideoData && <VideosGrid videoLinks={loadedVideoData} onVideoSelected={(src) => {
                             setEmbedVideoData({ videoUrl: src.video, posterUrl: src.poster });
                             setIsPosterUrlValid(null);

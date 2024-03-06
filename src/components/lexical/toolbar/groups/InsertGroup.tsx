@@ -118,7 +118,7 @@ export default function InsertGroup({ editor, buttons = [], groupedButtons = [] 
                 })}
             </Menu>
         );
-    }, [anchorEl, handleClose, groupedButtons, dispatchActionsCommand]);
+    }, [anchorEl, handleClose, groupedButtons, dispatchActionsCommand, state]);
 
     return (
         <Fragment>

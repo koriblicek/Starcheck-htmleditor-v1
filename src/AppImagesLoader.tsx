@@ -1,29 +1,29 @@
 import { Alert, AlertTitle, Grid, LinearProgress, Typography } from "@mui/material";
-import { IAppInputData, ICssData } from "./types";
+import { IAppInputData, ImageDataType } from "./types";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { htmlEditorAppDataActions } from "./store/htmleditor-data/htmlEditorAppDataSlice";
 import { useAppSelector } from "./store/hooks";
+import { htmlEditorAppDataActions } from "./store/htmleditor-data/htmlEditorAppDataSlice";
 import useGetFromAPI from "./hooks/useGetFromAPI";
-import AppImagesLoader from "./AppImagesLoader";
+import AppVideosLoader from "./AppVideosLoader";
 
-interface IAppCssLoaderProps {
+interface IAppImagesLoaderProps {
   inputData: IAppInputData;
 }
 
-export default function AppCssLoader({ inputData }: IAppCssLoaderProps) {
+export default function AppImagesLoader({ inputData }: IAppImagesLoaderProps) {
   const dispatch = useDispatch();
 
   const { appData } = useAppSelector(state => state.htmlEditorAppData);
 
-  const { error, data, isLoading } = useGetFromAPI<ICssData>(appData.cssURL);
+  const { error, data, isLoading } = useGetFromAPI<ImageDataType>(appData.imagesURL);
 
   const [proceed, setProceed] = useState<boolean>(false);
 
   useEffect(() => {
     if (data) {
       //initialize loaded data
-      dispatch(htmlEditorAppDataActions.initializeCssData({ data }));
+      dispatch(htmlEditorAppDataActions.initializeImageData({ data }));
       setProceed(true);
     }
     if (error) {
@@ -33,11 +33,11 @@ export default function AppCssLoader({ inputData }: IAppCssLoaderProps) {
 
   return (
     <Fragment>
-      {proceed && <AppImagesLoader inputData={inputData} />}
+      {proceed && <AppVideosLoader inputData={inputData} />}
       {isLoading &&
         <Grid container p={1}>
           <Grid item xs textAlign='center'>
-            <Typography>Loading css classes...</Typography>
+            <Typography>Loading images...</Typography>
             <LinearProgress />
           </Grid>
         </Grid>

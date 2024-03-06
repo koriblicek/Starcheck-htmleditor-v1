@@ -3,10 +3,11 @@ import { useState } from "react";
 import { ImageItem } from "./ImageItem";
 
 interface IImagesGrid {
+    path: string;
     imageLinks: string[];
     onImageSelected: (imageSrc: string) => void;
 }
-export default function ImagesGrid({ imageLinks, onImageSelected }: IImagesGrid) {
+export default function ImagesGrid({ imageLinks, onImageSelected, path }: IImagesGrid) {
     const [selectedLink, setSelectedLink] = useState<string>("");
 
     function handleImageSelection(link: string) {
@@ -16,12 +17,12 @@ export default function ImagesGrid({ imageLinks, onImageSelected }: IImagesGrid)
 
     const images = imageLinks.map((imageLink, index) => {
         return (
-            <ImageItem key={index} onImageSelected={handleImageSelection} imageLink={imageLink} selected={imageLink === selectedLink} />
+            <ImageItem key={index} onImageSelected={handleImageSelection} imageLink={imageLink} selected={(imageLink === selectedLink) || (imageLink === path)} />
         );
     });
 
     return (
-        <Grid container  sx={{p:0, m:0}}>
+        <Grid container sx={{ p: 0, m: 0 }}>
             <Grid item xs>
                 <ImageList variant="masonry" cols={3} gap={4}>
                     {images}

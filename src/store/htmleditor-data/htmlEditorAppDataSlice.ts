@@ -1,8 +1,10 @@
 import { PayloadAction, createSlice } from '@reduxjs/toolkit';
-import { IAppData, ICssData } from 'src/types';
+import { IAppData, ICssData, ImageDataType, VideoDataType } from 'src/types';
 interface State {
     appData: IAppData;
     cssData: ICssData;
+    imageData: ImageDataType;
+    videoData: VideoDataType;
 }
 
 const initialState = {
@@ -19,6 +21,14 @@ export const htmlEditorAppDataSlice = createSlice({
         initializeCssData: (state, action: PayloadAction<{ data: ICssData; }>) => {
             //initialize css data
             state.cssData = action.payload.data;
+        },
+        initializeImageData: (state, action: PayloadAction<{ data: ImageDataType; }>) => {
+            //initialize css data
+            state.imageData = action.payload.data;
+        },
+        initializeVideoData: (state, action: PayloadAction<{ data: VideoDataType; }>) => {
+            //initialize css data
+            state.videoData = action.payload.data;
         }
     }
 });

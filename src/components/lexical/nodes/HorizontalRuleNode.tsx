@@ -70,7 +70,7 @@ export class HorizontalRuleNode extends DecoratorBlockNode {
 
     static importDOM(): DOMConversionMap | null {
         return {
-            hr: (_: HTMLElement) => {
+            hr: () => {
                 return {
                     conversion: convertHorizontalRuleElement,
                     priority: 1,

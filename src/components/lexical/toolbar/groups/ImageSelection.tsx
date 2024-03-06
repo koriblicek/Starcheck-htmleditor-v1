@@ -70,7 +70,6 @@ export default function ImageSelection({ editor }: IImageSelectionProps) {
                     setOpenNewImageUrl(false);
                 }}
                 onConfirm={(data) => {
-                    setOpenNewImageUrl(false);
                     onConfirm(data);
                 }}
             />

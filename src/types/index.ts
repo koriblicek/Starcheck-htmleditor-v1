@@ -41,7 +41,7 @@ export interface IAppData {
     cssURL: string;
 }
 
-//css settings from API
+//css data from API
 export interface ICssData {
     figure: string[];
     "custom-link": string[];
@@ -49,8 +49,25 @@ export interface ICssData {
     "horizontal-rule": string[];
 }
 
-//#endregion
+//css data from API
+export interface ICssData {
+    figure: string[];
+    "custom-link": string[];
+    "div-clear-both": string[];
+    "horizontal-rule": string[];
+}
 
+//images data from API
+export type ImageDataType = string[];
+
+//videos data froim API
+export interface IVideoApiItem {
+    video: string;
+    poster: string;
+}
+
+export type VideoDataType = IVideoApiItem[];
+//#endregion
 
 export const ICON_SIZE: number = .9;
 export const linkAttributeTartgetTypeList: LinkAttributeTartgetType[] = ["_self", "_blank", "_parent", "_top"];
@@ -73,10 +90,6 @@ export type NewEmbedVideoPayload = {
     posterUrl: string;
 };
 
-export type VideoApiList = {
-    video: string;
-    poster: string;
-};
 
 export type SaveRestApiPayload = {
     data: string;

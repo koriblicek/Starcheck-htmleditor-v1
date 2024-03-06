@@ -1,16 +1,16 @@
 import { Grid, ImageList } from "@mui/material";
 import { useState } from "react";
-import { VideoApiList } from "src/types";
+import { IVideoApiItem } from "src/types";
 import { VideoItem } from "./VideoItem";
 
 interface IVideosGrid {
-    videoLinks: VideoApiList[];
-    onVideoSelected: (imageSrc: VideoApiList) => void;
+    videoLinks: IVideoApiItem[];
+    onVideoSelected: (imageSrc: IVideoApiItem) => void;
 }
 export default function VideosGrid({ videoLinks, onVideoSelected }: IVideosGrid) {
-    const [selectedVideo, setSelectedVideo] = useState<VideoApiList>({ video: "", poster: "" });
+    const [selectedVideo, setSelectedVideo] = useState<IVideoApiItem>({ video: "", poster: "" });
 
-    function handleVideoSelection(src: VideoApiList) {
+    function handleVideoSelection(src: IVideoApiItem) {
         setSelectedVideo({ video: src.video, poster: src.poster });
         onVideoSelected({ video: src.video, poster: src.poster });
     }

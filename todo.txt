@@ -42,8 +42,8 @@ DONE - <div class="thumbs">
 DONE - <figure class="imageLeft" style="max-width:350px;"> <img class="responsive" src="/files/2024/2024-03-01-eccam-2024-02.jpg" width="100%"> <figcaption></figcaption> </figure>
 DONE - pridat hr + class ako samostatny komponent
 DONE - znefunkcnit decorator buttons ked je selektnuty decorator - inak je tam chyba
-
-
+DONE - ak pridam obrazok.. a zistuim ze som sa pomylil.. tak ho nemozem vymenit -
+DONE - fix Decorator nodes mazanie (mazalo predchadzajuci alebo nasledovny decorator node)
 
 ---------------------------------------------------------------------------------------------------------------------
 
@@ -61,9 +61,9 @@ pridat classy do <a videa
 
 
 povolit embed na link
-
-ak pridam obrazok.. a zistuim ze som sa pomylil.. tak ho nemozem vymenit -
+pridat anchor do figure nejako
 
 vyhodit  data-load-on-start, data-css-link - su zbytocne
 
-pridat link do figure
+DONE - preload video list
+

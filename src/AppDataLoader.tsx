@@ -1,4 +1,4 @@
-import { Alert, AlertTitle, CircularProgress, Grid, Typography } from "@mui/material";
+import { Alert, AlertTitle, Grid, LinearProgress, Typography } from "@mui/material";
 import { IAppData, IAppInputData } from "./types";
 import { Fragment, useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
@@ -35,7 +35,8 @@ export default function AppDataLoader({ inputData }: IAppProps) {
       {isLoading &&
         <Grid container p={1}>
           <Grid item xs textAlign='center'>
-            <CircularProgress />
+            <Typography>Loading API settings...</Typography>
+            <LinearProgress />
           </Grid>
         </Grid>
       }

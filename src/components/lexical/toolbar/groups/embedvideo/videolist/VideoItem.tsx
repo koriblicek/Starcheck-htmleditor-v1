@@ -1,10 +1,10 @@
 import { ImageListItem, useTheme } from "@mui/material";
-import { VideoApiList } from "src/types";
+import { IVideoApiItem } from "src/types";
 
 export interface IVideoItemProps {
-    videoLink: VideoApiList;
+    videoLink: IVideoApiItem;
     selected: boolean;
-    onVideoSelected: (src: VideoApiList) => void;
+    onVideoSelected: (src: IVideoApiItem) => void;
 }
 
 export function VideoItem({ videoLink, onVideoSelected, selected }: IVideoItemProps) {
