@@ -45,6 +45,15 @@ const styles = {
     },
     '.htmleditor-theme-nestedListItem': {
         listStyleType: 'none'
+    },
+    '.htmleditor-theme-text-underline': {
+        textDecoration: 'underline'
+    },
+    '.htmleditor-theme-text-strikethrough': {
+        textDecoration: 'line-through'
+    },
+    '.htmleditor-theme-text-underline-strikethrough': {
+        textDecoration: 'underline line-through'
     }
 };
 const theme = {
@@ -77,17 +86,17 @@ const theme = {
         focus: 'htmleditor-editor-embedBlock-focus',
     },
     //     quote: "htmleditor-theme-quote",
-    //     text: {
-    //         bold: "htmleditor-theme-text-bold",
-    //         italic: "htmleditor-theme-text-italic",
-    //         underline: "htmleditor-theme-text-underline",
-    //         strikethrough: "htmleditor-theme-text-strikethrough",
-    //         underlineStrikethrough: "htmleditor-theme-text-underline-strikethrough",
-    //         subscript: "htmleditor-theme-text-subscript",
-    //         superscript: "htmleditor-theme-text-superscript",
-    //         code: "htmleditor-theme-text-code",
-    //         highlight: "htmleditor-theme-text-highlight"
-    //     },
+    text: {
+        //         bold: "htmleditor-theme-text-bold",
+        //         italic: "htmleditor-theme-text-italic",
+        underline: "htmleditor-theme-text-underline",
+        strikethrough: "htmleditor-theme-text-strikethrough",
+        underlineStrikethrough: "htmleditor-theme-text-underline-strikethrough",
+        //         subscript: "htmleditor-theme-text-subscript",
+        //         superscript: "htmleditor-theme-text-superscript",
+        //         code: "htmleditor-theme-text-code",
+        //         highlight: "htmleditor-theme-text-highlight"
+    },
     //     link: "htmleditor-theme-link",
     //     // inlineImage: 'htmleditor-theme-inline-image',
     //     figure: 'htmleditor-theme-figure',
