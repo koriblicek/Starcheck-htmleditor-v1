@@ -56,11 +56,11 @@ export class EmbedVideoNode extends DecoratorBlockNode {
         this.__posterUrl = posterUrl;
     }
 
-    exportDOM(editor: LexicalEditor): DOMExportOutput {
+    exportDOM(): DOMExportOutput {
         const element = document.createElement('div');
         element.setAttribute('data-lexical-video-url', this.__videoUrl);
         element.setAttribute('data-lexical-poster-url', this.__posterUrl);
-        element.setAttribute('class', editor._config.theme.embedVideo);
+        //element.setAttribute('class', editor._config.theme.embedVideo);
         const a = document.createElement('a');
         a.setAttribute('href', this.__videoUrl);
         a.setAttribute('class', "avideo");

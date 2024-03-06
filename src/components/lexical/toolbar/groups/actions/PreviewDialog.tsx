@@ -22,19 +22,28 @@ export interface IPreviewDialogProps {
     onClose: () => void;
 }
 
+function getStringFromNodeList(nodes: NodeListOf<Element>) {
+    let returnValue = "";
+    nodes.forEach(node => {
+        returnValue += `<link rel="stylesheet" href="${(node as HTMLLinkElement).href}">`;
+    });
+    return returnValue;
+}
+
 export function PreviewDialog({ open, onClose, htmlData }: IPreviewDialogProps) {
 
     const [size, setSize] = useState<string>("xl");
 
-    //const src = 'data:text/html;charset=utf-8,' + encodeURI(htmlData);
+    const src = 'data:text/html;charset=utf-8,' + encodeURI(getStringFromNodeList(document.querySelectorAll("link[rel='stylesheet']")) + htmlData);
 
     const handleSize = (_: React.MouseEvent<HTMLElement>, newSize: string | null) => {
         if (newSize !== null) {
             setSize(newSize);
         }
     };
+
     return (
-        <Dialog onClose={onClose} open={open} fullWidth maxWidth={size as Breakpoint}>
+        <Dialog onClose={onClose} open={open} fullWidth maxWidth={size as Breakpoint} PaperProps={{ style: { height: '90vh' } }}>
             <DialogTitle>
                 Preview
                 <IconButton
@@ -48,9 +57,10 @@ export function PreviewDialog({ open, onClose, htmlData }: IPreviewDialogProps) 
                     <Icon path={mdiWindowClose} size={ICON_SIZE} />
                 </IconButton>
             </DialogTitle>
-            <DialogContent dividers>
-                    {/* <iframe src={src} style={{width:'100%', height:'100%'}}/> */}
-                    <div dangerouslySetInnerHTML={{ __html: htmlData }} />
+            <DialogContent dividers sx={{ overflow: 'hidden' }}>
+                {/* <iframe src={src} style={{width:'100%', height:'100%'}}/> */}
+                <object type='text/html' data={src} style={{ width: '100%', height: '100%', overflow: 'unset' }} />
+                {/* <div dangerouslySetInnerHTML={{ __html: htmlData }} /> */}
             </DialogContent>
             <DialogActions>
                 <ToggleButtonGroup aria-label="text alignment" size='small' exclusive value={size} onChange={handleSize}>
