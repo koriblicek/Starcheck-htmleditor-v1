@@ -6,10 +6,11 @@ import { ICON_SIZE } from 'src/types';
 import { useEffect, useState } from 'react';
 
 const parseYouTubeUrl = async (url: string) => {
-    const match =
-        /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/.exec(url);
-    const id = match ? (match?.[2].length === 11 ? match[2] : null) : null;
-    if (id != null) {
+//    const match = /^.*(youtu\.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/.exec(url);
+//    const id = match ? (match?.[2].length === 11 ? match[2] : null) : null;
+    const match = /^.*(youtu.*be.*)\/(watch\?v=|embed\/|v|shorts|)(.*?((?=[&#?])|$)).*/.exec(url);
+    const id = match ? (match?.[3].length === 11 ? match[3] : null) : null;
+if (id != null) {
         return {
             id,
             url,
