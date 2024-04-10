@@ -65,3 +65,5 @@ pridat anchor do figure nejako
 
 
 
+InertTag - icon size of clear_both change from 1 to ICON_SIZE
+FigureComponent.tsx- icon size of changeButton change from 1 to ICON_SIZE
